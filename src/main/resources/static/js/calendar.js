@@ -78,7 +78,7 @@ function showCalendar(month, year) {
                 http.open('GET', url);
                 http.send();
                 http.onload = () => {
-                    if( http.status === 200 ) {
+                    if( http.status === 200 && http.response != null) {
                         let current_date = date;
 
                         console.log(http.response);
