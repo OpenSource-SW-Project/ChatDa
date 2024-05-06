@@ -6,22 +6,25 @@ const urlParams = new URLSearchParams(queryString);
 
 // 특정 매개변수 값 가져오기
 const date = urlParams.get('date');
+const month = urlParams.get('month');
+const year = urlParams.get('year');
 const user = urlParams.get('user');
 
 const diary = document.getElementById("diary");
 
 const http = new XMLHttpRequest();
-const url = `http://localhost:8080/api/DB/diary?date=${date}&user=${user}`;
+const url = `http://localhost:8080/api/DB/diary?date=${date}&month=${month + 1}&year=${year}&user=${user}`; // month는 0부터 시작하므로 +1 해줌
 http.open('GET', url);
 http.send();
 http.onload = () => {
-    if( http.status === 200 && http.response != null ) {
-        let current_date = date;
-
+    if( http.status === 200 ) {
         console.log(http.response);
         let content = document.createElement("p");
 
-        content.innerText = http.responseText;
+        if (http.response != "")
+            content.innerText = http.responseText;
+        else
+            content.innerText = "Wrong Access!!";
 
         diary.appendChild(content);
 
