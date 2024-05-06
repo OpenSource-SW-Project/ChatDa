@@ -22,26 +22,13 @@ public class DBController {
 
     @GetMapping("/diary")
     public String getDiary(@RequestParam("date")String date, @RequestParam("user")String user) {
-//        Diary diary = searchDiary(date, user);
-//        if (diary)
-//            return diary.getContent();
-        return "Test_Content~~~~";
+        return searchDiary(date, user);
     }
 
-    public boolean searchDiary(String date, String user) {
+    public String searchDiary(String date, String user) {
         // date, user 받아서 DB 검색 쿼리 해서 있으면 리턴, 아님 리턴 안하기
-        return true;
-    }
-}
-
-class Diary {
-    private String content;
-
-    public Diary(String content) {
-        this.content = content;
-    }
-
-    public String getContent() {
-        return this.content;
+        // 리턴값은 String으로 주면 달력에선 있으면 링크 생성
+        // 일기에선 링크 타고 들어가면 쿼리로 다시 요청해서 스트링 뿌려주는 방식
+        return "test";
     }
 }

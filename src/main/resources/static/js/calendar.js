@@ -79,11 +79,13 @@ function showCalendar(month, year) {
                 http.send();
                 http.onload = () => {
                     if( http.status === 200 ) {
+                        let current_date = date;
+
                         console.log(http.response);
                         let link = document.createElement("a");
 
-                        link.innerText = "test";
-                        link.href = "http://localhost:8080/diary?" + http.response;
+                        link.innerText = "📖";
+                        link.href = `http://localhost:8080/diary?date=${current_date}&user=${user}`;
 
                         cell.appendChild(link);
 
