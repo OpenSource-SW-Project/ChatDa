@@ -5,6 +5,8 @@ const chat_log = document.getElementById("chat-log");
 
 chat_form.addEventListener("submit", send_chat)
 
+var chat_count = 0;
+
 var user_name = localStorage.getItem("userName");
 var user_id = localStorage.getItem("userId");
 var talk_id = localStorage.getItem("talkId");
@@ -79,6 +81,12 @@ function receive_chat(event, response){
     chat_log.appendChild(new_response_wrapper);
 
     chat_log.scrollTop = chat_log.scrollHeight;
+
+    chat_count = chat_count + 1;
+    if (chat_count === 10) {
+        chat_btn.disabled = true;
+        alert("데모 버전에서 여기까지 대화를 제공합니다. 일기 생성 버튼을 눌러 일기를 생성해보세요!");
+    }
 }
 //
 
