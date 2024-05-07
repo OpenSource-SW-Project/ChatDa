@@ -11,7 +11,9 @@ import org.springframework.http.HttpStatus;
 public enum SuccessStatus implements BaseCode {
 
     // ChatGPT 메시지 관련 응답
-    MESSAGE_OK(HttpStatus.OK, "MESSAGE_1000", "성공입니다.");
+    USER_OK(HttpStatus.OK, "USER_1000", "성공입니다."),
+    MESSAGE_OK(HttpStatus.OK, "MESSAGE_2000", "성공입니다."),
+    TALK_OK (HttpStatus.OK, "TALK_2000", "성공입니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
