@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface DetailedTalkRepository extends JpaRepository<DetailedTalk, Long> {
-    //List<Talk> findByTalkId(Long talkId);
+    List<DetailedTalk> findByTalk_TalkIdOrderByCreatedAtDesc(Long talkId);
 }
