@@ -72,25 +72,27 @@ function showCalendar(month, year) {
 
                 cell.appendChild(cellText);
 
-                // 여기에 백에서 받아와서 만약 일기가 있으면 링크 (버튼 or <a>) 걸어주는 방식으로 코딩
-                const http = new XMLHttpRequest();
-                const url = `http://localhost:8080/api/DB/diary?date=${date}&user=${user}`;
-                http.open('GET', url);
-                http.send();
-                http.onload = () => {
-                    if( http.status === 200 ) {
-                        console.log(http.response);
-                        let link = document.createElement("a");
-
-                        link.innerText = "test";
-                        link.href = "http://localhost:8080/diary?" + http.response;
-
-                        cell.appendChild(link);
-
-                    } else {
-                        console.error("Error", http.status, http.statusText);
-                    }
-                };
+                (function (date, month, year) {
+                    // HTTP 요청 보내기
+                    const http = new XMLHttpRequest();
+                    const url = `http://localhost:8080/api/DB/diary?date=${date}&month=${month + 1}&year=${year}&user=${user}`; // month는 0부터 시작하므로 +1 해줌
+                    //console.log(url);
+                    http.open('GET', url);
+                    http.send();
+                    http.onload = () => {
+                        if (http.status === 200) {
+                            //console.log(http.responseText);
+                            if (http.response != "") {
+                                let link = document.createElement("a");
+                                link.innerText = "📖";
+                                link.href = `http://localhost:8080/diary?date=${date}&month=${month + 1}&year=${year}&user=${user}`;
+                                cell.appendChild(link);
+                            }
+                        } else {
+                            console.error("Error", http.status, http.statusText);
+                        }
+                    };
+                })(date, month, year);
 
                 row.appendChild(cell);
 
