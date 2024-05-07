@@ -49,7 +49,7 @@ function showCalendar(month, year) {
         // creates a table row
         let row = document.createElement("tr");
 
-        let user = "test_user";
+        let user = "UserA";
 
         //creating individual cells, filing them up with data.
         for (let j = 0; j < 7; j++) {
@@ -75,18 +75,35 @@ function showCalendar(month, year) {
                 (function (date, month, year) {
                     // HTTP 요청 보내기
                     const http = new XMLHttpRequest();
-                    const url = `http://localhost:8080/api/DB/diary?date=${date}&month=${month + 1}&year=${year}&user=${user}`; // month는 0부터 시작하므로 +1 해줌
+                    const url = `http://localhost:8080/api/DB/diary?date=${year}-${formatNumber(month + 1)}-${formatNumber(date)}&user=${user}`;
                     //console.log(url);
                     http.open('GET', url);
                     http.send();
                     http.onload = () => {
                         if (http.status === 200) {
                             //console.log(http.responseText);
+
                             if (http.response != "") {
-                                let link = document.createElement("a");
-                                link.innerText = "📖";
-                                link.href = `http://localhost:8080/diary?date=${date}&month=${month + 1}&year=${year}&user=${user}`;
-                                cell.appendChild(link);
+                                const response = JSON.parse(http.response);
+
+                                let diaryButton = document.createElement("button");
+
+                                diaryButton.textContent = "📖";
+                                diaryButton.addEventListener("click", function(){
+                                    let diary = document.getElementById("diary");
+                                    let title = document.getElementById("title");
+                                    let date_info = document.getElementById("date");
+                                    let content = document.getElementById("content");
+
+                                    diary.style.display = "block";
+                                    title.innerText = response.title;
+                                    date_info.innerText = response.date;
+                                    content.innerText = response.content;
+                                });
+
+                                cell.appendChild(diaryButton);
+
+                                console.log(response.title);
                             }
                         } else {
                             console.error("Error", http.status, http.statusText);
@@ -105,4 +122,15 @@ function showCalendar(month, year) {
         tbl.appendChild(row); // appending each row into calendar body.
     }
 
+}
+
+function formatNumber(num) {
+    // 숫자가 2자리 이상이면 그대로 문자열로 변환
+    if (num >= 10) {
+        return num.toString();
+    }
+    // 숫자가 1자리이면 앞에 0을 붙여 2자리 문자열로 변환
+    else {
+        return num.toString().padStart(2, '0');
+    }
 }

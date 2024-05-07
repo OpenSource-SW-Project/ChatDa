@@ -8,7 +8,14 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
           integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-
+    <style>
+        #diary {
+            display: none; /* 초기에는 숨겨진 상태로 설정합니다. */
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
 <div class="container-fluid">
@@ -87,6 +94,12 @@
             </select></form>
         </div>
     </div>
+</div>
+
+<div id="diary">
+    <p id="title"></p>
+    <p id="date"></p>
+    <p id="content"></p>
 </div>
 <!--<button name="jump" onclick="jump()">Go</button>-->
 <script src="js/calendar.js" defer></script>
