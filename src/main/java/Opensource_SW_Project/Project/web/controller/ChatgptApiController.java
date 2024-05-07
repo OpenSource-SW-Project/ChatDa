@@ -13,8 +13,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Map;
-
 @RestController
 @RequiredArgsConstructor
 @Validated
@@ -39,9 +37,9 @@ public class ChatgptApiController {
             @RequestParam(name = "userId")Long userId,
             @RequestBody TalkRequestDTO.CreateMessageRequestDTO request){ // userId와 talkID 필요, 화제 바꾸는 프롬프트 부르는 Id값(enum) 필요함
         // 시스템 프롬프트 생성 메소드 만들기 <- 대화 id에 따라 과거 대화기록 가져오기, 기본 시스템 프롬프트 클래스, 조건 시스템 프롬프트 클래스
-        //String systemPrompt = chatgptApiService.getDefaultSystemPrompt(request);
-        String systemPrompt = "문장뒤에 . 붙여줘";
+        String systemPrompt = chatgptApiService.generateSystemPrompt(userId, request);
 
+        //String systemPrompt = "친근하게 대답해줘";
         // userPrompt requestbody로 받기
         String userPrompt = chatgptApiService.getUserPrompt(request);
         // request를 api로 보내 chatGPT응답받기
