@@ -82,11 +82,28 @@ function showCalendar(month, year) {
                     http.onload = () => {
                         if (http.status === 200) {
                             //console.log(http.responseText);
+
                             if (http.response != "") {
-                                let link = document.createElement("a");
-                                link.innerText = "📖";
-                                link.href = `http://localhost:8080/api/DB/diary?date=${year}-${formatNumber(month + 1)}-${formatNumber(date)}&user=${user}`;
-                                cell.appendChild(link);
+                                const response = JSON.parse(http.response);
+
+                                let diaryButton = document.createElement("button");
+
+                                diaryButton.textContent = "📖";
+                                diaryButton.addEventListener("click", function(){
+                                    let diary = document.getElementById("diary");
+                                    let title = document.getElementById("title");
+                                    let date_info = document.getElementById("date");
+                                    let content = document.getElementById("content");
+
+                                    diary.style.display = "block";
+                                    title.innerText = response.title;
+                                    date_info.innerText = response.date;
+                                    content.innerText = response.content;
+                                });
+
+                                cell.appendChild(diaryButton);
+
+                                console.log(response.title);
                             }
                         } else {
                             console.error("Error", http.status, http.statusText);

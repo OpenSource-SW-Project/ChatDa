@@ -42,15 +42,14 @@ public class DBController {
     private String password; // 데이터베이스 암호
 
     @GetMapping("/diary")
-    public String getDiary(@RequestParam("date")String date, @RequestParam("user")String user) {
+    public Diary getDiary(@RequestParam("date")String date, @RequestParam("user")String user) {
 
-        System.out.println(date);
-        // 여긴 테스트 코드
+        // System.out.println(date);
         return searchDiary(date, user);
         // return searchDiary(date, month, year, user);
     }
 
-    public String searchDiary(String date, String user) {
+    public Diary searchDiary(String date, String user) {
         String title = "";
         String content = "";
 
@@ -80,9 +79,23 @@ public class DBController {
             e.printStackTrace();
         }
 
-        System.out.println("title: " + title);
-        System.out.println("content: " + content);
-        return title + content;
+        if (title.equals(""))
+            return null;
+
+        Diary diary = new Diary(title, content, date);
+
+        return diary;
     }
 
+    public class Diary {
+        public String title;
+        public String content;
+        public String date;
+
+        Diary(String title, String content, String date) {
+            this.title = title;
+            this.content = content;
+            this.date = date;
+        }
+    }
 }
