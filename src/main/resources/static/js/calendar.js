@@ -49,7 +49,7 @@ function showCalendar(month, year) {
         // creates a table row
         let row = document.createElement("tr");
 
-        let user = "test_user";
+        let user = "UserA";
 
         //creating individual cells, filing them up with data.
         for (let j = 0; j < 7; j++) {
@@ -75,7 +75,7 @@ function showCalendar(month, year) {
                 (function (date, month, year) {
                     // HTTP 요청 보내기
                     const http = new XMLHttpRequest();
-                    const url = `http://localhost:8080/api/DB/diary?date=${date}&month=${month + 1}&year=${year}&user=${user}`; // month는 0부터 시작하므로 +1 해줌
+                    const url = `http://localhost:8080/api/DB/diary?date=${year}-${formatNumber(month + 1)}-${formatNumber(date)}&user=${user}`;
                     //console.log(url);
                     http.open('GET', url);
                     http.send();
@@ -85,7 +85,7 @@ function showCalendar(month, year) {
                             if (http.response != "") {
                                 let link = document.createElement("a");
                                 link.innerText = "📖";
-                                link.href = `http://localhost:8080/diary?date=${date}&month=${month + 1}&year=${year}&user=${user}`;
+                                link.href = `http://localhost:8080/api/DB/diary?date=${year}-${formatNumber(month + 1)}-${formatNumber(date)}&user=${user}`;
                                 cell.appendChild(link);
                             }
                         } else {
@@ -105,4 +105,15 @@ function showCalendar(month, year) {
         tbl.appendChild(row); // appending each row into calendar body.
     }
 
+}
+
+function formatNumber(num) {
+    // 숫자가 2자리 이상이면 그대로 문자열로 변환
+    if (num >= 10) {
+        return num.toString();
+    }
+    // 숫자가 1자리이면 앞에 0을 붙여 2자리 문자열로 변환
+    else {
+        return num.toString().padStart(2, '0');
+    }
 }
