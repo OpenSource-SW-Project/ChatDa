@@ -5,11 +5,19 @@ const chat_log = document.getElementById("chat-log");
 
 chat_form.addEventListener("submit", send_chat)
 
-var user_name = sessionStorage.getItem("name");
+var user_name = localStorage.getItem("userName");
+var user_id = localStorage.getItem("userId");
+var talk_id = localStorage.getItem("talkId");
 console.log("got user name : " + user_name);
+console.log("got user id : " + user_id);
+console.log("got talk id : " + talk_id);
+
+//const url = "http://43.202.126.252:8080/";
+const url = "http://localhost:8080/";
 
 function send_chat(event){
     const user_message = chat_input.value;
+    console.log(user_message);
     if(user_message != ""){
         console.log("send message");
 
@@ -32,17 +40,22 @@ function send_chat(event){
         chat_btn.disabled = true;
 
         //send request & get response
-        const http = new XMLHttpRequest();
-        const url = `http://43.202.126.252:8080/api/chat?userPrompt=${user_message}`;
-        http.open('GET', url);
-        http.send();
-        http.onload = () => {
-            if( http.status === 200 ) {
-                console.log(http.response);
-                const response = JSON.parse(http.response);
+        const chatRequest = new XMLHttpRequest();
+        chatRequest.open('POST', url + `api/chat?userId=${user_id}`);
+        chatRequest.setRequestHeader("Content-Type", "application/json");
+
+        var body = JSON.stringify({
+            talkId : talk_id,
+            userPrompt : user_message
+        });
+        chatRequest.send(body);
+        chatRequest.onload = () => {
+            if( chatRequest.status === 200 ) {
+                console.log(chatRequest.response);
+                const response = JSON.parse(chatRequest.response);
                 receive_chat(null, response.result.message);
             } else {
-                console.error("Error", http.status, http.statusText);
+                console.error("Error", chatRequest.status, chatRequest.statusText);
             }
         };
     }
@@ -68,3 +81,27 @@ function receive_chat(event, response){
     chat_log.scrollTop = chat_log.scrollHeight;
 }
 //
+
+const end_chat_btn = document.getElementById("end-chat-btn");
+
+end_chat_btn.addEventListener("click", endChat);
+
+function endChat(event){
+
+    //create diary
+    const diaryRequest = new XMLHttpRequest();
+    diaryRequest.open('POST', url + `diary/?userId=${user_id}`);
+
+    var body = JSON.stringify({
+        talkId: talk_id,
+    });
+    diaryRequest.send(body);
+    diaryRequest.onload = () => {
+        if( diaryRequest.status === 200 ) {
+            console.log(diaryRequest.response);
+            const response = JSON.parse(diaryRequest.response);
+        } else {
+            console.error("Error", diaryRequest.status, diaryRequest.statusText);
+        }
+    };
+}
