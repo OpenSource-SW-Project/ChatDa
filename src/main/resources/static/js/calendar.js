@@ -75,7 +75,7 @@ function showCalendar(month, year) {
                 (function (date, month, year) {
                     // HTTP 요청 보내기
                     const http = new XMLHttpRequest();
-                    const url = `http://localhost:8080/api/DB/diary?date=${year}-${formatNumber(month + 1)}-${formatNumber(date)}&user=${user}`;
+                    const url = `http://43.202.126.252/:8080/api/DB/diary?date=${year}-${formatNumber(month + 1)}-${formatNumber(date)}&user=${user}`;
                     //console.log(url);
                     http.open('GET', url);
                     http.send();
