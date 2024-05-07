@@ -1,4 +1,4 @@
-package Opensource_SW_Project.Project.service;
+package Opensource_SW_Project.Project.service.DiaryService;
 
 import Opensource_SW_Project.Project.domain.Diary;
 import Opensource_SW_Project.Project.domain.Talk;
@@ -6,6 +6,7 @@ import Opensource_SW_Project.Project.domain.User;
 import Opensource_SW_Project.Project.repository.DiaryRepository;
 import Opensource_SW_Project.Project.repository.TalkRepository;
 import Opensource_SW_Project.Project.repository.UserRepository;
+import Opensource_SW_Project.Project.service.DiaryService.DiaryService;
 import Opensource_SW_Project.Project.web.dto.TalkRequestDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 //@Transactional
 @Slf4j
-public class DiaryServiceImpl implements DiaryService{
+public class DiaryServiceImpl implements DiaryService {
     private final UserRepository userRepository;
     private final TalkRepository talkRepository;
     private final DiaryRepository diaryRepository;
