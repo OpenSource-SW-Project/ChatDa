@@ -5,6 +5,9 @@ const chat_log = document.getElementById("chat-log");
 
 chat_form.addEventListener("submit", send_chat)
 
+var user_name = sessionStorage.getItem("name");
+console.log("got user name : " + user_name);
+
 function send_chat(event){
     const user_message = chat_input.value;
     if(user_message != ""){
@@ -44,10 +47,6 @@ function send_chat(event){
         };
     }
 }
-
-//create dummy response
-const receive_btn = document.getElementById("response");
-receive_btn.addEventListener("click",receive_chat);
 
 function receive_chat(event, response){
     chat_btn.disabled = false;

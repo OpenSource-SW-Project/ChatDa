@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>chatDa</title>
+</head>
+
+<body>
+<div class="container">
+    <div>
+        <h1>ChatDa Demo</h1>
+        <p>챗다와 대화를 나누어 오늘의 일기를 작성할 수 있습니다.</p>
+        <p>이름을 입력하고 대화를 시작해 보세요!</p>
+        <form id="start-chat-form" onsubmit="return false;">
+            <label>이름 : </label>
+            <input id="name-input" type="text" maxlength="10">
+            <button >대화 시작</button>
+        </form>
+    </div>
+
+    <a href="/calendar">Diary</a>
+</div> <!-- /container -->
+
+</body>
+
+<script src="js/home.js" defer></script>
+<script src="../static/js/home.js" defer></script>
+
+</html>
