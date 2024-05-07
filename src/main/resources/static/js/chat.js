@@ -56,6 +56,7 @@ function send_chat(event){
                 console.log(chatRequest.response);
                 const response = JSON.parse(chatRequest.response);
                 receive_chat(null, response.result.message);
+                
             } else {
                 console.error("Error", chatRequest.status, chatRequest.statusText);
             }
@@ -98,16 +99,22 @@ function endChat(event){
 
     //create diary
     const diaryRequest = new XMLHttpRequest();
-    diaryRequest.open('POST', url + `diary/?userId=${user_id}`);
-
+    diaryRequest.open('POST', url + `diary?userId=${user_id}`);
+    diaryRequest.setRequestHeader("Content-Type", "application/json");
     var body = JSON.stringify({
-        talkId: talk_id,
+        talkId : talk_id,
+        userPrompt : ""
     });
     diaryRequest.send(body);
+    end_chat_btn.disabled = true;
+    alert("일기를 작성 중입니다. 잠시만 기다려 주세요(30~40초)");
     diaryRequest.onload = () => {
         if( diaryRequest.status === 200 ) {
-            console.log(diaryRequest.response);
+            
             const response = JSON.parse(diaryRequest.response);
+            console.log(response);
+            localStorage.setItem("diary", response.result.content);
+            window.location.href = "temp";
         } else {
             console.error("Error", diaryRequest.status, diaryRequest.statusText);
         }

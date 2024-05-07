@@ -16,4 +16,9 @@ public class PageController {
     public String main() {
         return "chat";
     }
+
+    @RequestMapping(value="/temp")
+    public String temp() {
+        return "temp";
+    }
 }
