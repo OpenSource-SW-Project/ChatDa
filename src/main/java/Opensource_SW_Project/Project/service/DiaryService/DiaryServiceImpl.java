@@ -24,7 +24,7 @@ public class DiaryServiceImpl implements DiaryService {
         User getUser = userRepository.findById(userId).get();
 
         String diarySystemPrompt = "다음은 " + getUser.getName() +"의 하루에 대한 대화 내용이다.\n" +
-                getUser.getName() + "의 하루를 기록하는 일기를 작성하여라.\n" +
+                getUser.getName() + "의 하루를 " + getUser.getName() + "의 입장에서 작성한 것처럼 일기를 작성하여라.\n" +
                 "조건\n" +
                 "1. 대화 내용을 통해 알 수 있는 [사용자 이름]의 하루를 담는다.\n" +
                 "2. 형식에 맞춰 작성한다.\n" +
