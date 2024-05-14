@@ -96,7 +96,6 @@ const end_chat_btn = document.getElementById("end-chat-btn");
 end_chat_btn.addEventListener("click", endChat);
 
 function endChat(event){
-
     //create diary
     const diaryRequest = new XMLHttpRequest();
     diaryRequest.open('POST', url + `diary?userId=${user_id}`);
@@ -119,4 +118,65 @@ function endChat(event){
             console.error("Error", diaryRequest.status, diaryRequest.statusText);
         }
     };
+}
+
+
+//typing bubble
+var count = 0;
+var interval;
+const enableBtn = document.getElementById("enable-wait-btn");
+const disableBtn = document.getElementById("disable-wait-btn");
+
+function enableWait() {
+    console.log("enabled");
+
+    const new_response_wrapper = document.createElement("div");
+    new_response_wrapper.id = "wait-wrapper";
+    new_response_wrapper.classList.add("chat-wrapper");
+
+    const new_response_box = document.createElement("div");
+    new_response_box.classList.add("chat-box");
+
+    const new_response = document.createElement("div");
+    new_response.classList.add("chat-bubble");
+    new_response.id = "wait-bubble";
+    new_response.innerText = ".....";
+
+    new_response_wrapper.appendChild(new_response);
+    new_response_wrapper.appendChild(new_response_box);
+    chat_log.appendChild(new_response_wrapper);
+
+    count = 0;
+    interval = setInterval(nextWait, 100);
+}
+
+function disableWait() {
+    console.log("disabled");
+    document.getElementById("wait-wrapper").remove();
+    clearInterval(interval);
+}
+
+enableBtn.addEventListener("click", enableWait);
+disableBtn.addEventListener("click", disableWait);
+
+function nextWait() {
+    const bubble = document.getElementById("wait-bubble");
+    var wait_text = "";
+    if(count < 5) {
+        for (i=0;i<count;i++){
+            wait_text += ".";
+        }
+        wait_text += "·";
+        for (;i<4;i++){
+            wait_text += ".";
+        }
+        bubble.innerText = wait_text;
+    } else {
+        bubble.innerText = ".....";
+    }
+
+    count ++;
+    if (count > 10) {
+        count = 0;
+    }
 }
