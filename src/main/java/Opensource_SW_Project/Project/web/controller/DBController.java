@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.http.MediaType;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,12 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -45,6 +52,15 @@ public class DBController {
 
         // System.out.println(date);
         return searchDiary(date, user);
+        // return searchDiary(date, month, year, user);
+    }
+
+    @GetMapping(value = "/chat", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public String getChat(@RequestParam("date")String date, @RequestParam("talkId")String talk_id) {
+
+        String result = searchChats(date, talk_id);
+        System.out.println(result);
+        return result;
         // return searchDiary(date, month, year, user);
     }
 
@@ -85,6 +101,61 @@ public class DBController {
         Diary diary = new Diary(title, content, date);
 
         return diary;
+    }
+
+    public String searchChats (String date, String talk_id) {
+        List<String> contentList = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = DriverManager.getConnection(url, username, password);
+
+            // 쿼리 작성
+            String query = "SELECT content FROM detailed_talk WHERE talk_id = ?"; //  AND created_at = ?
+
+            // PreparedStatement 생성
+            stmt = conn.prepareStatement(query);
+            stmt.setString(1, talk_id);
+            //stmt.setString(2, date);
+
+            // 쿼리 실행 및 결과 처리
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                String content = rs.getString("content");
+                contentList.add(content);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // 리소스 정리
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+        String json = gson.toJson(contentList);
+        return gson.toJson(json);
     }
 
     public class Diary {
