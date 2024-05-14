@@ -7,6 +7,10 @@ let selectMonth = document.getElementById("month");
 let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 let monthAndYear = document.getElementById("monthAndYear");
+
+//const url = "http://43.202.126.252:8080/";
+const url = "http://localhost:8080/";
+
 showCalendar(currentMonth, currentYear);
 
 
@@ -75,9 +79,9 @@ function showCalendar(month, year) {
                 (function (date, month, year) {
                     // HTTP 요청 보내기
                     const http = new XMLHttpRequest();
-                    const url = `http://43.202.126.252:8080/api/DB/diary?date=${year}-${formatNumber(month + 1)}-${formatNumber(date)}&user=${user}`;
                     //console.log(url);
-                    http.open('GET', url);
+                    const query = url + `api/DB/diary?date=${year}-${formatNumber(month + 1)}-${formatNumber(date)}&userId=${user}`;
+                    http.open('GET', query);
                     http.send();
                     http.onload = () => {
                         if (http.status === 200) {

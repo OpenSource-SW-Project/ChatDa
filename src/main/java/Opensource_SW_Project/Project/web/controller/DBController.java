@@ -20,9 +20,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @RestController
 @RequiredArgsConstructor
@@ -42,7 +41,7 @@ public class DBController {
     private String password; // 데이터베이스 암호
 
     @GetMapping("/diary")
-    public Diary getDiary(@RequestParam("date")String date, @RequestParam("user")String user) {
+    public Diary getDiary(@RequestParam("date")String date, @RequestParam("userId")String user) {
 
         // System.out.println(date);
         return searchDiary(date, user);
@@ -57,6 +56,7 @@ public class DBController {
             Connection connection = DriverManager.getConnection(url, username, password);
 
             // SQL 문 작성
+            // 여기에 검색하는 table만 바꿔주면 적용됨!!!!
             String sql = "SELECT title, diary FROM diary_test WHERE date_info = ? AND user = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, date);

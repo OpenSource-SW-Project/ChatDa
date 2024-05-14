@@ -9,8 +9,8 @@ function start_chat(event) {
 
     //create user & create new talk
     const userRequest = new XMLHttpRequest();
-    const url = `http://43.202.126.252:8080/`;
-    //const url = `http://localhost:8080/`;
+    //const url = `http://43.202.126.252:8080/`;
+    const url = `http://localhost:8080/`;
     userRequest.open('POST', url + `users/?userName=${name}`);
     userRequest.send();
     userRequest.onload = () => {
