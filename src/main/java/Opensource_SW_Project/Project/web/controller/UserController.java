@@ -5,7 +5,7 @@ import Opensource_SW_Project.Project.apiPayload.code.status.SuccessStatus;
 import Opensource_SW_Project.Project.converter.UserConverter;
 import Opensource_SW_Project.Project.domain.User;
 import Opensource_SW_Project.Project.service.UserService.UserCommandService;
-import Opensource_SW_Project.Project.web.dto.UserResponseDTO;
+import Opensource_SW_Project.Project.web.dto.User.UserResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package Opensource_SW_Project.Project.web.dto;
+package Opensource_SW_Project.Project.web.dto.Talk;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
