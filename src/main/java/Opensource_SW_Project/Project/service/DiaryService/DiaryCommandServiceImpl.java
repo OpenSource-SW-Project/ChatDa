@@ -6,17 +6,18 @@ import Opensource_SW_Project.Project.domain.User;
 import Opensource_SW_Project.Project.repository.DiaryRepository;
 import Opensource_SW_Project.Project.repository.TalkRepository;
 import Opensource_SW_Project.Project.repository.UserRepository;
-import Opensource_SW_Project.Project.service.DiaryService.DiaryService;
+import Opensource_SW_Project.Project.web.dto.DiaryRequestDTO;
 import Opensource_SW_Project.Project.web.dto.TalkRequestDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-//@Transactional
+@Transactional   // 이게 주석처리되어 있으면 update 안먹음
 @Slf4j
-public class DiaryServiceImpl implements DiaryService {
+public class DiaryCommandServiceImpl implements DiaryCommandService {
     private final UserRepository userRepository;
     private final TalkRepository talkRepository;
     private final DiaryRepository diaryRepository;
@@ -51,5 +52,16 @@ public class DiaryServiceImpl implements DiaryService {
         Diary saveDiary = diaryRepository.save(newDiary);
 
         return saveDiary;
+    }
+
+    @Override
+    public Diary updateDiary(Long diaryId, DiaryRequestDTO.UpdateDiaryDTO request) {
+        Diary updateDiary = diaryRepository.findById(diaryId).get();
+        updateDiary.update(request);
+
+//        Diary updateDiary2 = diaryRepository.save(updateDiary);
+//        updateDiary = updateDiary2;
+
+        return updateDiary;
     }
 }

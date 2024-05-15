@@ -5,8 +5,10 @@ import Opensource_SW_Project.Project.apiPayload.code.status.SuccessStatus;
 import Opensource_SW_Project.Project.converter.DiaryConverter;
 import Opensource_SW_Project.Project.domain.Diary;
 import Opensource_SW_Project.Project.service.ChatgptApiService.ChatgptApiService;
-import Opensource_SW_Project.Project.service.DiaryService.DiaryService;
+import Opensource_SW_Project.Project.service.DiaryService.DiaryCommandService;
 import Opensource_SW_Project.Project.web.dto.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,7 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class DiaryController {
     private final ChatgptApiService chatgptApiService;
-    private final DiaryService diaryService;
+    private final DiaryCommandService diaryCommandService;
 
     @Value("${openai.model}")
     private String model;
@@ -33,31 +35,50 @@ public class DiaryController {
 
     @Autowired
     private RestTemplate template;
-    @PostMapping   // 첫번째 로컬호스트 8080으로 들어오면 이것이 호출됨
+
+    // 일기 생성
+    @PostMapping()
     public ApiResponse<DiaryResponseDTO.CreateDiaryResultDTO> createDiary(
             @RequestParam(name = "userId")Long userId,
             @RequestBody TalkRequestDTO.CreateMessageRequestDTO request
-            ){ // userId와 talkID 필요, 화제 바꾸는 프롬프트 부르는 Id값(enum) 필요함
-        // 시스템 프롬프트 생성 메소드 만들기 <- 대화 id에 따라 과거 대화기록 가져오기, 기본 시스템 프롬프트 클래스, 조건 시스템 프롬프트 클래스
-        String userPrompt1 = diaryService.createDiarySystemPrompt(userId);
+            ){
+        String userPrompt1 = diaryCommandService.createDiarySystemPrompt(userId);
         String userPrompt2 = chatgptApiService.getHistorytalk(userId, request);
 
         String userPrompt = userPrompt1 + userPrompt2;
 
-        //String systemPrompt = "친근하게 대답해줘";
-        // userPrompt requestbody로 받기
         String systemPrompt = "";
         // request를 api로 보내 chatGPT응답받기
-        ChatGPTRequest chatGPTrequest = new ChatGPTRequest(model, systemPrompt,userPrompt);
-        ChatGPTResponse chatGPTResponse =  template.postForObject(apiURL, chatGPTrequest, ChatGPTResponse.class);
+        ChatGPTRequestDTO chatGPTrequest = new ChatGPTRequestDTO(model, systemPrompt,userPrompt);
+        ChatGPTResponseDTO chatGPTResponse =  template.postForObject(apiURL, chatGPTrequest, ChatGPTResponseDTO.class);
 
-        // service에서 userPrompt와 chatGPTResponse 저장하기
-        Diary newDiary = diaryService.saveDiary(userId, request, chatGPTResponse.getChoices().get(0).getMessage().getContent());
+        // service에서 userPrompt와 chatGPTResponse 저장
+        Diary newDiary = diaryCommandService.saveDiary(userId, request, chatGPTResponse.getChoices().get(0).getMessage().getContent());
 
         return ApiResponse.onSuccess(
                 SuccessStatus.MESSAGE_OK,
                 DiaryConverter.toCreateDiaryResultDTO(
                         newDiary
+                )
+        );
+    }
+
+
+    // 일기 수정
+    @PatchMapping("/{diaryId}")
+    @Operation(
+            summary = "일기 수정 API"
+            , description = "일기를 수정합니다. Path variable로 diaryId를 입력 받고, RequestBody에 수정할 일기 content를 입력하세요"
+            , security = @SecurityRequirement(name = "accessToken")
+    )
+    public ApiResponse<DiaryResponseDTO.UpdateDiaryResultDTO> updateDiary(
+            @RequestBody DiaryRequestDTO.UpdateDiaryDTO request,
+            @PathVariable Long diaryId
+    ) {
+        return ApiResponse.onSuccess(
+                SuccessStatus.DIARY_OK,
+                DiaryConverter.UpdateDiaryResultDTO(
+                        diaryCommandService.updateDiary(diaryId, request)
                 )
         );
     }
