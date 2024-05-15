@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional   // 이게 주석처리되어 있으면 update 안먹음
 @Slf4j
 public class DiaryCommandServiceImpl implements DiaryCommandService {
+
     private final UserRepository userRepository;
     private final TalkRepository talkRepository;
     private final DiaryRepository diaryRepository;
