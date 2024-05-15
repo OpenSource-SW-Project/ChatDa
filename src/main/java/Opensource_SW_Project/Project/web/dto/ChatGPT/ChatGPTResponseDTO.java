@@ -1,5 +1,6 @@
-package Opensource_SW_Project.Project.web.dto;
+package Opensource_SW_Project.Project.web.dto.ChatGPT;
 
+import Opensource_SW_Project.Project.web.dto.Message.MessageDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

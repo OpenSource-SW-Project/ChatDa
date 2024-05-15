@@ -6,8 +6,8 @@ import Opensource_SW_Project.Project.domain.User;
 import Opensource_SW_Project.Project.repository.DiaryRepository;
 import Opensource_SW_Project.Project.repository.TalkRepository;
 import Opensource_SW_Project.Project.repository.UserRepository;
-import Opensource_SW_Project.Project.web.dto.DiaryRequestDTO;
-import Opensource_SW_Project.Project.web.dto.TalkRequestDTO;
+import Opensource_SW_Project.Project.web.dto.Diary.DiaryRequestDTO;
+import Opensource_SW_Project.Project.web.dto.Talk.TalkRequestDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -62,7 +62,6 @@ public class DiaryCommandServiceImpl implements DiaryCommandService {
 
 //        Diary updateDiary2 = diaryRepository.save(updateDiary);
 //        updateDiary = updateDiary2;
-
         return updateDiary;
     }
 }

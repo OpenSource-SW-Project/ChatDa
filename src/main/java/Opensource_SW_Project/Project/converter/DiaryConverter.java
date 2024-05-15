@@ -1,7 +1,7 @@
 package Opensource_SW_Project.Project.converter;
 
 import Opensource_SW_Project.Project.domain.Diary;
-import Opensource_SW_Project.Project.web.dto.DiaryResponseDTO;
+import Opensource_SW_Project.Project.web.dto.Diary.DiaryResponseDTO;
 
 
 public class DiaryConverter {

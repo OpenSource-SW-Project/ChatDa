@@ -2,16 +2,15 @@ package Opensource_SW_Project.Project.web.controller;
 
 import Opensource_SW_Project.Project.apiPayload.ApiResponse;
 import Opensource_SW_Project.Project.apiPayload.code.status.SuccessStatus;
-import Opensource_SW_Project.Project.service.ChatgptApiService.ChatgptApiService;
-import Opensource_SW_Project.Project.web.dto.*;
+import Opensource_SW_Project.Project.service.ChatgptApiService.ChatgptApiCommandService;
+import Opensource_SW_Project.Project.web.dto.ChatgptApi.ChatgptApiRequestDTO;
+import Opensource_SW_Project.Project.web.dto.ChatgptApi.ChatgptApiResponseDTO;
+import Opensource_SW_Project.Project.web.dto.Talk.TalkRequestDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,7 +20,7 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class ChatgptApiController {
 
-    private final ChatgptApiService chatgptApiService;
+    private final ChatgptApiCommandService chatgptApiService;
 
     @PostMapping("/chat")
     public ApiResponse<ChatgptApiResponseDTO.SendMessageResultDTO> chat(

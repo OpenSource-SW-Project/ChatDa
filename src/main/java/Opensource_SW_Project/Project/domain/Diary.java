@@ -1,7 +1,6 @@
 package Opensource_SW_Project.Project.domain;
 
-import Opensource_SW_Project.Project.domain.enums.Category;
-import Opensource_SW_Project.Project.web.dto.DiaryRequestDTO;
+import Opensource_SW_Project.Project.web.dto.Diary.DiaryRequestDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
