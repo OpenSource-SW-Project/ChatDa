@@ -1,6 +1,6 @@
 package Opensource_SW_Project.Project.service.ChatgptApiService;
 
-import Opensource_SW_Project.Project.web.dto.TalkRequestDTO;
+import Opensource_SW_Project.Project.web.dto.Talk.TalkRequestDTO;
 
 public interface ChatgptApiService { // ChatGPT API부르는 함수 만들어 공통으로 쓰기 <- 2개의 api 응답을 합치는데 쓰일 것임
 
