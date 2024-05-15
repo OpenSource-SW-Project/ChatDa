@@ -128,29 +128,6 @@ public class DBController {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            // 리소스 정리
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
         }
 
         Gson gson = new GsonBuilder().disableHtmlEscaping().create();

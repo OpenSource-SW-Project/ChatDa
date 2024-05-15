@@ -27,54 +27,7 @@ function init_chat() {
         return;
     }
 
-    create_chatDa_chat("안녕! 나는 챗다야. 오늘 하루 중 가장 기억에 남는 일은 뭐야?");
-
-    var today = new Date();
-    var year = today.getFullYear();
-    var month = (today.getMonth() + 1).toString().padStart(2, '0');
-    var day = today.getDate().toString().padStart(2, '0');
-
-    const formattedDate = year + '-' + month + '-' + day;
-
-    const http = new XMLHttpRequest();
-    const query = url + `api/DB/chat?date=${formattedDate}&talkId=${talk_id}`;
-    console.log(query);
-    http.open('GET', query);
-    http.send();
-    http.onload = () => {
-        if (http.status === 200) {
-            var chattings;
-            //console.log(http.responseText);
-            var jsonString = http.response;
-
-            jsonString = jsonString.substring(2, jsonString.length - 2);
-
-            console.log(jsonString);
-
-            var resultString;
-
-            // 문자열이 "[]" 형식인지 확인
-            if (jsonString === "") {
-                chattings = null; // 빈 문자열 반환
-            } else {
-                // 문자열에서 "[", "]"를 제거하고 ", "를 기준으로 나누기
-                resultString = jsonString.split('\",\"');
-                chattings =  resultString;
-            }
-
-            console.log(chattings);
-            console.log(chattings.length);
-
-            while (chat_count < chattings.length) {
-                create_user_chat(chattings[chat_count++]);
-                create_chatDa_chat(chattings[chat_count++]);
-            }
-            chat_btn.disabled = false;
-
-        } else {
-            console.error("Error", http.status, http.statusText);
-        }
-    };
+    get_today_chat();
 }
 
 function send_chat(event){
@@ -244,28 +197,47 @@ function get_today_chat() {
     http.send();
     http.onload = () => {
         if (http.status === 200) {
+            var chattings;
             //console.log(http.responseText);
             var jsonString = http.response;
 
             jsonString = jsonString.substring(2, jsonString.length - 2);
 
-            console.log(jsonString);
-
             var resultString;
 
             // 문자열이 "[]" 형식인지 확인
             if (jsonString === "") {
-                return null; // 빈 문자열 반환
+                chattings = null; // 빈 문자열 반환
             } else {
                 // 문자열에서 "[", "]"를 제거하고 ", "를 기준으로 나누기
-                resultString = jsonString.split('\",\"');
-                return resultString;
+                console.log(jsonString);
+                jsonString = '[' + jsonString + ']';
+                var removedString = jsonString.replace(/\\/g, '');
+                console.log(removedString);
+                chattings =  JSON.parse(removedString);
             }
+
+            console.log(chattings);
+
+            if (!chattings) {
+                create_chatDa_chat("안녕! 나는 챗다야. 오늘 하루 중 가장 기억에 남는 일은 뭐야?");
+                return;
+            }
+
+            var flag = true;
+
+            while (chat_count < chattings.length) {
+                var chat = chattings[chat_count++];
+                if (flag)
+                    create_chatDa_chat(chat);
+                else
+                    create_user_chat(chat);
+                flag = !flag;
+            }
+            chat_btn.disabled = false;
 
         } else {
             console.error("Error", http.status, http.statusText);
         }
     };
-
-    return null;
 }
