@@ -16,4 +16,14 @@ public class DiaryResponseDTO{
         Long diaryId;
         String content;
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UpdateDiaryResultDTO {
+        Long userId;
+        Long diaryId;
+        String content;
+    }
 }

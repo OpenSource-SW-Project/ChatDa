@@ -7,15 +7,14 @@ import Opensource_SW_Project.Project.domain.enums.Category;
 import Opensource_SW_Project.Project.repository.DetailedTalkRepository;
 import Opensource_SW_Project.Project.repository.TalkRepository;
 import Opensource_SW_Project.Project.repository.UserRepository;
-import Opensource_SW_Project.Project.web.dto.ChatGPTRequest;
-import Opensource_SW_Project.Project.web.dto.ChatGPTResponse;
+import Opensource_SW_Project.Project.web.dto.ChatGPTRequestDTO;
+import Opensource_SW_Project.Project.web.dto.ChatGPTResponseDTO;
 import Opensource_SW_Project.Project.web.dto.TalkRequestDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -50,8 +49,8 @@ public class ChatgptApiServiceImpl implements ChatgptApiService{ // 첫 대화�
     // ChatGPT API 요청
     public String getResponseOfChatGPT_API(String systemPrompt, String userPrompt){
         // request를 api로 보내 chatGPT응답받기
-        ChatGPTRequest chatGPTrequest = new ChatGPTRequest(model, systemPrompt,userPrompt);
-        ChatGPTResponse chatGPTResponse =  template.postForObject(apiURL, chatGPTrequest, ChatGPTResponse.class);
+        ChatGPTRequestDTO chatGPTrequest = new ChatGPTRequestDTO(model, systemPrompt,userPrompt);
+        ChatGPTResponseDTO chatGPTResponse =  template.postForObject(apiURL, chatGPTrequest, ChatGPTResponseDTO.class);
 
         return chatGPTResponse.getChoices().get(0).getMessage().getContent();
     }
