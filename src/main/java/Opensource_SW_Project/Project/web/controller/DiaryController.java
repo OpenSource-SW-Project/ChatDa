@@ -6,6 +6,7 @@ import Opensource_SW_Project.Project.converter.DiaryConverter;
 import Opensource_SW_Project.Project.domain.Diary;
 import Opensource_SW_Project.Project.service.ChatgptApiService.ChatgptApiCommandService;
 import Opensource_SW_Project.Project.service.DiaryService.DiaryCommandService;
+import Opensource_SW_Project.Project.service.DiaryService.DiaryQueryService;
 import Opensource_SW_Project.Project.web.dto.ChatGPT.ChatGPTRequestDTO;
 import Opensource_SW_Project.Project.web.dto.ChatGPT.ChatGPTResponseDTO;
 import Opensource_SW_Project.Project.web.dto.Diary.DiaryRequestDTO;
@@ -30,6 +31,7 @@ import org.springframework.web.client.RestTemplate;
 public class DiaryController {
     private final ChatgptApiCommandService chatgptApiService;
     private final DiaryCommandService diaryCommandService;
+    private final DiaryQueryService diaryQueryService;
 
     @Value("${openai.model}")
     private String model;
@@ -90,4 +92,28 @@ public class DiaryController {
                 )
         );
     }
+
+
+    // 특정 일기 조회
+    @GetMapping("/{diaryId}")
+    @Operation(
+            summary = "특정 일기 조회 API"
+            , description = "특정 일기를 조회합니다. Path variable로 조회할 diaryId를 입력하세요"
+    )
+    public ApiResponse<DiaryResponseDTO.DiaryDTO> findDiary(
+            @PathVariable Long diaryId,
+            @RequestParam(name = "userId")Long userId
+    ) {
+        Object request;
+        Diary findDiary = diaryQueryService.findById(diaryId);
+        return ApiResponse.onSuccess(
+                SuccessStatus.DIARY_OK,
+                DiaryConverter.toDiaryDTO(
+                        findDiary
+                )
+        );
+    }
+
+
+
 }

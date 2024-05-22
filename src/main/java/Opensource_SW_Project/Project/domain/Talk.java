@@ -1,7 +1,6 @@
 package Opensource_SW_Project.Project.domain;
 
 import Opensource_SW_Project.Project.domain.common.BaseEntity;
-import Opensource_SW_Project.Project.domain.enums.Category;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;

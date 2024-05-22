@@ -59,7 +59,6 @@ public class DiaryCommandServiceImpl implements DiaryCommandService {
     public Diary updateDiary(Long diaryId, DiaryRequestDTO.UpdateDiaryDTO request) {
         Diary updateDiary = diaryRepository.findById(diaryId).get();
         updateDiary.update(request);
-
 //        Diary updateDiary2 = diaryRepository.save(updateDiary);
 //        updateDiary = updateDiary2;
         return updateDiary;

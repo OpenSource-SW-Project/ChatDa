@@ -21,6 +21,29 @@ public class DiaryResponseDTO{
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
+    public static class DiaryDTO {
+        //Long userId;
+        Long diaryId;
+        String content;
+    }
+
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class DiaryPreviewDTO {    // 특정 일기 조회
+        Long userId;
+        Long diaryId;
+        String content;
+
+    }
+
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class UpdateDiaryResultDTO {
         Long userId;
         Long diaryId;
