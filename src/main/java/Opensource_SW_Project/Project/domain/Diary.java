@@ -1,10 +1,14 @@
 package Opensource_SW_Project.Project.domain;
 
+import Opensource_SW_Project.Project.domain.enums.mapping.DiaryHashTag;
 import Opensource_SW_Project.Project.web.dto.Diary.DiaryRequestDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -28,6 +32,10 @@ public class Diary {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "talk_id")
     private Talk talk;
+
+    @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<DiaryHashTag> diaryHashTagList = new ArrayList<>();
 
 
     // user와 양방향 매핑하기 <- 양방향??

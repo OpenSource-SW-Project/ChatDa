@@ -7,6 +7,16 @@ import lombok.NoArgsConstructor;
 
 public class DiaryRequestDTO {
 
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class GetDiaryRequestDTO {
+        private long userId;
+        private long diaryId;
+    }
+
     @Getter
     @Builder
     @NoArgsConstructor

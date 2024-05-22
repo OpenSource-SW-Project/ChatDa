@@ -24,7 +24,7 @@ import java.util.Random;
 @RequiredArgsConstructor
 //@Transactional
 @Slf4j
-public class ChatgptApiCommandServiceImpl implements ChatgptApiCommandService { // 첫 대화인지 확인하고 checkTopic값 초기화 해줘야함
+public class ChatgptApiServiceImpl implements ChatgptApiCommandService { // 첫 대화인지 확인하고 checkTopic값 초기화 해줘야함
 
     private final DetailedTalkRepository detailedTalkRepository;
     private final TalkRepository talkRepository;
