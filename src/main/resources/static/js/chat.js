@@ -14,9 +14,6 @@ console.log("got user name : " + user_name);
 console.log("got user id : " + user_id);
 console.log("got talk id : " + talk_id);
 
-const url = "http://43.202.126.252:8080/";
-//const url = "http://localhost:8080/";
-
 function send_chat(event){
     const user_message = chat_input.value;
     console.log(user_message);
