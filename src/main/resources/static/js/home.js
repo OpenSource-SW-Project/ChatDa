@@ -3,14 +3,21 @@ const name_input = document.getElementById("name-input");
 
 start_chat_form.addEventListener("submit", start_chat);
 
+//ANIMATION
+const container = document.getElementById("container");
+container.classList.add('move');
+const anim = document.getElementById("animation");
+anim.addEventListener("click",()=>{
+    
+});
+//
+
 function start_chat(event) {
     const name = name_input.value;
     localStorage.setItem("userName", name);
 
     //create user & create new talk
     const userRequest = new XMLHttpRequest();
-    const url = `http://43.202.126.252:8080/`;
-    //const url = `http://localhost:8080/`;
     userRequest.open('POST', url + `users/?userName=${name}`);
     userRequest.send();
     userRequest.onload = () => {
@@ -32,12 +39,14 @@ function start_chat(event) {
                     localStorage.setItem("userId", userId);
                     localStorage.setItem("talkId", talkId);
                     //if success move to chat page
-                    window.location.href = "chat";
+                    container.classList.add('out');
+                    setTimeout(() => {
+                        window.location.href = "chat";
+                    }, "1000");
                 } else {
                     console.error("Error", talkRequest.status, talkRequest.statusText);
                 }
             }
-
         } else {
             console.error("Error", userRequest.status, userRequest.statusText);
         }
