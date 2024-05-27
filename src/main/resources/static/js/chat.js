@@ -110,6 +110,13 @@ function endChat(event){
     };
 }
 
+// 현재 접속한 유저의 오늘자 채팅, 일기 내용 DB에서 삭제해줌, 새로고침까지 할듯?
+function delete_today_data() {}
+
+// 현재 접속한 유저의 오늘자 채팅, 일기 내용 특정 날짜로 날린다. 새로고침까지 할듯?
+function flush_today_data() {}
+
+// 메세지 넣으면 유저 챗 버블 만들어서 띄워줌
 function create_user_chat(user_message) {
     const new_chat_wrapper = document.createElement("div");
     new_chat_wrapper.classList.add("chat-wrapper");
@@ -130,6 +137,7 @@ function create_user_chat(user_message) {
     chat_btn.disabled = true;
 }
 
+// 메세지 넣으면 chatDa 챗 버블 만들어서 띄워줌
 function create_chatDa_chat(new_message) {
     const new_response_wrapper = document.createElement("div");
     new_response_wrapper.classList.add("chat-wrapper");
