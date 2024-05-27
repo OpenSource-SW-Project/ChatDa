@@ -3,6 +3,13 @@ const chat_input = document.getElementById("chat-input");
 const chat_btn = document.getElementById("chat-btn");
 const chat_log = document.getElementById("chat-log");
 
+var today = new Date();
+var year = today.getFullYear();
+var month = (today.getMonth() + 1).toString().padStart(2, '0');
+var day = today.getDate().toString().padStart(2, '0');
+
+const formattedDate = year + '-' + month + '-' + day;
+
 chat_form.addEventListener("submit", send_chat)
 
 var chat_count = 0;
@@ -111,10 +118,39 @@ function endChat(event){
 }
 
 // 현재 접속한 유저의 오늘자 채팅, 일기 내용 DB에서 삭제해줌, 새로고침까지 할듯?
-function delete_today_data() {}
+function delete_today_data() {
+    // 다른 버튼 전부 비활성화하는 코드
+
+    const http = new XMLHttpRequest();
+    const query = url + `api/DB/delete?date=${formattedDate}&talkId=${talk_id}`;
+    console.log(query);
+    http.open('GET', query);
+    http.send();
+    http.onload = () => {
+        if (http.status === 200) {
+            //console.log(http.responseText);
+
+            if (http.response == true) {
+                // 여기에 다른 버튼 활성화 코드 넣으면 될듯
+                console.log("delete success");
+                return true;
+            }
+            else {
+                console.log("delete failed");
+                return false;
+            }
+        } else {
+            console.error("Error", http.status, http.statusText);
+        }
+    };
+
+    return false;
+}
 
 // 현재 접속한 유저의 오늘자 채팅, 일기 내용 특정 날짜로 날린다. 새로고침까지 할듯?
-function flush_today_data() {}
+function flush_today_data() {
+
+}
 
 // 메세지 넣으면 유저 챗 버블 만들어서 띄워줌
 function create_user_chat(user_message) {
@@ -156,12 +192,6 @@ function create_chatDa_chat(new_message) {
 
 // today, user로 검색, diary 있으면 true 없으면 false 리턴
 function get_today_diary() {
-    var today = new Date();
-    var year = today.getFullYear();
-    var month = (today.getMonth() + 1).toString().padStart(2, '0');
-    var day = today.getDate().toString().padStart(2, '0');
-
-    const formattedDate = year + '-' + month + '-' + day;
 
     const http = new XMLHttpRequest();
     const query = url + `api/DB/diary?date=${formattedDate}&userId=${user_id}`;

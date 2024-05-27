@@ -59,11 +59,45 @@ public class DBController {
     public String getChat(@RequestParam("date")String date, @RequestParam("talkId")String talk_id) {
 
         String result = searchChats(date, talk_id);
-        System.out.println(result);
+        //System.out.println(result);
         return result;
-        // return searchDiary(date, month, year, user);
     }
 
+    @GetMapping(value = "/delete", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public boolean deleteChatDiary(@RequestParam("date")String date, @RequestParam("talkId")String talk_id) {
+
+        // JDBC 연결
+        try (Connection conn = DriverManager.getConnection(url, username, password)) {
+            // diary 테이블에서 talk_id와 일치하는 레코드 삭제
+            deleteRecord(conn, "diary", "talk_id", talk_id);
+
+            // detailed_talk 테이블에서 talk_id와 일치하는 레코드 삭제
+            deleteRecord(conn, "detailed_talk", "talk_id", talk_id);
+
+            System.out.println("Records deleted successfully.");
+        } catch (SQLException e) {
+            System.err.println("Database connection error: " + e.getMessage());
+        }
+        return true;
+    }
+
+    // 특정 테이블에서 특정 컬럼과 일치하는 레코드 삭제하는 메서드
+    static void deleteRecord(Connection conn, String tableName, String columnName, String value) throws SQLException {
+        // 삭제할 레코드의 조건에 맞는 SQL 쿼리 작성
+        String sql = "DELETE FROM " + tableName + " WHERE " + columnName + " = ?";
+
+        // PreparedStatement 생성
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            // 삭제할 레코드의 조건 설정
+            pstmt.setString(1, value);
+
+            // 쿼리 실행 및 결과 확인
+            int rowsAffected = pstmt.executeUpdate();
+            System.out.println(rowsAffected + " row(s) deleted from " + tableName);
+        }
+    }
+
+    // detail functions
     public Diary searchDiary(String date, String user) {
         String title = "";
         String content = "";
