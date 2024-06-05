@@ -5,6 +5,8 @@ import Opensource_SW_Project.Project.domain.Hashtag;
 import Opensource_SW_Project.Project.web.dto.Diary.DiaryResponseDTO;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 
 public class DiaryConverter {
@@ -33,6 +35,22 @@ public class DiaryConverter {
                 .userId(diary.getUser().getUserId())
                 .diaryId(diary.getDiaryId())
                 .content(diary.getContent())
+                .build();
+    }
+
+    public static DiaryResponseDTO.UserDiaryResultDTO toUserDiaryResultDTO(Diary diary) {
+        return DiaryResponseDTO.UserDiaryResultDTO.builder()
+                .diaryId(diary.getDiaryId())
+                .content(diary.getContent())
+                .build();
+    }
+
+    public static DiaryResponseDTO.UserDiaryResultListDTO toUserDiaryResultListDTO(List<Diary> userDiaryList) {
+        List<DiaryResponseDTO.UserDiaryResultDTO> userDiaryResultDTOList = IntStream.range(0, userDiaryList.size())
+                .mapToObj(i->toUserDiaryResultDTO(userDiaryList.get(i)))
+                .collect(Collectors.toList());
+        return DiaryResponseDTO.UserDiaryResultListDTO.builder()
+                .diaries(userDiaryResultDTOList)
                 .build();
     }
 

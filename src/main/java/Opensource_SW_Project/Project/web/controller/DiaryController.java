@@ -22,6 +22,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @Validated
@@ -94,7 +96,7 @@ public class DiaryController {
     }
 
 
-    // 특정 일기 조회   (userId 입력 받고, 해당 유저가 작성한 일기 모두 조회하는 API 재작성 필요)
+    // 특정 일기 조회
     @GetMapping("/{diaryId}")
     @Operation(
             summary = "특정 일기 조회 API"
@@ -111,6 +113,22 @@ public class DiaryController {
                 DiaryConverter.toDiaryDTO(
                         findDiary
                 )
+        );
+    }
+
+    // 유저가 작성한 일기 조회
+    @GetMapping("/diaryList/{userId}")
+    @Operation(
+            summary = "유저가 작성한 일기 조회 API"
+            , description = "로그인된 유저가 작성한 일기를 조회할 수 있습니다."
+    )
+    public ApiResponse<DiaryResponseDTO.UserDiaryResultListDTO> findUserDiary(
+            @PathVariable Long userId
+    ) {
+        List<Diary> userDiaryList = diaryQueryService.getUserDiary(userId);
+        return ApiResponse.onSuccess(
+                SuccessStatus.DIARY_OK,
+                DiaryConverter.toUserDiaryResultListDTO(userDiaryList)
         );
     }
 
