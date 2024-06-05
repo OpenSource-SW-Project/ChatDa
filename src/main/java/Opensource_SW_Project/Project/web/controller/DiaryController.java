@@ -94,7 +94,7 @@ public class DiaryController {
     }
 
 
-    // 특정 일기 조회
+    // 특정 일기 조회   (userId 입력 받고, 해당 유저가 작성한 일기 모두 조회하는 API 재작성 필요)
     @GetMapping("/{diaryId}")
     @Operation(
             summary = "특정 일기 조회 API"
