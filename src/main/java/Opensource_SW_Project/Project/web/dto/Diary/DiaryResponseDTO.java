@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 public class DiaryResponseDTO{
 
     @Getter
@@ -48,5 +50,22 @@ public class DiaryResponseDTO{
         Long userId;
         Long diaryId;
         String content;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UserDiaryResultDTO {
+        Long diaryId;
+        String content;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UserDiaryResultListDTO {
+        List<UserDiaryResultDTO> diaries;
     }
 }
