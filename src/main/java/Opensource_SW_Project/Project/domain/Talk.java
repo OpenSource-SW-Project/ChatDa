@@ -20,16 +20,16 @@ public class Talk extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    private Member member;
 
     // user와 양방향 매핑하기 <- 양방향??
-    public void setUser(User user) {
+    public void setMember(Member member) {
 //        // 기존에 이미 등록되어 있던 관계를 제거
 //        if (this.user != null) {
 //            this.user.getAnswerList().remove(this);
 //        }
 
-        this.user = user;
+        this.member = member;
 
 //        // 양방향 관계 설정
 //        if (user != null) {

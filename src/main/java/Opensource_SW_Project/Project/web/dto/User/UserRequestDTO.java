@@ -12,5 +12,16 @@ public class UserRequestDTO {
     @NoArgsConstructor
     public static class CreateUserRequestDTO {
         private String name;
+        private String username;
+        private String password;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class signInRequestDTO {
+        private String username;
+        private String password;
     }
 }

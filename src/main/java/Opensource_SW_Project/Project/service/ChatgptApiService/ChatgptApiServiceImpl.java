@@ -2,11 +2,11 @@ package Opensource_SW_Project.Project.service.ChatgptApiService;
 
 import Opensource_SW_Project.Project.domain.DetailedTalk;
 import Opensource_SW_Project.Project.domain.Talk;
-import Opensource_SW_Project.Project.domain.User;
+import Opensource_SW_Project.Project.domain.Member;
 import Opensource_SW_Project.Project.domain.enums.Category;
 import Opensource_SW_Project.Project.repository.DetailedTalkRepository;
 import Opensource_SW_Project.Project.repository.TalkRepository;
-import Opensource_SW_Project.Project.repository.UserRepository;
+import Opensource_SW_Project.Project.repository.MemberRepository;
 import Opensource_SW_Project.Project.web.dto.ChatGPT.ChatGPTRequestDTO;
 import Opensource_SW_Project.Project.web.dto.ChatGPT.ChatGPTResponseDTO;
 import Opensource_SW_Project.Project.web.dto.Talk.TalkRequestDTO;
@@ -28,7 +28,7 @@ public class ChatgptApiServiceImpl implements ChatgptApiCommandService { // 첫 
 
     private final DetailedTalkRepository detailedTalkRepository;
     private final TalkRepository talkRepository;
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
     Long checkTopic = 0L;
     int cnt = 1;
 
@@ -84,7 +84,7 @@ public class ChatgptApiServiceImpl implements ChatgptApiCommandService { // 첫 
         String message, message1, message2;
 
         // 유저정보 DB에서 가져오기
-        User getUser = userRepository.findById(userId).get();
+        Member getMember = memberRepository.findById(userId).get();
         Talk getTalk = talkRepository.findById(request.getTalkId()).get();
 
         // 첫 대화인지 확인
@@ -103,16 +103,16 @@ public class ChatgptApiServiceImpl implements ChatgptApiCommandService { // 첫 
 
         // 조건마다 systemPrompt 생성
         if(checkTopic == 0) {
-            systemPrompt1 = getDefaultSystemPrompt(getUser.getName()) + generateRequestionSystemPrompt_condition2() + "\n\n" + getHistorytalk(userId, request);
+            systemPrompt1 = getDefaultSystemPrompt(getMember.getName()) + generateRequestionSystemPrompt_condition2() + "\n\n" + getHistorytalk(userId, request);
             message = getResponseOfChatGPT_API(systemPrompt1, userPrompt);
         }
         else { // ChatGPT 요청 2번 보내기
             // 반응 생성 시스템 프롬프트
-            systemPrompt1 = getDefaultSystemPrompt(getUser.getName()) + generateEndSubjectSystemPrompt_condition3() + "\n\n" + getHistorytalk(userId, request);
+            systemPrompt1 = getDefaultSystemPrompt(getMember.getName()) + generateEndSubjectSystemPrompt_condition3() + "\n\n" + getHistorytalk(userId, request);
             message1 = getResponseOfChatGPT_API(systemPrompt1, userPrompt);
 
             // 새로운 화제에 대한 질문 생성 시스템 프롬프트
-            systemPrompt2 = getDefaultSystemPrompt(getUser.getName()) + generateNewSubjectSystemPrompt_condition4() + "\n\n" + getHistorytalk(userId, request);
+            systemPrompt2 = getDefaultSystemPrompt(getMember.getName()) + generateNewSubjectSystemPrompt_condition4() + "\n\n" + getHistorytalk(userId, request);
             message2 = getResponseOfChatGPT_API(systemPrompt1, userPrompt);
 
             message = message1 + message2;
@@ -135,8 +135,8 @@ public class ChatgptApiServiceImpl implements ChatgptApiCommandService { // 첫 
         String userName;
 
         // 유저정보 DB에서 가져오기
-        User getUser = userRepository.findById(userId).get();
-        userName = getUser.getName();
+        Member getMember = memberRepository.findById(userId).get();
+        userName = getMember.getName();
 
         // 대화내용 DB에서 가져오기
         Talk getTalk = talkRepository.findById(request.getTalkId()).get();

@@ -7,6 +7,7 @@ import Opensource_SW_Project.Project.domain.Talk;
 import Opensource_SW_Project.Project.service.TalkService.TalkCommandService;
 import Opensource_SW_Project.Project.web.dto.Talk.TalkResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
