@@ -116,7 +116,7 @@ public class DiaryController {
         );
     }
 
-    // 유저가 작성한 일기 조회
+    // 유저가 작성한 모든 일기 조회
     @GetMapping("/diaryList/{userId}")
     @Operation(
             summary = "유저가 작성한 일기 조회 API"
