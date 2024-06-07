@@ -24,11 +24,13 @@ public class SwaggerConfig {
         SecurityRequirement securityRequirement = new SecurityRequirement().addList(jwtSchemeName);
         // SecuritySchemes 등록
         Components components = new Components()
-                .addSecuritySchemes(jwtSchemeName, new SecurityScheme()
-                        .name(jwtSchemeName)
-                        .type(SecurityScheme.Type.HTTP) // HTTP 방식
-                        .scheme("bearer")
-                        .bearerFormat("JWT"));
+                // accessToken이라는 스키마 만들어주기
+                .addSecuritySchemes("accessToken", new SecurityScheme()
+                        .name("Authorization")
+                        .type(SecurityScheme.Type.APIKEY)
+                        .in(SecurityScheme.In.HEADER)
+                        .bearerFormat("JWT")
+                );
 
         return new OpenAPI()
                 .addServersItem(new Server().url("/"))
