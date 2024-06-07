@@ -1,11 +1,11 @@
-package Opensource_SW_Project.Project.web.dto.User;
+package Opensource_SW_Project.Project.web.dto.Member;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-public class UserRequestDTO {
+public class MemberRequestDTO {
     @Getter
     @Builder
     @AllArgsConstructor

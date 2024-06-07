@@ -5,12 +5,13 @@ import Opensource_SW_Project.Project.converter.UserConverter;
 import Opensource_SW_Project.Project.domain.Member;
 import Opensource_SW_Project.Project.repository.MemberRepository;
 import Opensource_SW_Project.Project.web.dto.JwtToken;
-import Opensource_SW_Project.Project.web.dto.User.UserRequestDTO;
+import Opensource_SW_Project.Project.web.dto.Member.MemberRequestDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,17 +22,20 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class UserCommandServiceImpl implements  UserCommandService{
+public class MemberCommandServiceImpl implements MemberCommandService {
 
     private final MemberRepository memberRepository;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final PasswordEncoder passwordEncoder;
 
-    public Member createUser(UserRequestDTO.CreateUserRequestDTO request){
+    public Member signUp(MemberRequestDTO.CreateUserRequestDTO request){
         List<String> roles = new ArrayList<>();
         roles.add("USER");
 
-        Member newMember = UserConverter.toMember(request, roles);
+        // Password 암호화
+        String encodedPassword = passwordEncoder.encode(request.getPassword());
+        Member newMember = UserConverter.toMember(request, encodedPassword, roles);
 
         return memberRepository.save(newMember);
     }

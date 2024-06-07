@@ -25,7 +25,8 @@ public class TalkController {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Operation(summary = "대화 생성", description =
-            "새로운 대화를 생성합니다."
+            "Header에 accessToken이 필요합니다. \n새로운 대화를 생성합니다."
+            , security = @SecurityRequirement(name = "accessToken")
     )
     @PostMapping("/")
     public ApiResponse<TalkResponseDTO.CreateTalkResultDTO> createTalk(

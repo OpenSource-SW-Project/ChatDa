@@ -1,12 +1,11 @@
-package Opensource_SW_Project.Project.web.dto.User;
+package Opensource_SW_Project.Project.web.dto.Member;
 
-import Opensource_SW_Project.Project.web.dto.JwtToken;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-public class UserResponseDTO {
+public class MemberResponseDTO {
 
     @Getter
     @Builder
@@ -23,6 +22,6 @@ public class UserResponseDTO {
     @AllArgsConstructor
     public static class signInResultDTO {
         Long userId;
-        JwtToken jwtToken;
+        String accessToken;
     }
 }

@@ -19,7 +19,7 @@ public class Talk extends BaseEntity {
     private Long talkId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "member_id")
     private Member member;
 
     // user와 양방향 매핑하기 <- 양방향??

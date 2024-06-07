@@ -1,24 +1,24 @@
 package Opensource_SW_Project.Project.converter;
 
 import Opensource_SW_Project.Project.domain.Member;
-import Opensource_SW_Project.Project.web.dto.User.UserRequestDTO;
-import Opensource_SW_Project.Project.web.dto.User.UserResponseDTO;
+import Opensource_SW_Project.Project.web.dto.Member.MemberRequestDTO;
+import Opensource_SW_Project.Project.web.dto.Member.MemberResponseDTO;
 
 import java.util.List;
 
 public class UserConverter {
 
-    public static Member toMember(UserRequestDTO.CreateUserRequestDTO request, List<String> roles){
+    public static Member toMember(MemberRequestDTO.CreateUserRequestDTO request, String encodedPassword, List<String> roles){
         return Member.builder()
                 .name(request.getName())
                 .username(request.getUsername())
-                .password(request.getPassword())
+                .password(encodedPassword)
                 .roles(roles)
                 .build();
     }
 
-    public static UserResponseDTO.CreateUserResultDTO toCreateUserResultDTO(Member member) {
-        return UserResponseDTO.CreateUserResultDTO.builder()
+    public static MemberResponseDTO.CreateUserResultDTO toCreateUserResultDTO(Member member) {
+        return MemberResponseDTO.CreateUserResultDTO.builder()
                 .userId(member.getUserId())
                 .name(member.getName())
                 .build();
