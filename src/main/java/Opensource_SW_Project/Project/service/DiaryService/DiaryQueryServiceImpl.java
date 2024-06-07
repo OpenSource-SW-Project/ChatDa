@@ -1,9 +1,9 @@
 package Opensource_SW_Project.Project.service.DiaryService;
 
 import Opensource_SW_Project.Project.domain.Diary;
-import Opensource_SW_Project.Project.domain.User;
+import Opensource_SW_Project.Project.domain.Member;
 import Opensource_SW_Project.Project.repository.DiaryRepository;
-import Opensource_SW_Project.Project.repository.UserRepository;
+import Opensource_SW_Project.Project.repository.MemberRepository;
 import Opensource_SW_Project.Project.web.dto.Diary.DiaryRequestDTO;
 import jakarta.transaction.Transactional;
 import lombok.Getter;
@@ -22,7 +22,7 @@ import java.util.Optional;
 public class DiaryQueryServiceImpl implements DiaryQueryService{
 
     private final DiaryRepository diaryRepository;
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
     public Diary diaryFind(DiaryRequestDTO.GetDiaryRequestDTO request) {
         Optional<Diary> findDiary = diaryRepository.findById(request.getDiaryId());
         return null;
@@ -36,8 +36,8 @@ public class DiaryQueryServiceImpl implements DiaryQueryService{
 
     @Override
     public List<Diary> getUserDiary(Long userId) {
-        User getUser = userRepository.findById(userId).get();
-        List<Diary> UserDiaryList = diaryRepository.findAllByUser(getUser);
+        Member getMember = memberRepository.findById(userId).get();
+        List<Diary> UserDiaryList = diaryRepository.findAllByMember(getMember);
 
         return UserDiaryList;
     }
