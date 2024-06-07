@@ -16,6 +16,7 @@ public class DiaryResponseDTO{
     public static class CreateDiaryResultDTO {
         Long userId;
         Long diaryId;
+        String title;
         String content;
     }
 
@@ -26,6 +27,7 @@ public class DiaryResponseDTO{
     public static class DiaryDTO {
         //Long userId;
         Long diaryId;
+        String title;
         String content;
     }
 
@@ -37,6 +39,7 @@ public class DiaryResponseDTO{
     public static class DiaryPreviewDTO {    // 특정 일기 조회
         Long userId;
         Long diaryId;
+        String title;
         String content;
 
     }
@@ -49,6 +52,7 @@ public class DiaryResponseDTO{
     public static class UpdateDiaryResultDTO {
         Long userId;
         Long diaryId;
+        String title;
         String content;
     }
 
@@ -58,6 +62,7 @@ public class DiaryResponseDTO{
     @AllArgsConstructor
     public static class UserDiaryResultDTO {
         Long diaryId;
+        String title;
         String content;
     }
 

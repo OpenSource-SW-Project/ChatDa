@@ -42,13 +42,14 @@ public class DiaryCommandServiceImpl implements DiaryCommandService {
         return diarySystemPrompt;
     }
 
-    public Diary saveDiary(Long userId, TalkRequestDTO.CreateMessageRequestDTO request, String content){
+    public Diary saveDiary(Long userId, TalkRequestDTO.CreateMessageRequestDTO request, String title, String content){
         User getUser = userRepository.findById(userId).get();
         Talk getTalk = talkRepository.findById(request.getTalkId()).get();
 
         Diary newDiary = Diary.builder()
                 .talk(getTalk)
                 .user(getUser)
+                .title(title)
                 .content(content)
                 .build();
         Diary saveDiary = diaryRepository.save(newDiary);

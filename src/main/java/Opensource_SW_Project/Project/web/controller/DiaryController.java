@@ -64,8 +64,16 @@ public class DiaryController {
         ChatGPTRequestDTO chatGPTrequest = new ChatGPTRequestDTO(model, systemPrompt,userPrompt);
         ChatGPTResponseDTO chatGPTResponse =  template.postForObject(apiURL, chatGPTrequest, ChatGPTResponseDTO.class);
 
+        // 일기 내용 파싱
+        String diaryContent = chatGPTResponse.getChoices().get(0).getMessage().getContent();
+
+        String[] splitContent = diaryContent.split("\n", 2); // \n으로 나눔. 첫 번째는 제목, 두 번째는 내용
+        String title = splitContent[0].replace("제목: ", "").trim();
+        String content = splitContent[1].replace("내용: ", "").trim();
+
         // service에서 userPrompt와 chatGPTResponse 저장
-        Diary newDiary = diaryCommandService.saveDiary(userId, request, chatGPTResponse.getChoices().get(0).getMessage().getContent());
+        //Diary newDiary = diaryCommandService.saveDiary(userId, request, chatGPTResponse.getChoices().get(0).getMessage().getContent());
+        Diary newDiary = diaryCommandService.saveDiary(userId, request, title, content);
 
         return ApiResponse.onSuccess(
                 SuccessStatus.DIARY_OK,

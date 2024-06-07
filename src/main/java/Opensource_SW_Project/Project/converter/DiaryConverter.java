@@ -14,6 +14,7 @@ public class DiaryConverter {
         return DiaryResponseDTO.CreateDiaryResultDTO.builder()
                 .userId(diary.getUser().getUserId())
                 .diaryId(diary.getDiaryId())
+                .title(diary.getTitle())
                 .content(diary.getContent())
                 .build();
     }
@@ -25,6 +26,7 @@ public class DiaryConverter {
 
         return DiaryResponseDTO.DiaryDTO.builder()
                 .diaryId(diary.getDiaryId())
+                .title(diary.getTitle())
                 .content(diary.getContent())
                 .build();
     }
@@ -34,6 +36,7 @@ public class DiaryConverter {
         return DiaryResponseDTO.UpdateDiaryResultDTO.builder()
                 .userId(diary.getUser().getUserId())
                 .diaryId(diary.getDiaryId())
+                .title(diary.getTitle())
                 .content(diary.getContent())
                 .build();
     }
@@ -41,6 +44,7 @@ public class DiaryConverter {
     public static DiaryResponseDTO.UserDiaryResultDTO toUserDiaryResultDTO(Diary diary) {
         return DiaryResponseDTO.UserDiaryResultDTO.builder()
                 .diaryId(diary.getDiaryId())
+                .title(diary.getTitle())
                 .content(diary.getContent())
                 .build();
     }

@@ -23,6 +23,7 @@ public class DiaryRequestDTO {
     @AllArgsConstructor
     public static class UpdateDiaryDTO {
         Long userId;
+        String title;
         String content;
     }
 }

@@ -23,6 +23,9 @@ public class Diary {
     private Long diaryId;
 
     @Column(columnDefinition = "TEXT")
+    private String title; // 제목 필드 추가
+
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -38,38 +41,18 @@ public class Diary {
     private List<DiaryHashTag> diaryHashTagList = new ArrayList<>();
 
 
-    // user와 양방향 매핑하기 <- 양방향??
+    // user와 양방향 매핑
     public void setUser(User user) {
-//        // 기존에 이미 등록되어 있던 관계를 제거
-//        if (this.user != null) {
-//            this.user.getAnswerList().remove(this);
-//        }
-
         this.user = user;
-
-//        // 양방향 관계 설정
-//        if (user != null) {
-//            user.getAnswerList().add(this);
-//        }
     }
 
-    // user와 양방향 매핑하기 <- 양방향??
+    // user와 양방향 매핑
     public void setTalk(Talk talk) {
-//        // 기존에 이미 등록되어 있던 관계를 제거
-//        if (this.user != null) {
-//            this.user.getAnswerList().remove(this);
-//        }
-
         this.talk = talk;
-
-//        // 양방향 관계 설정
-//        if (user != null) {
-//            user.getAnswerList().add(this);
-//        }
     }
 
     public void update(DiaryRequestDTO.UpdateDiaryDTO request) {
-        //this.content = String.valueOf(request.getUserId());
+        this.title = request.getTitle();
         this.content = request.getContent();
     }
 }
