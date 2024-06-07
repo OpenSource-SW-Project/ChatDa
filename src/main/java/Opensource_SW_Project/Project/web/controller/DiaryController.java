@@ -1,5 +1,6 @@
 package Opensource_SW_Project.Project.web.controller;
 
+import Opensource_SW_Project.Project.JWT.JwtTokenProvider;
 import Opensource_SW_Project.Project.apiPayload.ApiResponse;
 import Opensource_SW_Project.Project.apiPayload.code.status.SuccessStatus;
 import Opensource_SW_Project.Project.converter.DiaryConverter;
@@ -34,6 +35,7 @@ public class DiaryController {
     private final ChatgptApiCommandService chatgptApiService;
     private final DiaryCommandService diaryCommandService;
     private final DiaryQueryService diaryQueryService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Value("${openai.model}")
     private String model;
@@ -55,6 +57,9 @@ public class DiaryController {
             @RequestParam(name = "userId")Long userId,
             @RequestBody TalkRequestDTO.CreateMessageRequestDTO request
             ){
+        // 토큰 유효성 검사 (userId)
+        jwtTokenProvider.isValidToken(userId);
+
         String DiarySystemPrompt = diaryCommandService.createDiarySystemPrompt(userId);
         String userHistoryTalk = chatgptApiService.getHistorytalk(userId, request);
         String userPrompt = DiarySystemPrompt + userHistoryTalk;
@@ -87,6 +92,8 @@ public class DiaryController {
             @RequestBody DiaryRequestDTO.UpdateDiaryDTO request,
             @PathVariable Long diaryId
     ) {
+        // 토큰 유효성 검사 (userId)
+        jwtTokenProvider.isValidToken(request.getUserId());
         return ApiResponse.onSuccess(
                 SuccessStatus.DIARY_OK,
                 DiaryConverter.UpdateDiaryResultDTO(
@@ -121,10 +128,13 @@ public class DiaryController {
     @Operation(
             summary = "유저가 작성한 일기 조회 API"
             , description = "로그인된 유저가 작성한 일기를 조회할 수 있습니다."
+            , security = @SecurityRequirement(name = "accessToken")
     )
     public ApiResponse<DiaryResponseDTO.UserDiaryResultListDTO> findUserDiary(
             @PathVariable Long userId
     ) {
+        // 토큰 유효성 검사 (userId)
+        jwtTokenProvider.isValidToken(userId);
         List<Diary> userDiaryList = diaryQueryService.getUserDiary(userId);
         return ApiResponse.onSuccess(
                 SuccessStatus.DIARY_OK,
