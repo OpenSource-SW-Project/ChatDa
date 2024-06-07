@@ -7,7 +7,6 @@ import java.util.List;
 
 public interface DiaryQueryService {
     Diary findById(Long diaryId);
-    //Diary diaryFind(DiaryRequestDTO.GetDiaryRequestDTO request);
 
     List<Diary> getUserDiary(Long userId);
 }
