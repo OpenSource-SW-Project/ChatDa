@@ -26,8 +26,8 @@ public class DiaryCommandServiceImpl implements DiaryCommandService {
         Member getMember = memberRepository.findById(userId).get();
 
 
-        String diarySystemPrompt = "다음은 " + getUser.getName() +"의 하루에 대한 대화 내용이다.\n" +
-                getUser.getName() + "의 하루를 " + getUser.getName() + "의 입장에서 작성한 것처럼 일기를 작성하여라.\n" +
+        String diarySystemPrompt = "다음은 " + getMember.getName() +"의 하루에 대한 대화 내용이다.\n" +
+                getMember.getName() + "의 하루를 " + getMember.getName() + "의 입장에서 작성한 것처럼 일기를 작성하여라.\n" +
                 "제3자의 입장에서 작성한 듯한 느낌이 들지 않게 작성한다.\n" +
 
                 "조건\n" +
