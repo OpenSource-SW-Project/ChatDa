@@ -1,7 +1,7 @@
-package Opensource_SW_Project.Project.service.UserService;
+package Opensource_SW_Project.Project.service.MemberService;
 
 import Opensource_SW_Project.Project.JWT.JwtTokenProvider;
-import Opensource_SW_Project.Project.converter.UserConverter;
+import Opensource_SW_Project.Project.converter.MemberConverter;
 import Opensource_SW_Project.Project.domain.Member;
 import Opensource_SW_Project.Project.repository.MemberRepository;
 import Opensource_SW_Project.Project.web.dto.JwtToken;
@@ -35,7 +35,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
         // Password 암호화
         String encodedPassword = passwordEncoder.encode(request.getPassword());
-        Member newMember = UserConverter.toMember(request, encodedPassword, roles);
+        Member newMember = MemberConverter.toMember(request, encodedPassword, roles);
 
         return memberRepository.save(newMember);
     }

@@ -2,10 +2,10 @@ package Opensource_SW_Project.Project.web.controller;
 
 import Opensource_SW_Project.Project.apiPayload.ApiResponse;
 import Opensource_SW_Project.Project.apiPayload.code.status.SuccessStatus;
-import Opensource_SW_Project.Project.converter.UserConverter;
+import Opensource_SW_Project.Project.converter.MemberConverter;
 import Opensource_SW_Project.Project.domain.Member;
-import Opensource_SW_Project.Project.service.UserService.MemberCommandService;
-import Opensource_SW_Project.Project.service.UserService.MemberQueryService;
+import Opensource_SW_Project.Project.service.MemberService.MemberCommandService;
+import Opensource_SW_Project.Project.service.MemberService.MemberQueryService;
 import Opensource_SW_Project.Project.web.dto.JwtToken;
 import Opensource_SW_Project.Project.web.dto.Member.MemberRequestDTO;
 import Opensource_SW_Project.Project.web.dto.Member.MemberResponseDTO;
@@ -36,7 +36,7 @@ public class MemberController {
         Member newMember = memberCommandService.signUp(request);
         return ApiResponse.onSuccess(
                 SuccessStatus.USER_OK,
-                UserConverter.toCreateUserResultDTO(
+                MemberConverter.toCreateUserResultDTO(
                         newMember
                 )
         );

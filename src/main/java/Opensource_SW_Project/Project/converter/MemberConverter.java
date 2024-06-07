@@ -6,7 +6,7 @@ import Opensource_SW_Project.Project.web.dto.Member.MemberResponseDTO;
 
 import java.util.List;
 
-public class UserConverter {
+public class MemberConverter {
 
     public static Member toMember(MemberRequestDTO.CreateUserRequestDTO request, String encodedPassword, List<String> roles){
         return Member.builder()
