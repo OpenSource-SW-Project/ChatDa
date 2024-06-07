@@ -25,8 +25,11 @@ public class DiaryCommandServiceImpl implements DiaryCommandService {
     public String createDiarySystemPrompt(Long userId){
         Member getMember = memberRepository.findById(userId).get();
 
-        String diarySystemPrompt = "다음은 " + getMember.getName() +"의 하루에 대한 대화 내용이다.\n" +
-                getMember.getName() + "의 하루를 " + getMember.getName() + "의 입장에서 작성한 것처럼 일기를 작성하여라.\n" +
+
+        String diarySystemPrompt = "다음은 " + getUser.getName() +"의 하루에 대한 대화 내용이다.\n" +
+                getUser.getName() + "의 하루를 " + getUser.getName() + "의 입장에서 작성한 것처럼 일기를 작성하여라.\n" +
+                "제3자의 입장에서 작성한 듯한 느낌이 들지 않게 작성한다.\n" +
+
                 "조건\n" +
                 "1. 대화 내용을 통해 알 수 있는 [사용자 이름]의 하루를 담는다.\n" +
                 "2. 형식에 맞춰 작성한다.\n" +
@@ -41,13 +44,15 @@ public class DiaryCommandServiceImpl implements DiaryCommandService {
         return diarySystemPrompt;
     }
 
-    public Diary saveDiary(Long userId, TalkRequestDTO.CreateMessageRequestDTO request, String content){
+    public Diary saveDiary(Long userId, TalkRequestDTO.CreateMessageRequestDTO request, String title, String content){
         Member getMember = memberRepository.findById(userId).get();
         Talk getTalk = talkRepository.findById(request.getTalkId()).get();
 
         Diary newDiary = Diary.builder()
                 .talk(getTalk)
+
                 .member(getMember)
+                .title(title)
                 .content(content)
                 .build();
         Diary saveDiary = diaryRepository.save(newDiary);
@@ -59,8 +64,7 @@ public class DiaryCommandServiceImpl implements DiaryCommandService {
     public Diary updateDiary(Long diaryId, DiaryRequestDTO.UpdateDiaryDTO request) {
         Diary updateDiary = diaryRepository.findById(diaryId).get();
         updateDiary.update(request);
-//        Diary updateDiary2 = diaryRepository.save(updateDiary);
-//        updateDiary = updateDiary2;
+
         return updateDiary;
     }
 }
