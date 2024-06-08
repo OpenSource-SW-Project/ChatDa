@@ -8,7 +8,7 @@ chat_form.addEventListener("submit", send_chat)
 var chat_count = 0;
 
 var user_name = localStorage.getItem("userName");
-var user_id = localStorage.getItem("userId");
+var user_id = localStorage.getItem("memberId");
 var talk_id = localStorage.getItem("talkId");
 console.log("got user name : " + user_name);
 console.log("got user id : " + user_id);
@@ -40,7 +40,7 @@ function send_chat(event){
 
         //send request & get response
         const chatRequest = new XMLHttpRequest();
-        chatRequest.open('POST', url + `api/chat?userId=${user_id}`);
+        chatRequest.open('POST', url + `api/chat?memberId=${user_id}`);
         chatRequest.setRequestHeader("Content-Type", "application/json");
 
         var body = JSON.stringify({
@@ -95,7 +95,7 @@ end_chat_btn.addEventListener("click", endChat);
 function endChat(event){
     //create diary
     const diaryRequest = new XMLHttpRequest();
-    diaryRequest.open('POST', url + `diary?userId=${user_id}`);
+    diaryRequest.open('POST', url + `diary?memberId=${user_id}`);
     diaryRequest.setRequestHeader("Content-Type", "application/json");
     var body = JSON.stringify({
         talkId : talk_id,

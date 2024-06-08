@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class DiaryResponseDTO{
@@ -14,7 +15,7 @@ public class DiaryResponseDTO{
     @NoArgsConstructor
     @AllArgsConstructor
     public static class CreateDiaryResultDTO {
-        Long userId;
+        Long memberId;
         Long diaryId;
         String title;
         String content;
@@ -25,7 +26,7 @@ public class DiaryResponseDTO{
     @NoArgsConstructor
     @AllArgsConstructor
     public static class DiaryDTO {
-        //Long userId;
+        //Long memberId;
         Long diaryId;
         String title;
         String content;
@@ -37,7 +38,7 @@ public class DiaryResponseDTO{
     @NoArgsConstructor
     @AllArgsConstructor
     public static class DiaryPreviewDTO {    // 특정 일기 조회
-        Long userId;
+        Long memberId;
         Long diaryId;
         String title;
         String content;
@@ -50,7 +51,7 @@ public class DiaryResponseDTO{
     @NoArgsConstructor
     @AllArgsConstructor
     public static class UpdateDiaryResultDTO {
-        Long userId;
+        Long memberId;
         Long diaryId;
         String title;
         String content;
@@ -64,6 +65,7 @@ public class DiaryResponseDTO{
         Long diaryId;
         String title;
         String content;
+        LocalDateTime createdAt;
     }
 
     @Getter

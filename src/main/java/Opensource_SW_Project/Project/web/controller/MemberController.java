@@ -51,7 +51,7 @@ public class MemberController {
         return ApiResponse.onSuccess(
                 SuccessStatus.USER_OK,
                 MemberResponseDTO.signInResultDTO.builder()
-                        .userId(newMember.getUserId())
+                        .memberId(newMember.getMemberId())
                         .accessToken(jwtToken.getAccessToken())
                         .build()
         );

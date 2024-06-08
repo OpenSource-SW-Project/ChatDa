@@ -36,7 +36,7 @@ public class JwtTokenProvider {
     }
 
     // Member 정보를 가지고 AccessToken, RefreshToken을 생성하는 메서드
-    public JwtToken generateToken(Authentication authentication, Long userId) {
+    public JwtToken generateToken(Authentication authentication, Long memberId) {
         // 권한 가져오기
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -49,7 +49,7 @@ public class JwtTokenProvider {
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("auth", authorities)
-                .claim("userId", userId)
+                .claim("memberId", memberId)
                 .setExpiration(accessTokenExpiresIn)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
@@ -123,7 +123,7 @@ public class JwtTokenProvider {
         }
     }
 
-    public void isValidToken(Long userId) {
+    public void isValidToken(Long memberId) {
         // Jwt 토큰을 복호화하여 토큰에 들어있는 정보를 꺼내는 메서드
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
                 .getRequest();
@@ -133,7 +133,7 @@ public class JwtTokenProvider {
         Claims claims = parseClaims(accessToken);
 
 
-        if (!claims.get("userId", Long.class).equals(userId)) {
+        if (!claims.get("memberId", Long.class).equals(memberId)) {
             throw new RuntimeException("접근 권한이 없는 유저입니다.");
         }
     }

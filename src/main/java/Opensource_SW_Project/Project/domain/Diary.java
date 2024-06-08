@@ -1,5 +1,6 @@
 package Opensource_SW_Project.Project.domain;
 
+import Opensource_SW_Project.Project.domain.common.BaseEntity;
 import Opensource_SW_Project.Project.domain.enums.mapping.DiaryHashTag;
 import Opensource_SW_Project.Project.web.dto.Diary.DiaryRequestDTO;
 import jakarta.persistence.*;
@@ -17,7 +18,7 @@ import java.util.List;
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Diary {
+public class Diary extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long diaryId;

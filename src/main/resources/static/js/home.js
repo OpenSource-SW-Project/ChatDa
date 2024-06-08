@@ -26,17 +26,17 @@ function start_chat(event) {
             var response = JSON.parse(userRequest.response);
             console.log(response.result);
             
-            //init userID var
-            const userId = response.result.userId;
+            //init memberId var
+            const memberId = response.result.memberId;
             //send talk create request
             const talkRequest = new XMLHttpRequest();
-            talkRequest.open('POST', url + `talk/?userId=${userId}`);
+            talkRequest.open('POST', url + `talk/?memberId=${memberId}`);
             talkRequest.send();
             talkRequest.onload = () => {
                 if( talkRequest.status === 200 ) {
                     var response = JSON.parse(talkRequest.response);
                     const talkId = response.result.talkId;
-                    localStorage.setItem("userId", userId);
+                    localStorage.setItem("memberId", memberId);
                     localStorage.setItem("talkId", talkId);
                     //if success move to chat page
                     container.classList.add('out');

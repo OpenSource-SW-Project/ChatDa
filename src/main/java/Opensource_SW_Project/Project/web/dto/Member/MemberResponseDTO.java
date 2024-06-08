@@ -12,7 +12,7 @@ public class MemberResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class CreateUserResultDTO {
-        Long userId;
+        Long memberId;
         String name;
     }
 
@@ -21,7 +21,7 @@ public class MemberResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class signInResultDTO {
-        Long userId;
+        Long memberId;
         String accessToken;
     }
 }

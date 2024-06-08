@@ -50,18 +50,18 @@ public class DiaryController {
     @PostMapping()
     @Operation(
             summary = "일기 생성 API"
-            , description = "일기를 생성합니다. Param으로 userId과, RequestBody에 대화내역 talkId와 userPrompt를 입력하세요"
+            , description = "일기를 생성합니다. Param으로 memberId과, RequestBody에 대화내역 talkId와 userPrompt를 입력하세요"
             , security = @SecurityRequirement(name = "accessToken")
     )
     public ApiResponse<DiaryResponseDTO.CreateDiaryResultDTO> createDiary(
-            @RequestParam(name = "userId")Long userId,
+            @RequestParam(name = "memberId")Long memberId,
             @RequestBody TalkRequestDTO.CreateMessageRequestDTO request
             ){
-        // 토큰 유효성 검사 (userId)
-        jwtTokenProvider.isValidToken(userId);
+        // 토큰 유효성 검사 (memberId)
+        jwtTokenProvider.isValidToken(memberId);
 
-        String DiarySystemPrompt = diaryCommandService.createDiarySystemPrompt(userId);
-        String userHistoryTalk = chatgptApiService.getHistorytalk(userId, request);
+        String DiarySystemPrompt = diaryCommandService.createDiarySystemPrompt(memberId);
+        String userHistoryTalk = chatgptApiService.getHistorytalk(memberId, request);
         String userPrompt = DiarySystemPrompt + userHistoryTalk;
 
         String systemPrompt = "";
@@ -77,8 +77,8 @@ public class DiaryController {
         String content = splitContent[1].replace("내용: ", "").trim();
 
         // service에서 userPrompt와 chatGPTResponse 저장
-        //Diary newDiary = diaryCommandService.saveDiary(userId, request, chatGPTResponse.getChoices().get(0).getMessage().getContent());
-        Diary newDiary = diaryCommandService.saveDiary(userId, request, title, content);
+        //Diary newDiary = diaryCommandService.saveDiary(memberId, request, chatGPTResponse.getChoices().get(0).getMessage().getContent());
+        Diary newDiary = diaryCommandService.saveDiary(memberId, request, title, content);
 
         return ApiResponse.onSuccess(
                 SuccessStatus.DIARY_OK,
@@ -93,15 +93,15 @@ public class DiaryController {
     @PatchMapping("/{diaryId}")
     @Operation(
             summary = "일기 수정 API"
-            , description = "일기를 수정합니다. Path variable로 diaryId를 입력 받고, RequestBody에 작성자 userId와 수정할 일기 content를 입력하세요"
+            , description = "일기를 수정합니다. Path variable로 diaryId를 입력 받고, RequestBody에 작성자 memberId와 수정할 일기 content를 입력하세요"
             , security = @SecurityRequirement(name = "accessToken")
     )
     public ApiResponse<DiaryResponseDTO.UpdateDiaryResultDTO> updateDiary(
             @RequestBody DiaryRequestDTO.UpdateDiaryDTO request,
             @PathVariable Long diaryId
     ) {
-        // 토큰 유효성 검사 (userId)
-        jwtTokenProvider.isValidToken(request.getUserId());
+        // 토큰 유효성 검사 (memberId)
+        jwtTokenProvider.isValidToken(request.getMemberId());
         return ApiResponse.onSuccess(
                 SuccessStatus.DIARY_OK,
                 DiaryConverter.UpdateDiaryResultDTO(
@@ -119,7 +119,7 @@ public class DiaryController {
     )
     public ApiResponse<DiaryResponseDTO.DiaryDTO> findDiary(
             @PathVariable Long diaryId,
-            @RequestParam(name = "userId")Long userId
+            @RequestParam(name = "memberId")Long memberId
     ) {
         Object request;
         Diary findDiary = diaryQueryService.findById(diaryId);
@@ -132,18 +132,18 @@ public class DiaryController {
     }
 
     // 유저가 작성한 모든 일기 조회
-    @GetMapping("/diaryList/{userId}")
+    @GetMapping("/diaryList/{memberId}")
     @Operation(
             summary = "유저가 작성한 일기 조회 API"
             , description = "로그인된 유저가 작성한 일기를 조회할 수 있습니다."
             , security = @SecurityRequirement(name = "accessToken")
     )
     public ApiResponse<DiaryResponseDTO.UserDiaryResultListDTO> findUserDiary(
-            @PathVariable Long userId
+            @PathVariable Long memberId
     ) {
-        // 토큰 유효성 검사 (userId)
-        jwtTokenProvider.isValidToken(userId);
-        List<Diary> userDiaryList = diaryQueryService.getUserDiary(userId);
+        // 토큰 유효성 검사 (memberId)
+        jwtTokenProvider.isValidToken(memberId);
+        List<Diary> userDiaryList = diaryQueryService.getUserDiary(memberId);
         return ApiResponse.onSuccess(
                 SuccessStatus.DIARY_OK,
                 DiaryConverter.toUserDiaryResultListDTO(userDiaryList)

@@ -12,7 +12,7 @@ import java.util.stream.IntStream;
 public class DiaryConverter {
     public static DiaryResponseDTO.CreateDiaryResultDTO toCreateDiaryResultDTO(Diary diary) {
         return DiaryResponseDTO.CreateDiaryResultDTO.builder()
-                .userId(diary.getMember().getUserId())
+                .memberId(diary.getMember().getMemberId())
                 .diaryId(diary.getDiaryId())
                 .title(diary.getTitle())
                 .content(diary.getContent())
@@ -34,7 +34,7 @@ public class DiaryConverter {
 
     public static DiaryResponseDTO.UpdateDiaryResultDTO UpdateDiaryResultDTO(Diary diary) {
         return DiaryResponseDTO.UpdateDiaryResultDTO.builder()
-                .userId(diary.getMember().getUserId())
+                .memberId(diary.getMember().getMemberId())
                 .diaryId(diary.getDiaryId())
                 .title(diary.getTitle())
                 .content(diary.getContent())
@@ -46,6 +46,7 @@ public class DiaryConverter {
                 .diaryId(diary.getDiaryId())
                 .title(diary.getTitle())
                 .content(diary.getContent())
+                .createdAt(diary.getCreatedAt())
                 .build();
     }
 
