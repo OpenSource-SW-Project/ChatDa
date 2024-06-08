@@ -19,7 +19,7 @@ public class MemberConverter {
 
     public static MemberResponseDTO.CreateUserResultDTO toCreateUserResultDTO(Member member) {
         return MemberResponseDTO.CreateUserResultDTO.builder()
-                .userId(member.getUserId())
+                .memberId(member.getMemberId())
                 .name(member.getName())
                 .build();
     }

@@ -35,8 +35,8 @@ public class DiaryQueryServiceImpl implements DiaryQueryService{
     }
 
     @Override
-    public List<Diary> getUserDiary(Long userId) {
-        Member getMember = memberRepository.findById(userId).get();
+    public List<Diary> getUserDiary(Long memberId) {
+        Member getMember = memberRepository.findById(memberId).get();
         List<Diary> UserDiaryList = diaryRepository.findAllByMember(getMember);
 
         return UserDiaryList;

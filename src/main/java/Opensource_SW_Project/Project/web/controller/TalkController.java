@@ -30,11 +30,11 @@ public class TalkController {
     )
     @PostMapping("/")
     public ApiResponse<TalkResponseDTO.CreateTalkResultDTO> createTalk(
-            @RequestParam(name = "userId")Long userId
+            @RequestParam(name = "memberId")Long memberId
     ) {
-        Talk newTalk = talkCommandService.createTalk(userId);
-        // 토큰 유효성 검사 (userId)
-        jwtTokenProvider.isValidToken(userId);
+        Talk newTalk = talkCommandService.createTalk(memberId);
+        // 토큰 유효성 검사 (memberId)
+        jwtTokenProvider.isValidToken(memberId);
         return ApiResponse.onSuccess(
                 SuccessStatus.TALK_OK,
                 TalkConverter.toCreateTalkResultDTO(

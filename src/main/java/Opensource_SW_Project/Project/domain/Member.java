@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class Member implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private Long memberId;
 
     @Column(nullable = false, length = 20)
     private String name;

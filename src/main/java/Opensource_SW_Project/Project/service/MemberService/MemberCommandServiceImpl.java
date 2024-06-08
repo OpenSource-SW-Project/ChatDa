@@ -54,7 +54,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
         // 3. 인증 정보를 기반으로 JWT 토큰 생성
         Member getMember = memberRepository.findByUsername(username).get();
-        JwtToken jwtToken = jwtTokenProvider.generateToken(authentication, getMember.getUserId());
+        JwtToken jwtToken = jwtTokenProvider.generateToken(authentication, getMember.getMemberId());
 
         return jwtToken;
     }

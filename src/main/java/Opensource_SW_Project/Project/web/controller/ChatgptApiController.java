@@ -24,13 +24,13 @@ public class ChatgptApiController {
 
     @PostMapping("/chat")
     public ApiResponse<ChatgptApiResponseDTO.SendMessageResultDTO> chat(
-            @RequestParam(name = "userId")Long userId,
-            @RequestBody TalkRequestDTO.CreateMessageRequestDTO request){ // userId와 talkID 필요, 화제 바꾸는 프롬프트 부르는 Id값(enum) 필요함
+            @RequestParam(name = "memberId")Long memberId,
+            @RequestBody TalkRequestDTO.CreateMessageRequestDTO request){ // memberId와 talkID 필요, 화제 바꾸는 프롬프트 부르는 Id값(enum) 필요함
         // userPrompt requestbody로 받기
         String userPrompt = chatgptApiService.getUserPrompt(request);
 
         // 시스템 프롬프트 생성하는 메소드 <- 대화 id에 따라 과거 대화기록 가져오기, 기본 시스템 프롬프트 클래스, 조건 시스템 프롬프트 클래스 이용
-        String message = chatgptApiService.generateSystemPrompt(userId, request);
+        String message = chatgptApiService.generateSystemPrompt(memberId, request);
 
         // service에서 userPrompt와 chatGPTResponse 저장하기
         chatgptApiService.saveUserPromptAndMessage(request, userPrompt, message);
