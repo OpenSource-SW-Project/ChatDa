@@ -15,7 +15,7 @@ public class EmbeddingController {
     }
 
     @GetMapping("/api/embedding")
-    public JsonNode getChatCompletion(@RequestParam String prompt) throws Exception {
+    public String getChatCompletion(@RequestParam String prompt) throws Exception {
         return embeddingService.getChatCompletion(prompt);
     }
 }
