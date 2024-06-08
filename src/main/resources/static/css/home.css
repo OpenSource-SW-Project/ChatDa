@@ -8,29 +8,40 @@ body {
     align-items: center;
     height: 100vh;
 }
+
+#toggle-wrapper {
+    display: flex;
+    justify-content: right;
+}
+
+#toggle-btn {
+    width : 160px;
+    color : black;
+    background-color: #fff;
+    padding : 4px;
+    text-decoration : underline;
+}
+
 .container {
     background-color: #fff;
+    width :80%;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 80%;
+    width: 100%;
     max-width: 600px;
 }
 h1 {
     text-align: center;
     margin-bottom: 20px;
 }
-.date {
-    text-align: center;
-    margin-bottom: 20px;
-    font-weight: bold;
-}
+
 .form-group {
     margin-bottom: 20px;
 }
 label {
     display: block;
-    margin-bottom: 5px;
+    margin-top :10px;
     font-weight: bold;
 }
 input[type="text"], textarea {
@@ -61,6 +72,14 @@ button:hover {
 #button-container {
     display : flex;
 }
+
+#login-btn {
+    margin-top: 20px;
+}
+#signup-btn {
+    margin-top: 20px;
+}
+
 
 .google-btn {
     display: inline-flex;

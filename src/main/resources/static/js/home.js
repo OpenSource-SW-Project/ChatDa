@@ -20,9 +20,23 @@ if (sessionStorage.getItem("accessToken") === null) {
 // toggle login <-> signup
 const login_div = document.getElementById("login-div");
 const signup_div = document.getElementById("signup-div");
-
 signup_div.style.display = "none";
 
+const toggle_btn = document.getElementById("toggle-btn");
+var isLogin = true;
+toggle_btn.addEventListener("click", () => {
+    if (isLogin) {
+        signup_div.style.display = "block";
+        login_div.style.display = "none";
+        toggle_btn.innerText = "기존 계정 로그인";
+    } else {
+        login_div.style.display = "block";
+        signup_div.style.display = "none";
+        toggle_btn.innerText = "새로운 계정 만들기";
+    }
+    isLogin = !isLogin;
+});
+/*
 const show_login = document.getElementById("show-login");
 const show_signup = document.getElementById("show-signup");
 
@@ -34,6 +48,7 @@ show_signup.addEventListener("click", () => {
     signup_div.style.display = "block";
     login_div.style.display = "none";
 });
+*/
 
 //login function
 const login_form = document.getElementById("login-form");

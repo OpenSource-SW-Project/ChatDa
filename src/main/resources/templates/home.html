@@ -1,60 +1,54 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="/css/home.css">
-    <link rel="stylesheet" type="text/css" href="/css/animation.css">
-    <link rel="stylesheet" type="text/css" href="/css/navbar.css">
-
-    <title>chatDa</title>
-</head>
-
-<body>
-    <div id="container" class="container">
-        <h1>Chat Da</h1>
-        
-        <div id="usercheck-container">
-            <div id="login-div" class="form-group">
-                <form id="login-form" onsubmit="return false;">
-                    <label>아이디</label>
-                    <input id="login-username-input" type="text" maxlength="10">
-                    <label>비밀번호</label>
-                    <input id="login-password-input" type="text" maxlength="10">
-                    <button id="login-btn">로그인</button>
-                </form>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="/css/home.css">
+        <link rel="stylesheet" type="text/css" href="/css/animation.css">
+        <link rel="stylesheet" type="text/css" href="/css/navbar.css">
+        <title>chatDa</title>
+    </head>
+    <body>
+        <div id="container" class="container">
+            <h1>Chat Da</h1>
+            <div id="usercheck-container">
+                <div id="toggle-wrapper">
+                    <button class="toggle-btn" id="toggle-btn">새로운 계정 만들기</button>
+                </div>
+                <div id="login-div" class="form-group">
+                    <form id="login-form" onsubmit="return false;">
+                        <label>아이디</label>
+                        <input id="login-username-input" type="text" maxlength="10">
+                        <label>비밀번호</label>
+                        <input id="login-password-input" type="text" maxlength="10">
+                        <button id="login-btn">로그인</button>
+                    </form>
+                </div>
+                <div id="signup-div" class="form-group">
+                    <form id="signup-form" onsubmit="return false;">
+                        <label>이름</label>
+                        <input id="signup-name-input" type="text" maxlength="10">
+                        <label>아이디</label>
+                        <input id="signup-username-input" type="text" maxlength="10">
+                        <label>비밀번호</label>
+                        <input id="signup-password-input" type="text" maxlength="10">
+                        <label>비밀번호 확인</label>
+                        <input id="signup-passwordcheck-input" type="text" maxlength="10">
+                        <button id="signup-btn">계정 생성</button>
+                    </form>
+                </div>
             </div>
-            <div id="signup-div" class="form-group">
-                <form id="signup-form" onsubmit="return false;">
-                    <label>이름</label>
-                    <input id="signup-name-input" type="text" maxlength="10">
-                    <label>아이디</label>
-                    <input id="signup-username-input" type="text" maxlength="10">
-                    <label>비밀번호</label>
-                    <input id="signup-password-input" type="text" maxlength="10">
-                    <label>비밀번호 확인</label>
-                    <input id="signup-passwordcheck-input" type="text" maxlength="10">
-                    <button >계정 생성</button>
-                </form>
+            <div id="button-container">
+                <button class="google-btn">대화</button>
+                <button id="diary-btn" class="google-btn">일기장</button>
+                <button class="google-btn">문체</button>
             </div>
         </div>
-
-        <div id="button-container">
-            <button class="google-btn">대화</button>
-            <button id="diary-btn" class="google-btn">일기장</button>
-            <button class="google-btn">문체</button>
+        <div id="temp-btns">
+            <button class="temp-btn" id="animation">ANIMATION</button>
         </div>
     </div>
-    <div id="temp-btns">
-        <button class="temp-btn" id="show-login">show login</button>
-        <button class="temp-btn" id="show-signup">show signup</button>
-        <button class="temp-btn" id="animation" >ANIMATION</button>    
-    </div>
-    </div> <!-- /container -->
-
 </body>
-
 <script src="js/config.js" defer></script>
 <script src="js/home.js" defer></script>
 <script src="js/navbar.js" defer></script>
-
 </html>
