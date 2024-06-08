@@ -1,5 +1,10 @@
+const title = document.getElementById("title");
 const content = document.getElementById("content");
-content.value = localStorage.getItem("diary");
+title.value = sessionStorage.getItem("title");
+content.value = sessionStorage.getItem("content");
+
+const container = document.getElementById("container");
+container.classList.add("move");
 
 // 오늘 날짜를 표시하는 함수
 function displayCurrentDate() {
