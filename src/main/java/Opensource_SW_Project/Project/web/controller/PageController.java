@@ -21,4 +21,9 @@ public class PageController {
     public String temp() {
         return "temp";
     }
+
+    @RequestMapping(value="/calendar")
+    public String calendar() {
+        return "calendar";
+    }
 }

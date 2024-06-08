@@ -7,50 +7,6 @@ anim.addEventListener("click", () => {
 });
 //
 
-//start chat function
-/*
-function start_chat(event) {
-    const name = name_input.value;
-    localStorage.setItem("userName", name);
-
-    //create user & create new talk
-    const userRequest = new XMLHttpRequest();
-    userRequest.open('POST', url + `users/?userName=${name}`);
-    userRequest.send();
-    userRequest.onload = () => {
-        if( userRequest.status === 200 ) {
-            console.log(userRequest.response);
-            var response = JSON.parse(userRequest.response);
-            console.log(response.result);
-            
-            //init memberId var
-            const memberId = response.result.memberId;
-            //send talk create request
-            const talkRequest = new XMLHttpRequest();
-            talkRequest.open('POST', url + `talk/?memberId=${memberId}`);
-            talkRequest.send();
-            talkRequest.onload = () => {
-                if( talkRequest.status === 200 ) {
-                    var response = JSON.parse(talkRequest.response);
-                    const talkId = response.result.talkId;
-                    localStorage.setItem("memberId", memberId);
-                    localStorage.setItem("talkId", talkId);
-                    //if success move to chat page
-                    container.classList.add('out');
-                    setTimeout(() => {
-                        window.location.href = "chat";
-                    }, "1000");
-                } else {
-                    console.error("Error", talkRequest.status, talkRequest.statusText);
-                }
-            }
-        } else {
-            console.error("Error", userRequest.status, userRequest.statusText);
-        }
-    };
-}
-*/
-
 // toggle usercheck <-> main func
 const usercheck_container = document.getElementById("usercheck-container");
 const button_container = document.getElementById("button-container");
@@ -81,9 +37,11 @@ show_signup.addEventListener("click", () => {
 
 //login function
 const login_form = document.getElementById("login-form");
+const login_btn = document.getElementById("login-btn");
 login_form.addEventListener("submit", login);
 function login(event) {
     event.preventDefault();
+    login_btn.disabled = true;
     const username = document.getElementById("login-username-input").value;
     const password = document.getElementById("login-password-input").value;
 
@@ -102,9 +60,10 @@ function login(event) {
     })
         .then(response => response.json())
         .then(data => {
+            login_btn.disabled = false;
             if (data.isSuccess){
                 console.log(data);
-                sessionStorage.setItem("userId", data.result.userId);
+                sessionStorage.setItem("memberId", data.result.memberId);
                 sessionStorage.setItem("accessToken", data.result.accessToken);
                 alert("로그인 성공");
                 window.location.href = "/";
@@ -113,6 +72,7 @@ function login(event) {
             }
         })
         .catch(error => {
+            login_btn.disabled = false;
             alert("요청 실패");
             console.error('Error:', error);
         });
@@ -157,3 +117,53 @@ function signup(event) {
             });
     }
 }
+
+//start chat function
+/*
+function start_chat(event) {
+    const name = name_input.value;
+    localStorage.setItem("userName", name);
+
+    //create user & create new talk
+    const userRequest = new XMLHttpRequest();
+    userRequest.open('POST', url + `users/?userName=${name}`);
+    userRequest.send();
+    userRequest.onload = () => {
+        if( userRequest.status === 200 ) {
+            console.log(userRequest.response);
+            var response = JSON.parse(userRequest.response);
+            console.log(response.result);
+            
+            //init memberId var
+            const memberId = response.result.memberId;
+            //send talk create request
+            const talkRequest = new XMLHttpRequest();
+            talkRequest.open('POST', url + `talk/?memberId=${memberId}`);
+            talkRequest.send();
+            talkRequest.onload = () => {
+                if( talkRequest.status === 200 ) {
+                    var response = JSON.parse(talkRequest.response);
+                    const talkId = response.result.talkId;
+                    localStorage.setItem("memberId", memberId);
+                    localStorage.setItem("talkId", talkId);
+                    //if success move to chat page
+                    container.classList.add('out');
+                    setTimeout(() => {
+                        window.location.href = "chat";
+                    }, "1000");
+                } else {
+                    console.error("Error", talkRequest.status, talkRequest.statusText);
+                }
+            }
+        } else {
+            console.error("Error", userRequest.status, userRequest.statusText);
+        }
+    };
+}
+*/
+
+//go to calendar page
+const diary_btn = document.getElementById("diary-btn");
+diary_btn.addEventListener("click",()=> {
+    window.location.href = "/calendar";
+});
