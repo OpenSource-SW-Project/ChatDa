@@ -18,5 +18,34 @@ public class EmbeddingController {
     public String getChatCompletion(@RequestParam String prompt) throws Exception {
         return embeddingService.getChatCompletion(prompt);
     }
+
+    public static double[] strToDoubleArray(String str) {
+        str = str.replace("[", "").replace("]", "");
+        String[] stringArray = str.split(",");
+
+        double[] arr = new double[stringArray.length];
+        for (int i = 0; i < stringArray.length; i++) {
+            arr[i] = Double.parseDouble(stringArray[i]);
+        }
+        return arr;
+    }
+
+    public static double cosineSimilarity(double[] vectorA, double[] vectorB) {
+        if (vectorA.length != vectorB.length) {
+            throw new IllegalArgumentException("Vectors must be of the same length");
+        }
+
+        double dotProduct = 0.0;
+        double normA = 0.0;
+        double normB = 0.0;
+
+        for (int i = 0; i < vectorA.length; i++) {
+            dotProduct += vectorA[i] * vectorB[i];
+            normA += Math.pow(vectorA[i], 2);
+            normB += Math.pow(vectorB[i], 2);
+        }
+
+        return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+    }
 }
 
