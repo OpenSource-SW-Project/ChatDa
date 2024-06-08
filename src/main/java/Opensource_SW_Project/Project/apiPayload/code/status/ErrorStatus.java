@@ -17,12 +17,12 @@ public enum ErrorStatus implements BaseErrorCode {
     _FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON403", "금지된 요청입니다."),
 
     // 회원 관려 에러 1000
-    USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "USER_1001", "사용자가 없습니다."),
-    NAME_NOT_EXIST(HttpStatus.BAD_REQUEST, "USER_1002", "이름입력은 필수 입니다."),
-    USER_ALREADY_EXISTS(HttpStatus.CONFLICT, "USER_1003", "이미 존재하는 유저입니다."),
-    USER_ID_NULL(HttpStatus.BAD_REQUEST, "USER_1004", "사용자 아이디는 필수 입니다."),
-    USER_POINT_ZERO(HttpStatus.BAD_REQUEST, "USER_1005", "요청 포인트는 0이 아니어야 합니다."),
-    USER_TOTALPOINT_NEGATIVE(HttpStatus.BAD_REQUEST, "USER_1006", "보유 포인트가 부족합니다.");
+    MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "MEMBER_1001", "사용자가 없습니다."),
+    NAME_NOT_EXIST(HttpStatus.BAD_REQUEST, "MEMBER1002", "이름입력은 필수 입니다."),
+    MEMBER_ALREADY_EXISTS(HttpStatus.CONFLICT, "MEMBER_1003", "이미 존재하는 유저입니다."),
+    MEMBER_ID_NULL(HttpStatus.BAD_REQUEST, "MEMBER_1004", "사용자 아이디는 필수 입니다."),
+    MEMBER_POINT_ZERO(HttpStatus.BAD_REQUEST, "MEMBER_1005", "요청 포인트는 0이 아니어야 합니다."),
+    MEMBER_TOTALPOINT_NEGATIVE(HttpStatus.BAD_REQUEST, "MEMBER_1006", "보유 포인트가 부족합니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

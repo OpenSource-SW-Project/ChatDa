@@ -1,6 +1,8 @@
 package Opensource_SW_Project.Project.service.MemberService;
 
 import Opensource_SW_Project.Project.JWT.JwtTokenProvider;
+import Opensource_SW_Project.Project.apiPayload.code.status.ErrorStatus;
+import Opensource_SW_Project.Project.apiPayload.exception.handler.MemberHandler;
 import Opensource_SW_Project.Project.converter.MemberConverter;
 import Opensource_SW_Project.Project.domain.Member;
 import Opensource_SW_Project.Project.repository.MemberRepository;
@@ -30,6 +32,11 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     private final PasswordEncoder passwordEncoder;
 
     public Member signUp(MemberRequestDTO.CreateUserRequestDTO request){
+        Member getMember = memberRepository.findByUsername(request.getUsername()).get();
+        if(getMember != null){
+            throw new MemberHandler(ErrorStatus.MEMBER_ALREADY_EXISTS);
+        }
+
         List<String> roles = new ArrayList<>();
         roles.add("USER");
 
