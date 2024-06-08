@@ -36,19 +36,6 @@ toggle_btn.addEventListener("click", () => {
     }
     isLogin = !isLogin;
 });
-/*
-const show_login = document.getElementById("show-login");
-const show_signup = document.getElementById("show-signup");
-
-show_login.addEventListener("click", () => {
-    login_div.style.display = "block";
-    signup_div.style.display = "none";
-});
-show_signup.addEventListener("click", () => {
-    signup_div.style.display = "block";
-    login_div.style.display = "none";
-});
-*/
 
 //login function
 const login_form = document.getElementById("login-form");
@@ -76,7 +63,7 @@ function login(event) {
         .then(response => response.json())
         .then(data => {
             login_btn.disabled = false;
-            if (data.isSuccess){
+            if (data.isSuccess) {
                 console.log(data);
                 sessionStorage.setItem("memberId", data.result.memberId);
                 sessionStorage.setItem("accessToken", data.result.accessToken);
@@ -133,52 +120,41 @@ function signup(event) {
     }
 }
 
-//start chat function
-/*
+//start chat
+const chat_btn = document.getElementById("chat-btn");
+chat_btn.addEventListener("click", start_chat);
 function start_chat(event) {
-    const name = name_input.value;
-    localStorage.setItem("userName", name);
-
-    //create user & create new talk
-    const userRequest = new XMLHttpRequest();
-    userRequest.open('POST', url + `users/?userName=${name}`);
-    userRequest.send();
-    userRequest.onload = () => {
-        if( userRequest.status === 200 ) {
-            console.log(userRequest.response);
-            var response = JSON.parse(userRequest.response);
-            console.log(response.result);
-            
-            //init memberId var
-            const memberId = response.result.memberId;
-            //send talk create request
-            const talkRequest = new XMLHttpRequest();
-            talkRequest.open('POST', url + `talk/?memberId=${memberId}`);
-            talkRequest.send();
-            talkRequest.onload = () => {
-                if( talkRequest.status === 200 ) {
-                    var response = JSON.parse(talkRequest.response);
-                    const talkId = response.result.talkId;
-                    localStorage.setItem("memberId", memberId);
-                    localStorage.setItem("talkId", talkId);
-                    //if success move to chat page
-                    container.classList.add('out');
-                    setTimeout(() => {
-                        window.location.href = "chat";
-                    }, "1000");
-                } else {
-                    console.error("Error", talkRequest.status, talkRequest.statusText);
-                }
-            }
-        } else {
-            console.error("Error", userRequest.status, userRequest.statusText);
-        }
-    };
+    const member_id = sessionStorage.getItem("memberId");
+    const access_token = sessionStorage.getItem("accessToken");
+    fetch(url + `talk/?memberId=${member_id}`, {
+        method: 'POST',
+        headers: {
+            'accept': '*/*',
+            'Authorization': 'Bearer ' + access_token
+        },
+        body: ''
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            sessionStorage.setItem("talkId", data.result.talkId);
+            change_page("/chat");
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 }
-*/
 
 //go to calendar page
 const diary_btn = document.getElementById("diary-btn");
-diary_btn.addEventListener("click",()=> {
-    window.location.href = "/calendar";
+diary_btn.addEventListener("click", () => {
+    //window.location.href = "/calendar";
+    change_page("/calendar");
 });
+
+function change_page(page) {
+    container.classList.add('out');
+    setTimeout(() => {
+        window.location.href = page;
+    }, "1000");
+}
