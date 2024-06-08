@@ -23,7 +23,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 ////                .csrf(csrf -> csrf.disable())
-////                .headers(headers -> headers.frameOptions().disable())
+                ////                .headers(headers -> headers.frameOptions().disable())
                 // REST API이므로 basic auth 및 csrf 보안을 사용하지 않음
                 .httpBasic(httpBasic -> httpBasic.disable())
                 .csrf(csrf -> csrf.disable())
@@ -31,7 +31,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
                         authorize -> authorize
-                                .requestMatchers("/","/v3/**", "/swagger-ui/**", "/css/**", "images/**", "/js/**", "/error")
+                                .requestMatchers("/","/v3/**", "/swagger-ui/**", "/css/**", "/img/**", "/js/**", "/static/**", "/error")
                                 .permitAll()
                                 .requestMatchers("/chat", "/temp", "/calender", "/api/DB/diary","/users/signUp", "/users/signIn", "/api/chat").permitAll()
                                 .requestMatchers("/talk", "/diary/diaryList/{userId}", "/diary", "/diary/{diaryId}").hasRole("USER")
@@ -53,6 +53,5 @@ public class SecurityConfig {
         // BCrypt Encoder 사용
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
-
 
 }

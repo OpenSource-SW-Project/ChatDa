@@ -58,12 +58,17 @@ button:hover {
     background-color: #0056b3;
 }
 
+#button-container {
+    display : flex;
+}
+
 .google-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     background-color: #007BFF;
     color: white;
+    margin : 8px;
     padding: 10px 20px;
     border: none;
     border-radius: 4px;
@@ -73,12 +78,18 @@ button:hover {
     text-decoration: none;
 }
 
-.google-btn img {
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
-}
-
 .google-btn:hover {
     background-color: #357ae8;
+}
+
+#temp-btns{
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display :flex;
+    flex-direction: column;
+}
+
+.temp-btn{
+    width : 100px;
 }
