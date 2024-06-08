@@ -3,7 +3,7 @@ const container = document.getElementById("container");
 container.classList.add('move');
 const anim = document.getElementById("animation");
 anim.addEventListener("click", () => {
-
+    container.classList.add('out');
 });
 //
 
