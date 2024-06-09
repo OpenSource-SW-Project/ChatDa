@@ -152,6 +152,12 @@ diary_btn.addEventListener("click", () => {
     change_page("/calendar");
 });
 
+//go to writing style page
+const writing_style_btn = document.getElementById("writing-style-btn");
+writing_style_btn.addEventListener("click", () => {
+    change_page("/writing-style");
+});
+
 function change_page(page) {
     container.classList.add('out');
     setTimeout(() => {
