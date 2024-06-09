@@ -14,22 +14,28 @@ const create_div = document.getElementById("create-div");
 const check_div = document.getElementById("check-div");
 check_div.style.display = "none";
 
-const toggle_btn = document.getElementById("temp-btn");
+const toggle_btn = document.getElementById("toggle-btn");
 var iscreate = true;
 toggle_btn.addEventListener("click", toggle_view);
 
+const writing_style_content = document.getElementById("writing-style-content");
+
 function toggle_view() {
+    writing_style_content.innerText = sessionStorage.getItem("style");;
     if (iscreate) {
         check_div.style.display = "block";
         create_div.style.display = "none";
     } else {
         create_div.style.display = "block";
         check_div.style.display = "none";
+        toggle_btn.style.display = "hidden";
     }
     iscreate = !iscreate;
 }
 
-const writing_style_content = document.getElementById("writing-style-content");
+if (sessionStorage.getItem("style")) {
+    toggle_view();
+}
 
 //create style
 const create_style_btn = document.getElementById("create-style-btn");
@@ -57,8 +63,8 @@ function create_style() {
         .then(response => response.json())
         .then(data => {
             console.log(data);
+            sessionStorage.setItem("style", data.result.content);
             toggle_view();
-            writing_style_content.innerText = data.result.content;
         })
         .catch(error => {
             console.error('Error:', error);
