@@ -23,6 +23,7 @@ public class DiaryQueryServiceImpl implements DiaryQueryService{
 
     private final DiaryRepository diaryRepository;
     private final MemberRepository memberRepository;
+
     public Diary diaryFind(DiaryRequestDTO.GetDiaryRequestDTO request) {
         Optional<Diary> findDiary = diaryRepository.findById(request.getDiaryId());
         return null;
