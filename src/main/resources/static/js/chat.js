@@ -19,6 +19,8 @@ console.log("got member id : " + member_id);
 console.log("got talk id : " + talk_id);
 console.log("got access token : " + access_token);
 
+send_embedding("asdf");
+
 function send_chat(event) {
     const user_message = chat_input.value;
     console.log(user_message);
