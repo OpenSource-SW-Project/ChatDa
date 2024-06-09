@@ -24,12 +24,19 @@ public class StyleQueryServiceImpl implements StyleQueryService{
     private final StyleRepository styleRepository;
     private final MemberRepository memberRepository;
 
-    @Override
-    public List<Style> getUserStyle(Long memberId) {
-        Member getMember = memberRepository.findById(memberId).get();
-        List<Style> UserStyleList = styleRepository.findAllByMember(getMember);
+//    @Override
+//    public List<Style> getUserStyle(Long memberId) {
+//        Member getMember = memberRepository.findById(memberId).get();
+//        List<Style> UserStyleList = styleRepository.findAllByMember(getMember);
+//
+//        return UserStyleList;
+//    }
 
-        return UserStyleList;
+    @Override
+    public Style getUserStyle(Long memberId) {
+        Member getMember = memberRepository.findById(memberId).get();
+        Style UserStyle = styleRepository.findByMember(getMember);
+        return UserStyle;
     }
 
     @Override

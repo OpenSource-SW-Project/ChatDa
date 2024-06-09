@@ -79,15 +79,17 @@ public class StyleController {
             , description = "로그인된 유저가 생성한 문체를 조회할 수 있습니다."
             , security = @SecurityRequirement(name = "accessToken")
     )
-    public ApiResponse<StyleResponseDTO.UserStyleResultListDTO> findUserStyle(
+    public ApiResponse<StyleResponseDTO.UserStyleResultDTO> findUserStyle(
             @PathVariable Long memberId
     ) {
         // 토큰 유효성 검사 (memberId)
         jwtTokenProvider.isValidToken(memberId);
-        List<Style> userStyleList = styleQueryService.getUserStyle(memberId);
+        //List<Style> userStyleList = styleQueryService.getUserStyle(memberId);
+        Style userStyle = styleQueryService.getUserStyle(memberId);
         return ApiResponse.onSuccess(
                 SuccessStatus.STYLE_OK,
-                StyleConverter.toUserStyleResultListDTO(userStyleList)
+                //StyleConverter.toUserStyleResultListDTO(userStyleList)
+                StyleConverter.toUserStyleResultDTO(userStyle)
         );
     }
 
