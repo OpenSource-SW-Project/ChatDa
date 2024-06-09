@@ -31,11 +31,12 @@ console.log("got access token : " + access_token);
 init_chat();
 
 function init_chat() {
-    // if (get_today_diary()) {
-    //     create_chatDa_chat("오늘은 이미 일기를 작성했어!! 내일 다시 찾아줘!!");
-    //     chat_btn.disabled = true;
-    //     return;
-    // }
+    if (get_today_diary()) {
+        create_chatDa_chat("오늘은 이미 일기를 작성했어!! 내일 다시 찾아줘!!");
+        chat_btn.disabled = true;
+        return;
+    }
+
     get_today_chat();
 }
 
@@ -320,34 +321,31 @@ function create_chatDa_chat(new_message) {
 
 // today, user로 검색, diary 있으면 true 없으면 false 리턴
 function get_today_diary() {
-    var today = new Date();
-    var year = today.getFullYear();
-    var month = (today.getMonth() + 1).toString().padStart(2, '0');
-    var day = today.getDate().toString().padStart(2, '0');
-
-    const formattedDate = year + '-' + month + '-' + day;
-
-    const http = new XMLHttpRequest();
-    const query = url + `api/DB/diary?date=${formattedDate}&userId=${user_id}`;
-    console.log(query);
-    http.open('GET', query);
-    http.send();
-    http.onload = () => {
-        if (http.status === 200) {
-            //console.log(http.responseText);
-            if (http.response != "") {
-                console.log("Today diary already exist!!");
-                return true;
-            }
-            else {
-                console.log(`No diary user = ${user_id}, date=${formattedDate}`);
-                return false;
-            }
-        } else {
-            console.error("Error", http.status, http.statusText);
+    fetch(url + `diary/talk?talkId=${talk_id}`, {
+        method: 'GET',
+        headers: {
+            'accept': '*/*',
+            'Authorization': 'Bearer ' + access_token
         }
-    };
-    return false;
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data === null) {
+                console.log('Response is null');
+            } else {
+                console.log('Response is not null', data);
+            }
+        })
+        .catch(error => {
+            return false;
+        });
+
+    return true;
 }
 
 // today, user로 검색, 오늘 채팅 내역 전체 리턴
