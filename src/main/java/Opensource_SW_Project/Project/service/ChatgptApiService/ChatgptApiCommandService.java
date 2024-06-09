@@ -14,13 +14,13 @@ public interface ChatgptApiCommandService { // ChatGPT API부르는 함수 만�
     void saveUserPromptAndMessage(TalkRequestDTO.CreateMessageRequestDTO request, String userPrompt, String message);
 
     // 최종 SystemPrompt생성 메소드-------------------------------------------------------------
-    String generateSystemPrompt(Long userId, TalkRequestDTO.CreateMessageRequestDTO request);
+    String generateSystemPrompt(Long memberId, TalkRequestDTO.CreateMessageRequestDTO request);
 
     // 기본 조건 systemPrompt------------------------------------------------------------------
     String getDefaultSystemPrompt(String name);
 
     // 대화 기록 systemPrompt-------------------------------------------------------------------
-    String getHistorytalk(Long userId, TalkRequestDTO.CreateMessageRequestDTO request);
+    String getHistorytalk(Long memberId, TalkRequestDTO.CreateMessageRequestDTO request);
 
     // 조건 SystemPrompt-----------------------------------------------------------------------
     String generateRespondSystemPrompt_condition1(); // 조건 타입 1 : 반응만

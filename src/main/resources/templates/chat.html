@@ -1,40 +1,38 @@
 <!DOCTYPE html>
-
 <html>
-<head>
-  <meta charset="utf-8">
-  <link rel="stylesheet" href="/css/style.css">
-  <link rel="stylesheet" href="../static/css/style.css">
-  <title>chatDa</title>
-</head>
-
-<body>
-
-<div id="chat-box">
-  <div id="chat-log">
-    <div style="padding:4px"></div>
-    <div class="chat-wrapper"><div class="chat-bubble">안녕! 나는 챗다야. 오늘 하루 중 가장 기억에 남는 일은 뭐야?</div><div class="chat-box"></div></div>
-  </div>
-
-  <div id="chat-form-wrapper">
-    <form id="chat-form" onsubmit="return false;">
-      <input id="chat-input" type="text">
-      <button id="chat-btn">send</button>
-    </form>
-  </div>
-</div>
-
-<div id="debug-box">
-  <button id="end-chat-btn">대화를 마치고 일기 작성하기</button>
-  <button id="enable-wait-btn">enable wait</button>
-  <button id="disable-wait-btn">disable wait</button>
-</div>
-</body>
-
-<script src="js/config.js" defer></script>
-<script src="../static/js/config.js" defer></script>
-
-<script src="js/chat.js" defer></script>
-<script src="../static/js/chat.js" defer></script>
-
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="/css/chat.css">
+        <link rel="stylesheet" href="/css/navbar.css">
+        <link rel="stylesheet" href="/css/animation.css">     
+        <title>chatDa</title>
+    </head>
+    <body>
+        <div id="chat-box">
+            <div id="chat-log">
+                <div style="padding:4px"></div>
+                <div class="chat-wrapper">
+                    <div class="chat-bubble">안녕! 나는 챗다야. 오늘 하루 중 가장 기억에 남는 일은 뭐야?</div>
+                    <div class="chat-box"></div>
+                </div>
+            </div>
+            <div id="chat-form-wrapper">
+                <form id="chat-form" onsubmit="return false;">
+                    <input id="chat-input" type="text">
+                    <button id="chat-btn">send</button>
+                </form>
+            </div>
+        </div>
+        <div id="debug-box">
+            <button id="end-chat-btn">대화를 마치고 일기 작성하기</button>
+            <button id="enable-wait-btn">enable wait</button>
+            <button id="disable-wait-btn">disable wait</button>
+        </div>
+        <div id="penguin">
+            <img src="img/pengu.gif">
+        </div>
+    </body>
+    <script src="js/config.js" defer></script>
+    <script src="js/chat.js" defer></script>
+    <script src="js/navbar.js" defer></script>
 </html>

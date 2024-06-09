@@ -1,3 +1,8 @@
+//ANIMATION
+const chat_box = document.getElementById("chat-box");
+chat_box.classList.add('move');
+//
+
 const chat_form = document.getElementById("chat-form");
 const chat_input = document.getElementById("chat-input");
 const chat_btn = document.getElementById("chat-btn");
@@ -7,17 +12,17 @@ chat_form.addEventListener("submit", send_chat)
 
 var chat_count = 0;
 
-var user_name = localStorage.getItem("userName");
-var user_id = localStorage.getItem("userId");
-var talk_id = localStorage.getItem("talkId");
-console.log("got user name : " + user_name);
-console.log("got user id : " + user_id);
+var member_id = sessionStorage.getItem("memberId");
+var talk_id = sessionStorage.getItem("talkId");
+var access_token = sessionStorage.getItem("accessToken");
+console.log("got member id : " + member_id);
 console.log("got talk id : " + talk_id);
+console.log("got access token : " + access_token);
 
-function send_chat(event){
+function send_chat(event) {
     const user_message = chat_input.value;
     console.log(user_message);
-    if(user_message != ""){
+    if (user_message != "") {
         console.log("send message");
 
         const new_chat_wrapper = document.createElement("div");
@@ -39,8 +44,30 @@ function send_chat(event){
         chat_btn.disabled = true;
 
         //send request & get response
+        const data = {
+            talkId: talk_id,
+            userPrompt: user_message
+        };
+
+        fetch(url + `api/chat?memberId=${member_id}`, {
+            method: 'POST',
+            headers: {
+                'accept': '*/*',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                receive_chat(null, data.result.message);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        /*
         const chatRequest = new XMLHttpRequest();
-        chatRequest.open('POST', url + `api/chat?userId=${user_id}`);
+        chatRequest.open('POST', url + `api/chat?memberId=${user_id}`);
         chatRequest.setRequestHeader("Content-Type", "application/json");
 
         var body = JSON.stringify({
@@ -58,10 +85,11 @@ function send_chat(event){
                 console.error("Error", chatRequest.status, chatRequest.statusText);
             }
         };
+        */
     }
 }
 
-function receive_chat(event, response){
+function receive_chat(event, response) {
     chat_btn.disabled = false;
 
     const new_response_wrapper = document.createElement("div");
@@ -89,24 +117,52 @@ function receive_chat(event, response){
 //
 
 const end_chat_btn = document.getElementById("end-chat-btn");
-
 end_chat_btn.addEventListener("click", endChat);
 
-function endChat(event){
+function endChat(event) {
+    end_chat_btn.disabled = true;
+    chat_box.classList.add('out');
     //create diary
+    const data = {
+        talkId: talk_id,
+        userPrompt: ""
+    };
+
+    fetch(url + `diary?memberId=${member_id}`, {
+        method: 'POST',
+        headers: {
+            'accept': '*/*',
+            'Authorization': 'Bearer ' + access_token,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            const result = data.result;
+            sessionStorage.setItem("title", result.title);
+            sessionStorage.setItem("content", result.content);
+            sessionStorage.setItem("diaryId", result.diaryId);
+            window.location.href = "temp";
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    /*
     const diaryRequest = new XMLHttpRequest();
-    diaryRequest.open('POST', url + `diary?userId=${user_id}`);
+    diaryRequest.open('POST', url + `diary?memberId=${member_id}`);
     diaryRequest.setRequestHeader("Content-Type", "application/json");
     var body = JSON.stringify({
-        talkId : talk_id,
-        userPrompt : ""
+        talkId: talk_id,
+        userPrompt: ""
     });
     diaryRequest.send(body);
     end_chat_btn.disabled = true;
     alert("일기를 작성 중입니다. 잠시만 기다려 주세요(30~40초)");
     diaryRequest.onload = () => {
-        if( diaryRequest.status === 200 ) {
-            
+        if (diaryRequest.status === 200) {
+
             const response = JSON.parse(diaryRequest.response);
             console.log(response);
             localStorage.setItem("diary", response.result.content);
@@ -115,8 +171,8 @@ function endChat(event){
             console.error("Error", diaryRequest.status, diaryRequest.statusText);
         }
     };
+    */
 }
-
 
 //typing bubble
 var count = 0;
@@ -159,12 +215,12 @@ disableBtn.addEventListener("click", disableWait);
 function nextWait() {
     const bubble = document.getElementById("wait-bubble");
     var wait_text = "";
-    if(count < 5) {
-        for (i=0;i<count;i++){
+    if (count < 5) {
+        for (i = 0; i < count; i++) {
             wait_text += ".";
         }
         wait_text += "·";
-        for (;i<4;i++){
+        for (; i < 4; i++) {
             wait_text += ".";
         }
         bubble.innerText = wait_text;
@@ -172,8 +228,14 @@ function nextWait() {
         bubble.innerText = ".....";
     }
 
-    count ++;
+    count++;
     if (count > 10) {
         count = 0;
     }
 }
+
+//PENGU
+const pengu = document.getElementById("penguin");
+setTimeout(() => {
+    pengu.className = "in";
+}, "5000");

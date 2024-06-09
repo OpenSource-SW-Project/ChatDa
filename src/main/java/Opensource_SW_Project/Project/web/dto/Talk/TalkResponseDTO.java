@@ -11,7 +11,7 @@ public class TalkResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class CreateTalkResultDTO {
-        Long userId;
+        Long memberId;
         Long talkId;
     }
 }

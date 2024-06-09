@@ -13,7 +13,7 @@ public class DiaryRequestDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class GetDiaryRequestDTO {
-        private long userId;
+        private long memberId;
         private long diaryId;
     }
 
@@ -22,7 +22,8 @@ public class DiaryRequestDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class UpdateDiaryDTO {
-        Long userId;
+        Long memberId;
+        String title;
         String content;
     }
 }

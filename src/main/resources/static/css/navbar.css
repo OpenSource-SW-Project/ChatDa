@@ -1,0 +1,28 @@
+#navbar{
+    position: absolute;
+    top : 12px;
+    right : 12px;
+    color : #777;
+}
+
+.navbar-item{
+    margin : 0px 8px;
+    cursor : pointer;
+    position : relative
+}
+
+.navbar-item::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: -3px;
+    left: 0;
+    background-color: #777;
+    visibility: hidden;
+    transition: all 0.3s ease-in-out;
+}
+.navbar-item:hover::after {
+    visibility: visible;
+    width: 100%;
+}

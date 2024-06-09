@@ -8,44 +8,65 @@ body {
     align-items: center;
     height: 100vh;
 }
+
+#toggle-wrapper {
+    display: flex;
+    justify-content: right;
+}
+
+#toggle-btn {
+    width : 160px;
+    color : black;
+    background-color: #fff;
+    padding : 4px;
+    text-decoration : underline;
+}
+
 .container {
     background-color: #fff;
+    width :80%;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 80%;
+    width: 100%;
     max-width: 600px;
 }
+
 h1 {
     text-align: center;
     margin-bottom: 20px;
 }
-.date {
-    text-align: center;
-    margin-bottom: 20px;
-    font-weight: bold;
-}
+
 .form-group {
     margin-bottom: 20px;
 }
+
 label {
     display: block;
-    margin-bottom: 5px;
+    margin-top :10px;
     font-weight: bold;
 }
-input[type="text"], textarea {
+
+input[type="text"], input[type="password"] {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
 }
+
 textarea {
     height: 200px;
     resize: none;
 }
+
+#button-container {
+    display : flex;
+    justify-content: space-between;
+}
+
 button {
-    width: 100%;
+    width: 170px;
     padding: 10px;
     border: none;
     border-radius: 4px;
@@ -54,8 +75,36 @@ button {
     font-size: 16px;
     cursor: pointer;
 }
+
 button:hover {
     background-color: #0056b3;
+}
+
+#alert-div {
+    position: relative
+}
+
+.alert-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 5px 10px;
+    font-size: 14px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#login-btn {
+    margin-top: 20px;
+}
+
+#signup-btn {
+    margin-top: 20px;
 }
 
 .google-btn {
@@ -64,6 +113,7 @@ button:hover {
     justify-content: center;
     background-color: #007BFF;
     color: white;
+    margin : 8px;
     padding: 10px 20px;
     border: none;
     border-radius: 4px;
@@ -73,12 +123,18 @@ button:hover {
     text-decoration: none;
 }
 
-.google-btn img {
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
-}
-
 .google-btn:hover {
     background-color: #357ae8;
+}
+
+#temp-btns{
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display :flex;
+    flex-direction: column;
+}
+
+.temp-btn{
+    width : 100px;
 }
