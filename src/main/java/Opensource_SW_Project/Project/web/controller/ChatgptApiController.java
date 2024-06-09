@@ -2,16 +2,15 @@ package Opensource_SW_Project.Project.web.controller;
 
 import Opensource_SW_Project.Project.apiPayload.ApiResponse;
 import Opensource_SW_Project.Project.apiPayload.code.status.SuccessStatus;
-import Opensource_SW_Project.Project.service.ChatgptApiService.ChatgptApiService;
-import Opensource_SW_Project.Project.web.dto.*;
+import Opensource_SW_Project.Project.service.ChatgptApiService.ChatgptApiCommandService;
+import Opensource_SW_Project.Project.web.dto.ChatgptApi.ChatgptApiRequestDTO;
+import Opensource_SW_Project.Project.web.dto.ChatgptApi.ChatgptApiResponseDTO;
+import Opensource_SW_Project.Project.web.dto.Talk.TalkRequestDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,39 +20,25 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class ChatgptApiController {
 
-    private final ChatgptApiService chatgptApiService;
-
-    @Value("${openai.model}")
-    private String model;
-
-    @Value("${openai.api.url}")
-    private String apiURL;
-
-    @Autowired
-    private RestTemplate template;
+    private final ChatgptApiCommandService chatgptApiService;
 
     @PostMapping("/chat")
     public ApiResponse<ChatgptApiResponseDTO.SendMessageResultDTO> chat(
-            @RequestParam(name = "userId")Long userId,
-            @RequestBody TalkRequestDTO.CreateMessageRequestDTO request){ // userId와 talkID 필요, 화제 바꾸는 프롬프트 부르는 Id값(enum) 필요함
-        // 시스템 프롬프트 생성 메소드 만들기 <- 대화 id에 따라 과거 대화기록 가져오기, 기본 시스템 프롬프트 클래스, 조건 시스템 프롬프트 클래스
-        String systemPrompt = chatgptApiService.generateSystemPrompt(userId, request);
-
-        //String systemPrompt = "친근하게 대답해줘";
+            @RequestParam(name = "memberId")Long memberId,
+            @RequestBody TalkRequestDTO.CreateMessageRequestDTO request){ // memberId와 talkID 필요, 화제 바꾸는 프롬프트 부르는 Id값(enum) 필요함
         // userPrompt requestbody로 받기
         String userPrompt = chatgptApiService.getUserPrompt(request);
-        // request를 api로 보내 chatGPT응답받기
-        ChatGPTRequest chatGPTrequest = new ChatGPTRequest(model, systemPrompt,userPrompt);
-        ChatGPTResponse chatGPTResponse =  template.postForObject(apiURL, chatGPTrequest, ChatGPTResponse.class);
+
+        // 시스템 프롬프트 생성하는 메소드 <- 대화 id에 따라 과거 대화기록 가져오기, 기본 시스템 프롬프트 클래스, 조건 시스템 프롬프트 클래스 이용
+        String message = chatgptApiService.generateSystemPrompt(memberId, request);
 
         // service에서 userPrompt와 chatGPTResponse 저장하기
-        chatgptApiService.saveUserPromptAndMessage(request, userPrompt, chatGPTResponse.getChoices().get(0).getMessage().getContent());
-
+        chatgptApiService.saveUserPromptAndMessage(request, userPrompt, message);
 
         return ApiResponse.onSuccess(
                 SuccessStatus.MESSAGE_OK,
                 ChatgptApiResponseDTO.SendMessageResultDTO.builder()
-                        .message(chatGPTResponse.getChoices().get(0).getMessage().getContent())
+                        .message(message)
                         .build()
         );
     }

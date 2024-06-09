@@ -1,12 +1,20 @@
 package Opensource_SW_Project.Project.web.controller;
 
+import Opensource_SW_Project.Project.JWT.JwtTokenProvider;
 import Opensource_SW_Project.Project.apiPayload.ApiResponse;
 import Opensource_SW_Project.Project.apiPayload.code.status.SuccessStatus;
 import Opensource_SW_Project.Project.converter.DiaryConverter;
 import Opensource_SW_Project.Project.domain.Diary;
-import Opensource_SW_Project.Project.service.ChatgptApiService.ChatgptApiService;
-import Opensource_SW_Project.Project.service.DiaryService.DiaryService;
-import Opensource_SW_Project.Project.web.dto.*;
+import Opensource_SW_Project.Project.service.ChatgptApiService.ChatgptApiCommandService;
+import Opensource_SW_Project.Project.service.DiaryService.DiaryCommandService;
+import Opensource_SW_Project.Project.service.DiaryService.DiaryQueryService;
+import Opensource_SW_Project.Project.web.dto.ChatGPT.ChatGPTRequestDTO;
+import Opensource_SW_Project.Project.web.dto.ChatGPT.ChatGPTResponseDTO;
+import Opensource_SW_Project.Project.web.dto.Diary.DiaryRequestDTO;
+import Opensource_SW_Project.Project.web.dto.Diary.DiaryResponseDTO;
+import Opensource_SW_Project.Project.web.dto.Talk.TalkRequestDTO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +23,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @Validated
@@ -22,8 +32,10 @@ import org.springframework.web.client.RestTemplate;
 @RequestMapping("/diary")
 @Slf4j
 public class DiaryController {
-    private final ChatgptApiService chatgptApiService;
-    private final DiaryService diaryService;
+    private final ChatgptApiCommandService chatgptApiService;
+    private final DiaryCommandService diaryCommandService;
+    private final DiaryQueryService diaryQueryService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Value("${openai.model}")
     private String model;
@@ -33,32 +45,111 @@ public class DiaryController {
 
     @Autowired
     private RestTemplate template;
-    @PostMapping   // 첫번째 로컬호스트 8080으로 들어오면 이것이 호출됨
+
+    // 일기 생성
+    @PostMapping()
+    @Operation(
+            summary = "일기 생성 API"
+            , description = "일기를 생성합니다. Param으로 memberId과, RequestBody에 대화내역 talkId와 userPrompt를 입력하세요"
+            , security = @SecurityRequirement(name = "accessToken")
+    )
     public ApiResponse<DiaryResponseDTO.CreateDiaryResultDTO> createDiary(
-            @RequestParam(name = "userId")Long userId,
+            @RequestParam(name = "memberId")Long memberId,
             @RequestBody TalkRequestDTO.CreateMessageRequestDTO request
-            ){ // userId와 talkID 필요, 화제 바꾸는 프롬프트 부르는 Id값(enum) 필요함
-        // 시스템 프롬프트 생성 메소드 만들기 <- 대화 id에 따라 과거 대화기록 가져오기, 기본 시스템 프롬프트 클래스, 조건 시스템 프롬프트 클래스
-        String userPrompt1 = diaryService.createDiarySystemPrompt(userId);
-        String userPrompt2 = chatgptApiService.getHistorytalk(userId, request);
+            ){
+        // 토큰 유효성 검사 (memberId)
+        jwtTokenProvider.isValidToken(memberId);
 
-        String userPrompt = userPrompt1 + userPrompt2;
+        String DiarySystemPrompt = diaryCommandService.createDiarySystemPrompt(memberId);
+        String userHistoryTalk = chatgptApiService.getHistorytalk(memberId, request);
+        String userPrompt = DiarySystemPrompt + userHistoryTalk;
 
-        //String systemPrompt = "친근하게 대답해줘";
-        // userPrompt requestbody로 받기
         String systemPrompt = "";
         // request를 api로 보내 chatGPT응답받기
-        ChatGPTRequest chatGPTrequest = new ChatGPTRequest(model, systemPrompt,userPrompt);
-        ChatGPTResponse chatGPTResponse =  template.postForObject(apiURL, chatGPTrequest, ChatGPTResponse.class);
+        ChatGPTRequestDTO chatGPTrequest = new ChatGPTRequestDTO(model, systemPrompt,userPrompt);
+        ChatGPTResponseDTO chatGPTResponse =  template.postForObject(apiURL, chatGPTrequest, ChatGPTResponseDTO.class);
 
-        // service에서 userPrompt와 chatGPTResponse 저장하기
-        Diary newDiary = diaryService.saveDiary(userId, request, chatGPTResponse.getChoices().get(0).getMessage().getContent());
+        // 일기 내용 파싱
+        String diaryContent = chatGPTResponse.getChoices().get(0).getMessage().getContent();
+
+        String[] splitContent = diaryContent.split("\n", 2); // \n으로 나눔. 첫 번째는 제목, 두 번째는 내용
+        String title = splitContent[0].replace("제목: ", "").trim();
+        String content = splitContent[1].replace("내용: ", "").trim();
+
+        // service에서 userPrompt와 chatGPTResponse 저장
+        //Diary newDiary = diaryCommandService.saveDiary(memberId, request, chatGPTResponse.getChoices().get(0).getMessage().getContent());
+        Diary newDiary = diaryCommandService.saveDiary(memberId, request, title, content);
 
         return ApiResponse.onSuccess(
-                SuccessStatus.MESSAGE_OK,
+                SuccessStatus.DIARY_OK,
                 DiaryConverter.toCreateDiaryResultDTO(
                         newDiary
                 )
         );
     }
+
+
+    // 일기 수정
+    @PatchMapping("/{diaryId}")
+    @Operation(
+            summary = "일기 수정 API"
+            , description = "일기를 수정합니다. Path variable로 diaryId를 입력 받고, RequestBody에 작성자 memberId와 수정할 일기 content를 입력하세요"
+            , security = @SecurityRequirement(name = "accessToken")
+    )
+    public ApiResponse<DiaryResponseDTO.UpdateDiaryResultDTO> updateDiary(
+            @RequestBody DiaryRequestDTO.UpdateDiaryDTO request,
+            @PathVariable Long diaryId
+    ) {
+        // 토큰 유효성 검사 (memberId)
+        jwtTokenProvider.isValidToken(request.getMemberId());
+        return ApiResponse.onSuccess(
+                SuccessStatus.DIARY_OK,
+                DiaryConverter.UpdateDiaryResultDTO(
+                        diaryCommandService.updateDiary(diaryId, request)
+                )
+        );
+    }
+
+
+    // 특정 일기 조회
+    @GetMapping("/{diaryId}")
+    @Operation(
+            summary = "특정 일기 조회 API"
+            , description = "특정 일기를 조회합니다. Path variable로 조회할 diaryId를 입력하세요"
+    )
+    public ApiResponse<DiaryResponseDTO.DiaryDTO> findDiary(
+            @PathVariable Long diaryId,
+            @RequestParam(name = "memberId")Long memberId
+    ) {
+        Object request;
+        Diary findDiary = diaryQueryService.findById(diaryId);
+        return ApiResponse.onSuccess(
+                SuccessStatus.DIARY_OK,
+                DiaryConverter.toDiaryDTO(
+                        findDiary
+                )
+        );
+    }
+
+    // 유저가 작성한 모든 일기 조회
+    @GetMapping("/diaryList/{memberId}")
+    @Operation(
+            summary = "유저가 작성한 일기 조회 API"
+            , description = "로그인된 유저가 작성한 일기를 조회할 수 있습니다."
+            , security = @SecurityRequirement(name = "accessToken")
+    )
+    public ApiResponse<DiaryResponseDTO.UserDiaryResultListDTO> findUserDiary(
+            @PathVariable Long memberId
+    ) {
+        // 토큰 유효성 검사 (memberId)
+        jwtTokenProvider.isValidToken(memberId);
+        List<Diary> userDiaryList = diaryQueryService.getUserDiary(memberId);
+        return ApiResponse.onSuccess(
+                SuccessStatus.DIARY_OK,
+                DiaryConverter.toUserDiaryResultListDTO(userDiaryList)
+        );
+    }
+
+
+
 }
