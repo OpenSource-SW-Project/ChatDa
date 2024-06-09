@@ -67,10 +67,10 @@ function login(event) {
                 console.log(data);
                 sessionStorage.setItem("memberId", data.result.memberId);
                 sessionStorage.setItem("accessToken", data.result.accessToken);
-                alert("로그인 성공");
-                window.location.href = "/";
+                change_page("/");
             } else {
                 alert("로그인 실패 : " + data.result);
+                login_btn.disabled = false;
             }
         })
         .catch(error => {
