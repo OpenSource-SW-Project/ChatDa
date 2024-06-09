@@ -26,4 +26,9 @@ public class PageController {
     public String calendar() {
         return "calendar";
     }
+
+    @RequestMapping(value="/writing-style")
+    public String writing_style() {
+        return "writing-style";
+    }
 }
