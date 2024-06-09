@@ -7,15 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class ChatGPTRequestDTO {
+public class ChatGPTUserRequestDTO {
     private String model;
     private List<MessageDTO> messages;
 
-    public ChatGPTRequestDTO(String model, String systemPrompt, String userPrompt) {
+    public ChatGPTUserRequestDTO(String model, String userInput) {
         this.model = model;
         this.messages = new ArrayList<>();
-        this.messages.add(new MessageDTO("system", systemPrompt));
-        this.messages.add(new MessageDTO("user", userPrompt));
+        this.messages.add(new MessageDTO("user", userInput));
     }
 }
-

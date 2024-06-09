@@ -9,6 +9,8 @@ import Opensource_SW_Project.Project.repository.TalkRepository;
 import Opensource_SW_Project.Project.repository.MemberRepository;
 import Opensource_SW_Project.Project.web.dto.ChatGPT.ChatGPTRequestDTO;
 import Opensource_SW_Project.Project.web.dto.ChatGPT.ChatGPTResponseDTO;
+import Opensource_SW_Project.Project.web.dto.ChatGPT.ChatGPTUserRequestDTO;
+import Opensource_SW_Project.Project.web.dto.ChatgptApi.ChatgptApiRequestDTO;
 import Opensource_SW_Project.Project.web.dto.Talk.TalkRequestDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -196,4 +199,39 @@ public class ChatgptApiServiceImpl implements ChatgptApiCommandService { // 첫 
         String newSubject = subjects[index];
         return newSubject;
     }
+
+
+    // =========================================================
+    // 문체 생성
+    // ChatGPT를 통해 문체 생성
+    public String generateStyle(String userInput) {
+//        // 첫 번째 요청: 문체적 특징 요청
+//        String systemPrompt1 = "다음의 문장은 어떤 문체적 특징을 보이는가?\n문장: " + userInput;
+//        ChatGPTRequestDTO request1 = new ChatGPTRequestDTO(model, systemPrompt1, userInput);
+//        ChatGPTResponseDTO response1 = template.postForObject(apiURL, request1, ChatGPTResponseDTO.class);
+//        String styleFeatures = response1.getChoices().get(0).getMessage().getContent();
+//
+//        // 두 번째 요청: 문체적 특징 요약 요청
+//        String systemPrompt2 = "위 특징들을 각각 한 줄로 요약하여라.";
+//        ChatGPTRequestDTO request2 = new ChatGPTRequestDTO(model, systemPrompt2, styleFeatures);
+//        ChatGPTResponseDTO response2 = template.postForObject(apiURL, request2, ChatGPTResponseDTO.class);
+//        String summarizedFeatures = response2.getChoices().get(0).getMessage().getContent();
+
+        // 첫 번째 요청: 문체적 특징 요청
+        String userInput1 = "다음의 문장은 어떤 문체적 특징을 보이는가?\n문장: " + userInput;
+        ChatGPTUserRequestDTO request1 = new ChatGPTUserRequestDTO(model, userInput1);
+        ChatGPTResponseDTO response1 = template.postForObject(apiURL, request1, ChatGPTResponseDTO.class);
+        String styleFeatures = response1.getChoices().get(0).getMessage().getContent();
+
+        // 두 번째 요청: 문체적 특징 요약 요청
+        String systemPrompt = "위 특징들을 각각 한 줄로 요약하여라.";
+        ChatGPTRequestDTO request2 = new ChatGPTRequestDTO(model, systemPrompt, styleFeatures);
+        ChatGPTResponseDTO response2 = template.postForObject(apiURL, request2, ChatGPTResponseDTO.class);
+        String summarizedFeatures = response2.getChoices().get(0).getMessage().getContent();
+
+        return summarizedFeatures;
+    }
+
+
+
 }
