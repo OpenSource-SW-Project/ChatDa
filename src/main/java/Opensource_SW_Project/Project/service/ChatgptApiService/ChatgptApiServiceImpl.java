@@ -2,16 +2,20 @@ package Opensource_SW_Project.Project.service.ChatgptApiService;
 
 import Opensource_SW_Project.Project.domain.DetailedTalk;
 import Opensource_SW_Project.Project.domain.Talk;
-import Opensource_SW_Project.Project.domain.User;
+import Opensource_SW_Project.Project.domain.Member;
 import Opensource_SW_Project.Project.domain.enums.Category;
 import Opensource_SW_Project.Project.repository.DetailedTalkRepository;
 import Opensource_SW_Project.Project.repository.TalkRepository;
-import Opensource_SW_Project.Project.repository.UserRepository;
-import Opensource_SW_Project.Project.web.dto.TalkRequestDTO;
+import Opensource_SW_Project.Project.repository.MemberRepository;
+import Opensource_SW_Project.Project.web.dto.ChatGPT.ChatGPTRequestDTO;
+import Opensource_SW_Project.Project.web.dto.ChatGPT.ChatGPTResponseDTO;
+import Opensource_SW_Project.Project.web.dto.Talk.TalkRequestDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Random;
@@ -20,18 +24,37 @@ import java.util.Random;
 @RequiredArgsConstructor
 //@Transactional
 @Slf4j
-public class ChatgptApiServiceImpl implements ChatgptApiService{ // 첫 대화인지 확인하고 checkTopic값 초기화 해줘야함
+public class ChatgptApiServiceImpl implements ChatgptApiCommandService { // 첫 대화인지 확인하고 checkTopic값 초기화 해줘야함
 
     private final DetailedTalkRepository detailedTalkRepository;
     private final TalkRepository talkRepository;
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
     Long checkTopic = 0L;
     int cnt = 1;
+
+    @Value("${openai.model}")
+    private String model;
+
+    @Value("${openai.api.url}")
+    private String apiURL;
+
+    @Autowired
+    private RestTemplate template;
 
     // userPrompt 받아오기
     public String getUserPrompt(TalkRequestDTO.CreateMessageRequestDTO request){
         return request.getUserPrompt();
     }
+
+    // ChatGPT API 요청
+    public String getResponseOfChatGPT_API(String systemPrompt, String userPrompt){
+        // request를 api로 보내 chatGPT응답받기
+        ChatGPTRequestDTO chatGPTrequest = new ChatGPTRequestDTO(model, systemPrompt,userPrompt);
+        ChatGPTResponseDTO chatGPTResponse =  template.postForObject(apiURL, chatGPTrequest, ChatGPTResponseDTO.class);
+
+        return chatGPTResponse.getChoices().get(0).getMessage().getContent();
+    }
+
 
     // 대화 내용 저장
     public void saveUserPromptAndMessage(TalkRequestDTO.CreateMessageRequestDTO request, String userPrompt, String message){
@@ -55,11 +78,13 @@ public class ChatgptApiServiceImpl implements ChatgptApiService{ // 첫 대화�
     }
 
     // 최종 SystemPrompt생성 메소드
-    public String generateSystemPrompt(Long userId, TalkRequestDTO.CreateMessageRequestDTO request){
-        String systemPrompt = "";
+    public String generateSystemPrompt(Long memberId, TalkRequestDTO.CreateMessageRequestDTO request){
+        String userPrompt = request.getUserPrompt();
+        String systemPrompt1 = "", systemPrompt2 = "";
+        String message, message1, message2;
 
         // 유저정보 DB에서 가져오기
-        User getUser = userRepository.findById(userId).get();
+        Member getMember = memberRepository.findById(memberId).get();
         Talk getTalk = talkRepository.findById(request.getTalkId()).get();
 
         // 첫 대화인지 확인
@@ -77,28 +102,41 @@ public class ChatgptApiServiceImpl implements ChatgptApiService{ // 첫 대화�
         }
 
         // 조건마다 systemPrompt 생성
-        if(checkTopic == 0) systemPrompt = getDefaultSystemPrompt(getUser.getName()) + generateRequestionSystemPrompt_condition2() + "\n" + getHistorytalk(userId, request);
-        else systemPrompt = getDefaultSystemPrompt(getUser.getName()) + generateRespondSystemPrompt_condition1() + "\n" + generateNewSubjectSystemPrompt_condition4() + "\n" + getHistorytalk(userId, request);
+        if(checkTopic == 0) {
+            systemPrompt1 = getDefaultSystemPrompt(getMember.getName()) + generateRequestionSystemPrompt_condition2() + "\n\n" + getHistorytalk(memberId, request);
+            message = getResponseOfChatGPT_API(systemPrompt1, userPrompt);
+        }
+        else { // ChatGPT 요청 2번 보내기
+            // 반응 생성 시스템 프롬프트
+            systemPrompt1 = getDefaultSystemPrompt(getMember.getName()) + generateEndSubjectSystemPrompt_condition3() + "\n\n" + getHistorytalk(memberId, request);
+            message1 = getResponseOfChatGPT_API(systemPrompt1, userPrompt);
 
-        System.out.println("SystemPrompt" + systemPrompt);
+            // 새로운 화제에 대한 질문 생성 시스템 프롬프트
+            systemPrompt2 = getDefaultSystemPrompt(getMember.getName()) + generateNewSubjectSystemPrompt_condition4() + "\n\n" + getHistorytalk(memberId, request);
+            message2 = getResponseOfChatGPT_API(systemPrompt1, userPrompt);
 
-        return systemPrompt;
+            message = message1 + message2;
+        }
+
+        System.out.println("SystemPrompt" + systemPrompt1 + "\n" + systemPrompt2);
+
+        return message;
     }
 
     // 기본 조건 systemPrompt------------------------------------------------------------------
     public String getDefaultSystemPrompt(String name){
-        String defaultSystemPrompt = "기본 조건 : 당신은 " + name + "의 친구로 그와 자연스럽게 대화한다.\n";
+        String defaultSystemPrompt = "당신은 " + name + "의 친구로 그와 자연스럽게 대화한다.\n\n";
         return defaultSystemPrompt;
     }
 
     // 대화 기록 systemPrompt------------------------------------------------------------------
-    public String getHistorytalk(Long userId, TalkRequestDTO.CreateMessageRequestDTO request){
+    public String getHistorytalk(Long memberId, TalkRequestDTO.CreateMessageRequestDTO request){
         String talkHistory = "";
         String userName;
 
         // 유저정보 DB에서 가져오기
-        User getUser = userRepository.findById(userId).get();
-        userName = getUser.getName();
+        Member getMember = memberRepository.findById(memberId).get();
+        userName = getMember.getName();
 
         // 대화내용 DB에서 가져오기
         Talk getTalk = talkRepository.findById(request.getTalkId()).get();
@@ -124,23 +162,23 @@ public class ChatgptApiServiceImpl implements ChatgptApiService{ // 첫 대화�
     // 조건 SystemPrompt-----------------------------------------------------------------------
 
     public String generateRespondSystemPrompt_condition1() {
-        String respondPrompt = "1.자연스럽게 이어지도록 적절하게 반응한다.\n2.한문장으로 짧게 반응한다.";
+        String respondPrompt = "조건\n1. 자연스럽게 이어지도록 적절하게 반응한다.\n2. 한문장으로 짧게 반응한다.";
         return respondPrompt;
     }
 
     public String generateRequestionSystemPrompt_condition2() {
-        String requestionPrompt = "1.자연스럽게 이어지도록 적절하게 반응한다.\n2.한문장으로 짧게 질문한다.";
+        String requestionPrompt = "조건\n1. 자연스럽게 이어지도록 적절하게 반응한다.\n2. 한문장으로 짧게 질문한다.";
         return requestionPrompt;
     }
 
     public String generateEndSubjectSystemPrompt_condition3() {
-        String endSubjectPrompt = "1.자연스럽게 이어지도록 적절하게 반응한다.\n2.한문장으로 짧게 반응한다\n3.질문하지 않는다.";
+        String endSubjectPrompt = "조건\n1. 자연스럽게 이어지도록 적절하게 반응한다.\n2. 한문장으로 짧게 반응한다\n3. 질문하지 않는다.";
         return endSubjectPrompt;
     }
 
     // 새 화제 생성 systemPrompt---------------------------------------------------------------
     public String generateNewSubjectSystemPrompt_condition4() {
-        return "새 화제" + getRandomSubject() + "에 관하여 질문한다.";
+        return "조건\n1. 새 화제 " + getRandomSubject() + "에 관하여 질문한다. \n2. 한문장으로 짧게 질문만 한다.";
     }
 
     public String getRandomSubject() {

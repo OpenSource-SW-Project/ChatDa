@@ -1,0 +1,114 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#debug-box {
+    position: absolute;
+    left: 60px;
+    top: 40px;
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+
+    border: 2px solid red;
+}
+
+#chat-box {
+    background-color: #d6e6f5;
+
+    outline-style: auto;
+    outline-color: black;
+    outline-width: 0px;
+
+    height: 480px;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+}
+
+#chat-log {
+    height: 94%;
+    overflow-y: auto;
+}
+
+#chat-form-wrapper {
+    height: 6%;
+}
+
+#chat-form {
+    height: 40px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+#chat-input {
+    flex-grow: 3;
+}
+
+#chat-btn {
+    flex-grow: 1;
+}
+
+.chat-wrapper {
+    display: flex;
+    justify-content: space-between;
+    height: auto;
+}
+
+.chat-box {
+    width: 100px;
+    flex-shrink: 0;
+}
+
+.chat-bubble {
+    margin: 8px;
+    padding: 7px;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.2);
+    word-break: break-all;
+}
+
+#penguin {
+    position: absolute;
+    bottom: 0px;
+    left: -64px;
+}
+
+img {
+    width: 64px;
+    height: 64px;
+}
+
+@keyframes slideInOut {
+    0% {
+        left: -64px;
+        /* 시작 위치 */
+    }
+
+    20% {
+        left: 4px;
+    }
+
+    80% {
+        left: 4px
+    }
+
+    100% {
+        left: -64px;
+        /* 종료 위치 */
+    }
+}
+
+.in {
+    animation: slideInOut 12s forwards;
+}

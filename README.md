@@ -1,3 +1,3 @@
 # ChatDa 
-with protocol ChatDa_dialogue_ver1
+ChatDa_dialogue_ver1 protocol patched. (Demo_24.05.07)
 

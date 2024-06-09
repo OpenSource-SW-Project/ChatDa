@@ -11,8 +11,8 @@ const user = urlParams.get('user');
 const diary = document.getElementById("diary");
 
 const http = new XMLHttpRequest();
-const url = `http://localhost:8080/api/DB/diary?date=${date}&user=${user}`;
-http.open('GET', url);
+
+http.open('GET', url + `api/DB/diary?date=${date}&user=${user}`);
 http.send();
 http.onload = () => {
     if( http.status === 200 ) {

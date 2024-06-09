@@ -1,0 +1,31 @@
+td,th {
+    width: 55px;
+    height: 55px;
+}
+
+td {
+    position: relative;
+}
+
+.cell-date {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+}
+
+.symbol {
+    font-size: 20px;
+    text-align: center;
+    cursor: pointer;
+}
+
+#diary {
+    display: none; /* 초기에는 숨겨진 상태로 설정합니다. */
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+#title {
+    font-weight : bold;
+}
