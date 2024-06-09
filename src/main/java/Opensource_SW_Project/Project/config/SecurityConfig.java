@@ -34,7 +34,7 @@ public class SecurityConfig {
                                 .requestMatchers("/","/v3/**", "/swagger-ui/**", "/css/**", "/img/**", "/js/**", "/static/**", "/error", "/api/embedding")
                                 .permitAll()
                                 .requestMatchers("/chat", "/temp", "/calendar", "/writing-style","/api/DB/diary","/users/signUp", "/users/signIn", "/api/chat").permitAll()
-                                .requestMatchers("/talk", "/diary/diaryList/{memberId}", "/diary", "/diary/{diaryId}").hasRole("USER")
+                                .requestMatchers("/talk", "/diary/diaryList/{memberId}", "/diary", "/diary/{diaryId}", "/api/DB/chat").hasRole("USER")
                                 .anyRequest().authenticated()
                 )
 //                .authorizeHttpRequests()
