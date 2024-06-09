@@ -4,6 +4,7 @@ import Opensource_SW_Project.Project.domain.Member;
 import Opensource_SW_Project.Project.domain.Style;
 import Opensource_SW_Project.Project.repository.MemberRepository;
 import Opensource_SW_Project.Project.repository.StyleRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,4 +31,16 @@ public class StyleQueryServiceImpl implements StyleQueryService{
 
         return UserStyleList;
     }
+
+    @Override
+    public Style getUserLastStyle(Long memberId) {
+        Optional<Member> optionalMember = memberRepository.findById(memberId);
+        if (optionalMember.isPresent()) {
+            Member member = optionalMember.get();
+            return styleRepository.findByMember(member);
+        } else {
+            throw new EntityNotFoundException("Member with id " + memberId + " not found.");
+        }
+    }
+
 }

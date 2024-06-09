@@ -30,4 +30,15 @@ public class StyleCommandServiceImpl implements StyleCommandService {
 
         return styleRepository.save(newStyle);
     }
+
+    @Override
+    @Transactional
+    public void deleteStyle(Long styleId) {
+        // Check if style exists
+        Style style = styleRepository.findById(styleId).orElse(null);
+        if (style != null) {
+            // Delete the style if it exists
+            styleRepository.delete(style);
+        }
+    }
 }
