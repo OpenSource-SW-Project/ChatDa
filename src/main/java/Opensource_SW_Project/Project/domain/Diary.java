@@ -42,22 +42,12 @@ public class Diary extends BaseEntity {
     private List<DiaryHashTag> diaryHashTagList = new ArrayList<>();
 
 
-    // user와 양방향 매핑하기 <- 양방향??
+    // user와 양방향 매핑
     public void setMember(Member member) {
-//        // 기존에 이미 등록되어 있던 관계를 제거
-//        if (this.user != null) {
-//            this.user.getAnswerList().remove(this);
-//        }
-
         this.member = member;
-
-//        // 양방향 관계 설정
-//        if (user != null) {
-//            user.getAnswerList().add(this);
-//        }
     }
 
-    // user와 양방향 매핑
+    // talk와 양방향 매핑
     public void setTalk(Talk talk) {
         this.talk = talk;
     }

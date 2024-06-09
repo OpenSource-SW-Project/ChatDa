@@ -34,4 +34,7 @@ public interface ChatgptApiCommandService { // ChatGPT API부르는 함수 만�
 
     String getRandomSubject(); //화제 랜덤생성
 
+
+    String generateStyle(String userInput);
+
 }

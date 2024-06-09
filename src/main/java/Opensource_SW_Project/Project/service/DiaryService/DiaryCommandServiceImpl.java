@@ -22,6 +22,7 @@ public class DiaryCommandServiceImpl implements DiaryCommandService {
     private final MemberRepository memberRepository;
     private final TalkRepository talkRepository;
     private final DiaryRepository diaryRepository;
+
     public String createDiarySystemPrompt(Long memberId){
         Member getMember = memberRepository.findById(memberId).get();
 

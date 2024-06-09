@@ -43,7 +43,6 @@ public class ChatgptApiController {
         );
     }
 
-    // 일기 저장 api 생성
 
     @PostMapping("/test")
     @Operation(
@@ -62,7 +61,5 @@ public class ChatgptApiController {
         );
     }
 
-    // OpenAiChatClient
-    //private final OpenAiChatClient chatClient;
 
 }
