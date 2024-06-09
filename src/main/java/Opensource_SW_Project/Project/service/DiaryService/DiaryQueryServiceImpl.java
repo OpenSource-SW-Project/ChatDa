@@ -29,6 +29,7 @@ public class DiaryQueryServiceImpl implements DiaryQueryService{
     private final TalkController talkController;
     private final TalkRepository talkRepository;
 
+
     public Diary diaryFind(DiaryRequestDTO.GetDiaryRequestDTO request) {
         Optional<Diary> findDiary = diaryRepository.findById(request.getDiaryId());
         return null;
