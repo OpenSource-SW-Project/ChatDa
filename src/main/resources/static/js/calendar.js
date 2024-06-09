@@ -29,15 +29,6 @@ let selectMonth = document.getElementById("month");
 let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 let monthAndYear = document.getElementById("monthAndYear");
-<<<<<<< HEAD
-
-//const url = "http://43.202.126.252:8080/";
-const url = "http://localhost:8080/";
-
-showCalendar(currentMonth, currentYear);
-
-=======
->>>>>>> develop
 
 function next() {
     currentYear = (currentMonth === 11) ? currentYear + 1 : currentYear;
@@ -103,53 +94,10 @@ function showCalendar(month, year) {
                 } // color today's date
 
                 cell.appendChild(cellText);
-<<<<<<< HEAD
-
-                (function (date, month, year) {
-                    // HTTP 요청 보내기
-                    const http = new XMLHttpRequest();
-                    //console.log(url);
-                    const query = url + `api/DB/diary?date=${year}-${formatNumber(month + 1)}-${formatNumber(date)}&userId=${user}`;
-                    http.open('GET', query);
-                    http.send();
-                    http.onload = () => {
-                        if (http.status === 200) {
-                            //console.log(http.responseText);
-
-                            if (http.response != "") {
-                                const response = JSON.parse(http.response);
-
-                                let diaryButton = document.createElement("button");
-
-                                diaryButton.textContent = "📖";
-                                diaryButton.addEventListener("click", function(){
-                                    let diary = document.getElementById("diary");
-                                    let title = document.getElementById("title");
-                                    let date_info = document.getElementById("date");
-                                    let content = document.getElementById("content");
-
-                                    diary.style.display = "block";
-                                    title.innerText = response.title;
-                                    date_info.innerText = response.date;
-                                    content.innerText = response.content;
-                                });
-
-                                cell.appendChild(diaryButton);
-
-                                console.log(response.title);
-                            }
-                        } else {
-                            console.error("Error", http.status, http.statusText);
-                        }
-                    };
-                })(date, month, year);
-
-=======
                 const diary = data.filter(element => (element.createdAt[2] == date))[0];
                 if(diary) {
                     addSymbol(cell, diary.title, diary.createdAt, diary.content);
                 }
->>>>>>> develop
                 row.appendChild(cell);
 
                 date++;

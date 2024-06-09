@@ -17,37 +17,6 @@ if (sessionStorage.getItem("accessToken") === null) {
     usercheck_container.style.display = "none";
 }
 
-<<<<<<< HEAD
-    //create user & create new talk
-    const userRequest = new XMLHttpRequest();
-    //const url = `http://43.202.126.252:8080/`;
-    const url = `http://localhost:8080/`;
-    userRequest.open('POST', url + `users/?userName=${name}`);
-    userRequest.send();
-    userRequest.onload = () => {
-        if( userRequest.status === 200 ) {
-            console.log(userRequest.response);
-            var response = JSON.parse(userRequest.response);
-            console.log(response.result);
-            
-            //init userID var
-            const userId = response.result.userId;
-            //send talk create request
-            const talkRequest = new XMLHttpRequest();
-            talkRequest.open('POST', url + `talk/?userId=${userId}`);
-            talkRequest.send();
-            talkRequest.onload = () => {
-                if( talkRequest.status === 200 ) {
-                    var response = JSON.parse(talkRequest.response);
-                    const talkId = response.result.talkId;
-                    localStorage.setItem("userId", userId);
-                    localStorage.setItem("talkId", talkId);
-                    //if success move to chat page
-                    window.location.href = "chat";
-                } else {
-                    console.error("Error", talkRequest.status, talkRequest.statusText);
-                }
-=======
 // toggle login <-> signup
 const login_div = document.getElementById("login-div");
 const signup_div = document.getElementById("signup-div");
@@ -102,7 +71,6 @@ function login(event) {
                 window.location.href = "/";
             } else {
                 alert("로그인 실패 : " + data.result);
->>>>>>> develop
             }
         })
         .catch(error => {
