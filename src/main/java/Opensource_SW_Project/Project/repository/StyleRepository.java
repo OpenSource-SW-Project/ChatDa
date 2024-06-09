@@ -11,4 +11,6 @@ import java.util.List;
 public interface StyleRepository extends JpaRepository<Style, Long> {
 
     List<Style> findAllByMember(Member member);
+
+    Style findByMember(Member member);
 }

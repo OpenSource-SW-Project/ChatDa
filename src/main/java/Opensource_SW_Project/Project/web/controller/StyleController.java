@@ -54,6 +54,15 @@ public class StyleController {
 
         // ChatGPT를 이용해 문체 생성
         String styleContent = chatgptApiService.generateStyle(userInput);
+        // 사용자의 이전 문체 조회
+        Style existingStyle = styleQueryService.getUserLastStyle(memberId);
+
+        // 사용자의 이전 문체가 존재하는 경우 삭제
+        if (existingStyle != null) {
+            styleCommandService.deleteStyle(existingStyle.getStyleId());
+        }
+
+        // 새로운 문체 저장
         Style newStyle = styleCommandService.saveStyle(memberId, styleContent);
 
         // 응답 생성
