@@ -33,9 +33,9 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
     public Member signUp(MemberRequestDTO.CreateUserRequestDTO request){
         Member getMember = memberRepository.findByUsername(request.getUsername()).get();
-        if(getMember != null){
-            throw new MemberHandler(ErrorStatus.MEMBER_ALREADY_EXISTS);
-        }
+//        if(getMember != null){
+//            throw new MemberHandler(ErrorStatus.MEMBER_ALREADY_EXISTS);
+//        }
 
         List<String> roles = new ArrayList<>();
         roles.add("USER");
