@@ -55,7 +55,7 @@ public class EmbeddingService implements EmbeddingServicelmpl {
         httpPost.setHeader("Content-Type", "application/json");
         httpPost.setHeader("Authorization", "Bearer " + apiKey);
 
-        String requestBody = "{ \"model\": \"" + model + "\", \"input\": \"" + prompt + "\" }";
+        String requestBody = "{\"input\": \"" + prompt + "\" }";
         httpPost.setEntity(new StringEntity(requestBody, StandardCharsets.UTF_8));
 
         CloseableHttpResponse response = httpClient.execute(httpPost);
@@ -70,24 +70,6 @@ public class EmbeddingService implements EmbeddingServicelmpl {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(responseString);
         return jsonNode.toString();
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.set("Authorization", "Bearer " + apiKey);
-//        headers.set("Content-Type", "application/json");
-//
-//        Map<String, Object> requestBody = new HashMap<>();
-//        requestBody.put("model", model);
-//        requestBody.put("messages", List.of(Map.of("role", "user", "content", prompt)));
-//
-//        HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
-//
-//        ResponseEntity<String> responseEntity = restTemplate.exchange(
-//                apiUrl,
-//                HttpMethod.POST,
-//                requestEntity,
-//                String.class
-//        );
-//
-//        return objectMapper.readTree(responseEntity.getBody());
     }
 }
 

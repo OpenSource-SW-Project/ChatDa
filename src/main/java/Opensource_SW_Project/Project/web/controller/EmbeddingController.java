@@ -14,11 +14,13 @@ public class EmbeddingController {
         this.embeddingService = embeddingService;
     }
 
+    //prompt로 넘겨주면 해당 String에 대해 embedding return
     @GetMapping("/api/embedding")
     public String getChatCompletion(@RequestParam String prompt) throws Exception {
         return embeddingService.getChatCompletion(prompt);
     }
 
+    // Vector 배열 Double[]로 변환
     public static double[] strToDoubleArray(String str) {
         str = str.replace("[", "").replace("]", "");
         String[] stringArray = str.split(",");
@@ -30,6 +32,7 @@ public class EmbeddingController {
         return arr;
     }
 
+    // Double[] 배열 2개 consin 유사도 검사
     public static double cosineSimilarity(double[] vectorA, double[] vectorB) {
         if (vectorA.length != vectorB.length) {
             throw new IllegalArgumentException("Vectors must be of the same length");
