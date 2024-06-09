@@ -32,10 +32,10 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     private final PasswordEncoder passwordEncoder;
 
     public Member signUp(MemberRequestDTO.CreateUserRequestDTO request){
-        Member getMember = memberRepository.findByUsername(request.getUsername()).get();
-//        if(getMember != null){
-//            throw new MemberHandler(ErrorStatus.MEMBER_ALREADY_EXISTS);
-//        }
+        boolean memberExists = memberRepository.existsByUsername(request.getUsername());
+        if(memberExists){
+            throw new MemberHandler(ErrorStatus.MEMBER_ALREADY_EXISTS);
+        }
 
         List<String> roles = new ArrayList<>();
         roles.add("USER");
