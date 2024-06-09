@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface StyleQueryService {
 
-    List<Style> getUserStyle(Long memberId);
+    //List<Style> getUserStyle(Long memberId);
+    Style getUserStyle(Long memberId);
     Style getUserLastStyle(Long memberId);
 }

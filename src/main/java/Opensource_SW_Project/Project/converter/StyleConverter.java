@@ -24,12 +24,12 @@ public class StyleConverter {
                 .build();
     }
 
-    public static StyleResponseDTO.UserStyleResultListDTO toUserStyleResultListDTO(List<Style> userStyleList) {
-        List<StyleResponseDTO.UserStyleResultDTO> userStyleResultDTOList = IntStream.range(0, userStyleList.size())
-                .mapToObj(i->toUserStyleResultDTO(userStyleList.get(i)))
-                .collect(Collectors.toList());
-        return StyleResponseDTO.UserStyleResultListDTO.builder()
-                .styles(userStyleResultDTOList)
-                .build();
-    }
+//    public static StyleResponseDTO.UserStyleResultListDTO toUserStyleResultListDTO(List<Style> userStyleList) {
+//        List<StyleResponseDTO.UserStyleResultDTO> userStyleResultDTOList = IntStream.range(0, userStyleList.size())
+//                .mapToObj(i->toUserStyleResultDTO(userStyleList.get(i)))
+//                .collect(Collectors.toList());
+//        return StyleResponseDTO.UserStyleResultListDTO.builder()
+//                .styles(userStyleResultDTOList)
+//                .build();
+//    }
 }
