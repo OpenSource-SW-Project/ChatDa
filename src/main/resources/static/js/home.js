@@ -15,6 +15,35 @@ if (sessionStorage.getItem("accessToken") === null) {
     button_container.style.display = "none";
 } else {
     usercheck_container.style.display = "none";
+    load_style();
+}
+
+//load style
+function load_style() {
+    const member_id = sessionStorage.getItem("memberId");
+    const access_token = sessionStorage.getItem("accessToken");
+    fetch(url + `style/styleList/${member_id}`, {
+        method: 'GET',
+        headers: {
+            'accept': '*/*',
+            'Authorization': 'Bearer ' + access_token
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            const style = data.result.styles[0];
+            if (style) {    // style exist
+                sessionStorage.setItem("style", style.content);
+                const alert_badge = document.getElementById("alert-badge");
+                alert_badge.style.display = "none";
+            } else {        // no style
+                console.log("no style found");
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 }
 
 // toggle login <-> signup
