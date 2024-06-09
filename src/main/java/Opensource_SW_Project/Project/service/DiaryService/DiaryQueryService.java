@@ -8,5 +8,7 @@ import java.util.List;
 public interface DiaryQueryService {
     Diary findById(Long diaryId);
 
+    List<Diary> getDiaryByTalkId(Long talkId);
+
     List<Diary> getUserDiary(Long memberId);
 }

@@ -112,21 +112,23 @@ public class DiaryController {
 
 
     // 특정 일기 조회
-    @GetMapping("/{diaryId}")
+    @GetMapping("/talk")
     @Operation(
             summary = "특정 일기 조회 API"
-            , description = "특정 일기를 조회합니다. Path variable로 조회할 diaryId를 입력하세요"
+            , description = "특정 일기를 조회합니다. Path variable로 조회할 talkId를 입력하세요"
     )
     public ApiResponse<DiaryResponseDTO.DiaryDTO> findDiary(
-            @PathVariable Long diaryId,
-            @RequestParam(name = "memberId")Long memberId
+            @RequestParam(name = "talkId")Long talkId
     ) {
         Object request;
-        Diary findDiary = diaryQueryService.findById(diaryId);
+        List<Diary> findDiary = diaryQueryService.getDiaryByTalkId(talkId);
+
+        if (findDiary.isEmpty())
+            return null;
         return ApiResponse.onSuccess(
                 SuccessStatus.DIARY_OK,
                 DiaryConverter.toDiaryDTO(
-                        findDiary
+                        findDiary.get(0)
                 )
         );
     }
