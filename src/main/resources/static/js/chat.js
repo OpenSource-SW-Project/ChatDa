@@ -30,11 +30,18 @@ console.log("got access token : " + access_token);
 
 init_chat();
 
-function init_chat() {
-    if (get_today_diary()) {
-        create_chatDa_chat("오늘은 이미 일기를 작성했어!! 내일 다시 찾아줘!!");
-        chat_btn.disabled = true;
-        return;
+async function init_chat() {
+    try {
+        const isTodayDiary = await get_today_diary();
+
+        if (isTodayDiary) {
+            create_chatDa_chat("오늘은 이미 일기를 작성했어!! 내일 다시 찾아줘!!");
+            chat_btn.disabled = true;
+            return;
+        }
+    } catch (error) {
+        console.error('An error occurred:', error);
+        // 에러 처리 로직을 여기에 추가
     }
 
     get_today_chat();
@@ -255,30 +262,24 @@ function nextWait() {
     }
 }
 
+const deleteBtn = document.getElementById("delete-diary-btn");
+deleteBtn.addEventListener("click", delete_today_data);
+
 function delete_today_data() {
     // 다른 버튼 전부 비활성화하는 코드
 
     const http = new XMLHttpRequest();
-    const query = url + `api/DB/delete?date=${formattedDate}&talkId=${talk_id}`;
+    const query = url + `api/DB/delete?talkId=${talk_id}`;
     console.log(query);
     http.open('GET', query);
     http.send();
     http.onload = () => {
         if (http.status === 200) {
-            //console.log(http.responseText);
-
-            if (http.response == true) {
-                // 여기에 다른 버튼 활성화 코드 넣으면 될듯
-                console.log("delete success");
-                return true;
-            }
-            else {
-                console.log("delete failed");
-                return false;
-            }
+            console.log(http.responseText);
         } else {
             console.error("Error", http.status, http.statusText);
         }
+        location.reload();
     };
 
     return false;
@@ -293,15 +294,21 @@ function flush_today_data() {
 function create_user_chat(user_message) {
     const new_chat_wrapper = document.createElement("div");
     new_chat_wrapper.classList.add("chat-wrapper");
+
     const new_chat_box = document.createElement("div");
     new_chat_box.classList.add("chat-box");
+
     const new_chat = document.createElement("div");
     new_chat.classList.add("chat-bubble");
+
     new_chat.innerText = user_message;
+
     new_chat_wrapper.appendChild(new_chat_box);
     new_chat_wrapper.appendChild(new_chat);
+
     chat_log.appendChild(new_chat_wrapper);
     chat_log.scrollTop = chat_log.scrollHeight;
+
     chat_input.value = "";
     chat_btn.disabled = true;
 }
@@ -309,11 +316,15 @@ function create_user_chat(user_message) {
 function create_chatDa_chat(new_message) {
     const new_response_wrapper = document.createElement("div");
     new_response_wrapper.classList.add("chat-wrapper");
+
     const new_response_box = document.createElement("div");
     new_response_box.classList.add("chat-box");
+
     const new_response = document.createElement("div");
     new_response.classList.add("chat-bubble");
+
     new_response.innerText = new_message;
+
     new_response_wrapper.appendChild(new_response);
     new_response_wrapper.appendChild(new_response_box);
     chat_log.appendChild(new_response_wrapper);
@@ -321,7 +332,7 @@ function create_chatDa_chat(new_message) {
 
 // today, user로 검색, diary 있으면 true 없으면 false 리턴
 function get_today_diary() {
-    fetch(url + `diary/talk?talkId=${talk_id}`, {
+    return fetch(url + `diary/talk?talkId=${talk_id}`, {
         method: 'GET',
         headers: {
             'accept': '*/*',
@@ -337,15 +348,16 @@ function get_today_diary() {
         .then(data => {
             if (data === null) {
                 console.log('Response is null');
+                return false;
             } else {
                 console.log('Response is not null', data);
+                return true;
             }
         })
         .catch(error => {
-            return false;
+            console.error('Error occurred:', error);
+            return false; // 에러 발생 시 false를 반환
         });
-
-    return true;
 }
 
 // today, user로 검색, 오늘 채팅 내역 전체 리턴

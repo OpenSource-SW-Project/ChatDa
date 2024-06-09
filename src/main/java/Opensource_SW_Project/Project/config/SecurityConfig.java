@@ -31,7 +31,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
                         authorize -> authorize
-                                .requestMatchers("/","/v3/**", "/swagger-ui/**", "/css/**", "/img/**", "/js/**", "/static/**", "/error", "/api/embedding")
+                                .requestMatchers("/","/v3/**", "/swagger-ui/**", "/css/**", "/img/**", "/js/**", "/static/**", "/error", "/api/embedding", "api/DB/delete")
                                 .permitAll()
                                 .requestMatchers("/chat", "/temp", "/calendar", "/writing-style","/api/DB/diary","/users/signUp", "/users/signIn", "/api/chat").permitAll()
                                 .requestMatchers("/talk", "/diary/diaryList/{memberId}", "/diary", "/diary/talk", "/api/DB/chat", "/diary/{memberId}").hasRole("USER")

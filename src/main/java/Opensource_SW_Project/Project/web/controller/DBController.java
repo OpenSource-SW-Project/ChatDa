@@ -54,7 +54,7 @@ public class DBController {
     }
 
     @GetMapping(value = "/delete", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public boolean deleteChatDiary(@RequestParam("date")String date, @RequestParam("talkId")String talk_id) {
+    public boolean deleteChatDiary(@RequestParam("talkId")String talk_id) {
 
         // JDBC 연결
         try (Connection conn = DriverManager.getConnection(url, username, password)) {
@@ -67,6 +67,7 @@ public class DBController {
             System.out.println("Records deleted successfully.");
         } catch (SQLException e) {
             System.err.println("Database connection error: " + e.getMessage());
+            return false;
         }
         return true;
     }
