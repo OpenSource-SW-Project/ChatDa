@@ -57,6 +57,10 @@ public class ChatgptApiController {
         // service에서 userPrompt와 chatGPTResponse 저장하기
         chatgptApiService.saveUserPromptAndMessage(request, userPrompt, message);
 
+        // 3개의 화제에 대한 대화가 끝나면 대화 종료시키고 일기 생성하기
+        Boolean checkCountTopic = chatgptApiService.checkCountTopic(request);
+        if(checkCountTopic == true) talkState = TalkState.EXIT;
+
         return ApiResponse.onSuccess(
                 SuccessStatus.MESSAGE_OK,
                 ChatgptApiResponseDTO.SendMessageResultDTO.builder()

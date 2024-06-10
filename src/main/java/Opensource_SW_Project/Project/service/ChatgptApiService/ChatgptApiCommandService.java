@@ -37,4 +37,5 @@ public interface ChatgptApiCommandService { // ChatGPT API부르는 함수 만�
 
     String generateStyle(String userInput);
 
+    Boolean checkCountTopic(TalkRequestDTO.CreateMessageRequestDTO request);
 }
