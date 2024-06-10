@@ -4,6 +4,7 @@ import Opensource_SW_Project.Project.apiPayload.ApiResponse;
 import Opensource_SW_Project.Project.apiPayload.code.status.SuccessStatus;
 import Opensource_SW_Project.Project.domain.enums.TalkState;
 import Opensource_SW_Project.Project.service.ChatgptApiService.ChatgptApiCommandService;
+import Opensource_SW_Project.Project.service.EmbeddingService.EmbeddingServicelmpl;
 import Opensource_SW_Project.Project.service.ModerationService.ModerationService;
 import Opensource_SW_Project.Project.web.dto.ChatgptApi.ChatgptApiRequestDTO;
 import Opensource_SW_Project.Project.web.dto.ChatgptApi.ChatgptApiResponseDTO;
@@ -26,11 +27,12 @@ public class ChatgptApiController {
 
     private final ChatgptApiCommandService chatgptApiService;
     private final ModerationService moderationService;
+    private final EmbeddingServicelmpl embeddingServicelmpl;
 
     @PostMapping("/chat")
     public ApiResponse<ChatgptApiResponseDTO.SendMessageResultDTO> chat(
             @RequestParam(name = "memberId")Long memberId,
-            @RequestBody TalkRequestDTO.CreateMessageRequestDTO request){ // memberId와 talkID 필요, 화제 바꾸는 프롬프트 부르는 Id값(enum) 필요함
+            @RequestBody TalkRequestDTO.CreateMessageRequestDTO request) throws Exception { // memberId와 talkID 필요, 화제 바꾸는 프롬프트 부르는 Id값(enum) 필요함
         TalkState talkState = TalkState.COMMON;
 
         // userPrompt requestbody로 받기
@@ -44,6 +46,10 @@ public class ChatgptApiController {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+
+        // embedding값 통해서 대화 종료 조건 확인하기
+        Boolean checkTermination = embeddingServicelmpl.checkTermination(userPrompt);
+        if(checkTermination == true) talkState = TalkState.EXIT;
 
         // 시스템 프롬프트 생성하는 메소드 <- 대화 id에 따라 과거 대화기록 가져오기, 기본 시스템 프롬프트 클래스, 조건 시스템 프롬프트 클래스 이용
         String message = chatgptApiService.generateSystemPrompt(memberId, request);
