@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Iterator;
+import java.util.Map;
 
 @Service
 public class ModerationServicelmpl implements ModerationService {
@@ -42,6 +44,46 @@ public class ModerationServicelmpl implements ModerationService {
 
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(responseString);
-        return jsonNode.toString();
+
+        String result = checkModeration(jsonNode);
+
+        System.out.println("Moderation Result:" + result);
+
+        return result;
+    }
+
+    public String checkModeration (JsonNode response) {
+        try {
+            JsonNode resultsNode = response.path("results").get(0);
+            JsonNode categoryScoresNode = resultsNode.path("category_scores");
+
+            String[] categoryScores = new String[categoryScoresNode.size()];
+            String result = null;
+            double threshold = 0.03;
+
+            int index = 0;
+            Iterator<Map.Entry<String, JsonNode>> fields = categoryScoresNode.fields();
+            while (fields.hasNext()) {
+                Map.Entry<String, JsonNode> field = fields.next();
+
+                double value = field.getValue().asDouble();
+                if (field.getValue().asDouble() >= threshold) {
+                    result = field.getKey();
+                    threshold = field.getValue().asDouble();
+                    System.out.println("Moderation Detect:" + field.getKey() + ": " + field.getValue().toString());
+                }
+
+                categoryScores[index++] = field.getKey() + ": " + field.getValue().toString();
+            }
+
+            // Print the results
+            for (String score : categoryScores) {
+                System.out.println(score);
+            }
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
