@@ -47,7 +47,7 @@ public class ModerationServicelmpl implements ModerationService {
 
         String result = checkModeration(jsonNode);
 
-        System.out.println("Moderation Result:" + result);
+        //System.out.println("Moderation Result:" + result);
 
         return result;
     }
@@ -78,7 +78,7 @@ public class ModerationServicelmpl implements ModerationService {
 
             // Print the results
             for (String score : categoryScores) {
-                System.out.println(score);
+                //System.out.println(score);
             }
             return result;
         } catch (Exception e) {

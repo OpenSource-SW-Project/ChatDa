@@ -35,7 +35,7 @@ public class ChatgptApiController {
         String userPrompt = chatgptApiService.getUserPrompt(request);
 
         try {
-            System.out.println("Moderation " + userPrompt + ": " + moderationService.getChatCompletion(userPrompt));
+            //System.out.println("Moderation " + userPrompt + ": " + moderationService.getChatCompletion(userPrompt));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
