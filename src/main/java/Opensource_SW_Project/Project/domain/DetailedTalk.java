@@ -32,6 +32,8 @@ public class DetailedTalk extends BaseEntity {
     @JoinColumn(name = "talk_id")
     private Talk talk;
 
+    private Long nextCheckTopic;
+
     // user와 양방향 매핑하기 <- 양방향??
     public void setTalk(Talk talk) {
 //        // 기존에 이미 등록되어 있던 관계를 제거
@@ -45,5 +47,9 @@ public class DetailedTalk extends BaseEntity {
 //        if (user != null) {
 //            user.getAnswerList().add(this);
 //        }
+    }
+
+    public void setNextCheckTopic(Long nextCheckTopic){
+        this.nextCheckTopic = nextCheckTopic;
     }
 }

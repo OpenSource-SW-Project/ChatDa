@@ -32,7 +32,7 @@ public class ChatgptApiServiceImpl implements ChatgptApiCommandService { // 첫 
     private final DetailedTalkRepository detailedTalkRepository;
     private final TalkRepository talkRepository;
     private final MemberRepository memberRepository;
-    Long checkTopic = 0L;
+    //Long checkTopic = 0L;
     int cnt = 1;
 
     @Value("${openai.model}")
@@ -61,7 +61,16 @@ public class ChatgptApiServiceImpl implements ChatgptApiCommandService { // 첫 
 
     // 대화 내용 저장
     public void saveUserPromptAndMessage(TalkRequestDTO.CreateMessageRequestDTO request, String userPrompt, String message){
+        Long checkTopic;
+
         Talk talk = talkRepository.findById(request.getTalkId()).get(); // 후에 예외처리 해주기, 해당하는 user가 존재하지 않을 때
+
+        // checkTopic 저장할 때 바로전 대화의 checkTopic확인하고 저장하기
+        // 조건마다 systemPrompt 생성위해서 바로전 detailedTalk의 checkTopic확인하기
+        DetailedTalk getDetailedTalk = detailedTalkRepository.findFirstByTalkOrderByCreatedAtDesc(talk);
+        //System.out.println(getDetailedTalk.getContent());
+        checkTopic = getDetailedTalk.getNextCheckTopic();
+
         DetailedTalk questionDetailedTalk = DetailedTalk.builder()
                 .talk(talk)
                 .content(userPrompt)
@@ -85,41 +94,77 @@ public class ChatgptApiServiceImpl implements ChatgptApiCommandService { // 첫 
         String userPrompt = request.getUserPrompt();
         String systemPrompt1 = "", systemPrompt2 = "";
         String message, message1, message2;
+        Long checkTopic, nextCheckTopic;
 
         // 유저정보 DB에서 가져오기
         Member getMember = memberRepository.findById(memberId).get();
         Talk getTalk = talkRepository.findById(request.getTalkId()).get();
 
         // 첫 대화인지 확인
-        List<DetailedTalk> allTalk = detailedTalkRepository.findByTalk_TalkIdOrderByCreatedAtDesc(request.getTalkId());
+        List<DetailedTalk> allTalk = detailedTalkRepository.findByTalk_TalkIdOrderByCreatedAtAsc(request.getTalkId());
         if(allTalk.isEmpty()) {
             checkTopic = 0L;
+            nextCheckTopic = 1L;
             cnt = 1;
             DetailedTalk firstDetailedTalk = DetailedTalk.builder()
                     .talk(getTalk)
                     .content("오늘 하루 중 가장 기억에 남는 일은 뭐야?")
                     .category(Category.QUESTION)
                     .checkTopic(checkTopic)
+                    .nextCheckTopic(nextCheckTopic)
                     .build();
             detailedTalkRepository.save(firstDetailedTalk);
         }
 
+        // 조건마다 systemPrompt 생성위해서 바로전 detailedTalk의 checkTopic확인하기
+        DetailedTalk getDetailedTalk = detailedTalkRepository.findFirstByTalkOrderByCreatedAtDesc(getTalk);
+        checkTopic = getDetailedTalk.getCheckTopic();
+
         // 조건마다 systemPrompt 생성
-        if(checkTopic == 0) {
-            systemPrompt1 = getDefaultSystemPrompt(getMember.getName()) + generateRequestionSystemPrompt_condition2() + "\n\n" + getHistorytalk(memberId, request);
-            message = getResponseOfChatGPT_API(systemPrompt1, userPrompt);
-        }
-        else { // ChatGPT 요청 2번 보내기
+
+        if(getDetailedTalk.getCheckTopic() == 3L) { // ChatGPT 요청 2번 보내기
             // 반응 생성 시스템 프롬프트
             systemPrompt1 = getDefaultSystemPrompt(getMember.getName()) + generateEndSubjectSystemPrompt_condition3() + "\n\n" + getHistorytalk(memberId, request);
             message1 = getResponseOfChatGPT_API(systemPrompt1, userPrompt);
 
             // 새로운 화제에 대한 질문 생성 시스템 프롬프트
             systemPrompt2 = getDefaultSystemPrompt(getMember.getName()) + generateNewSubjectSystemPrompt_condition4() + "\n\n" + getHistorytalk(memberId, request);
-            message2 = getResponseOfChatGPT_API(systemPrompt1, userPrompt);
+            message2 = getResponseOfChatGPT_API(systemPrompt2, userPrompt);
 
             message = message1 + message2;
+
+            checkTopic = 0L;
         }
+        else if(getDetailedTalk.getCheckTopic() == 2L){
+            Random random = new Random();
+            int randomNumber = random.nextInt(2); // 0 ~ 1 까지의 무작위 int 값 리턴
+            if(randomNumber == 0){
+                // 반응 생성 시스템 프롬프트
+                systemPrompt1 = getDefaultSystemPrompt(getMember.getName()) + generateEndSubjectSystemPrompt_condition3() + "\n\n" + getHistorytalk(memberId, request);
+                message1 = getResponseOfChatGPT_API(systemPrompt1, userPrompt);
+
+                // 새로운 화제에 대한 질문 생성 시스템 프롬프트
+                systemPrompt2 = getDefaultSystemPrompt(getMember.getName()) + generateNewSubjectSystemPrompt_condition4() + "\n\n" + getHistorytalk(memberId, request);
+                message2 = getResponseOfChatGPT_API(systemPrompt2, userPrompt);
+
+                message = message1 + message2;
+
+                checkTopic = 0L;
+            }
+            else{
+                systemPrompt1 = getDefaultSystemPrompt(getMember.getName()) + generateRequestionSystemPrompt_condition2() + "\n\n" + getHistorytalk(memberId, request);
+                message = getResponseOfChatGPT_API(systemPrompt1, userPrompt);
+                checkTopic++;
+            }
+        }
+        else {
+            systemPrompt1 = getDefaultSystemPrompt(getMember.getName()) + generateRequestionSystemPrompt_condition2() + "\n\n" + getHistorytalk(memberId, request);
+            message = getResponseOfChatGPT_API(systemPrompt1, userPrompt);
+            checkTopic++;
+        }
+
+        // 다음 detailedTalk이 저장될 때 사용할 checkTopic을 현재 detailedTalk에 저장
+        getDetailedTalk.setNextCheckTopic(checkTopic);
 
         System.out.println("SystemPrompt" + systemPrompt1 + "\n" + systemPrompt2);
 
@@ -143,7 +188,7 @@ public class ChatgptApiServiceImpl implements ChatgptApiCommandService { // 첫 
 
         // 대화내용 DB에서 가져오기
         Talk getTalk = talkRepository.findById(request.getTalkId()).get();
-        List<DetailedTalk> allTalk = detailedTalkRepository.findByTalk_TalkIdOrderByCreatedAtDesc(request.getTalkId());
+        List<DetailedTalk> allTalk = detailedTalkRepository.findByTalk_TalkIdOrderByCreatedAtAsc(request.getTalkId());
 
         if(allTalk.size() == 1) return talkHistory += "GPT : " + allTalk.get(0).getContent() + "\n";
 
@@ -181,12 +226,14 @@ public class ChatgptApiServiceImpl implements ChatgptApiCommandService { // 첫 
 
     // 새 화제 생성 systemPrompt---------------------------------------------------------------
     public String generateNewSubjectSystemPrompt_condition4() {
-        return "조건\n1. 새 화제 " + getRandomSubject() + "에 관하여 질문한다. \n2. 한문장으로 짧게 질문만 한다.";
+        return "조건\n1. 대화 화제 전환을 위해 " + getRandomSubject() + "에 관하여 질문한다. \n2. 한문장으로 짧게 질문만 한다.";
     }
 
     public String getRandomSubject() {
         String[] subjects = {
-                "고민", "학업", "날씨", "점심 메뉴", "주말 할일", "최근 본 영화"
+                "오늘 날씨", "오늘 먹은 음식", "오늘 만난 사람", "오늘 기분", "주말에 할 일",
+                "오늘 아침에 있었던 일", "오늘 기억에 남는 일", "오늘 있었던 일 중 특별한 일",
+                "오늘 했던 특별한 경험", "요즘 고민 거리"
                 //"요즘들어 가장 큰 고민은 뭐야?",
                 //"학교 공부는 요즘 어떤거 같아?",
                 //"오늘 날씨 어떤거 같아?",
