@@ -2,6 +2,7 @@ package Opensource_SW_Project.Project.web.controller;
 
 import Opensource_SW_Project.Project.apiPayload.ApiResponse;
 import Opensource_SW_Project.Project.apiPayload.code.status.SuccessStatus;
+import Opensource_SW_Project.Project.domain.enums.TalkState;
 import Opensource_SW_Project.Project.service.ChatgptApiService.ChatgptApiCommandService;
 import Opensource_SW_Project.Project.service.ModerationService.ModerationService;
 import Opensource_SW_Project.Project.web.dto.ChatgptApi.ChatgptApiRequestDTO;
@@ -30,12 +31,16 @@ public class ChatgptApiController {
     public ApiResponse<ChatgptApiResponseDTO.SendMessageResultDTO> chat(
             @RequestParam(name = "memberId")Long memberId,
             @RequestBody TalkRequestDTO.CreateMessageRequestDTO request){ // memberId와 talkID 필요, 화제 바꾸는 프롬프트 부르는 Id값(enum) 필요함
-        // userPrompt requestbody로 받기
+        TalkState talkState = TalkState.COMMON;
 
+        // userPrompt requestbody로 받기
         String userPrompt = chatgptApiService.getUserPrompt(request);
 
+        // moderation 적용
         try {
-            //System.out.println("Moderation " + userPrompt + ": " + moderationService.getChatCompletion(userPrompt));
+            String moderation_message = moderationService.getChatCompletion(userPrompt);
+            System.out.println("Moderation " + userPrompt + ": " + moderation_message);
+            if(moderation_message != null) talkState = TalkState.WARNING;
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -50,6 +55,7 @@ public class ChatgptApiController {
                 SuccessStatus.MESSAGE_OK,
                 ChatgptApiResponseDTO.SendMessageResultDTO.builder()
                         .message(message)
+                        .talkState(talkState)
                         .build()
         );
     }
