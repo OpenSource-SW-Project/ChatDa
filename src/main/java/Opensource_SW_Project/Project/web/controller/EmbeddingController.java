@@ -1,22 +1,65 @@
 package Opensource_SW_Project.Project.web.controller;
+import Opensource_SW_Project.Project.apiPayload.ApiResponse;
+import Opensource_SW_Project.Project.apiPayload.code.status.SuccessStatus;
+import Opensource_SW_Project.Project.converter.TalkConverter;
+import Opensource_SW_Project.Project.domain.Talk;
 import Opensource_SW_Project.Project.service.EmbeddingService.EmbeddingService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import Opensource_SW_Project.Project.web.dto.Talk.TalkResponseDTO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import java.util.Arrays;
+
 @RestController
+@RequiredArgsConstructor
+@Validated
+@CrossOrigin
+@Slf4j
 public class EmbeddingController {
 
     private final EmbeddingService embeddingService;
 
-    public EmbeddingController(EmbeddingService embeddingService) {
-        this.embeddingService = embeddingService;
+    @Operation(summary = "대화 종료 조건에 대한 임베딩 값 생성 및 DB에 저장"    )
+    @PostMapping("/embedding")
+    public ApiResponse<?> saveEmbeddingValue(
+            @RequestParam(name = "terminationCondition")String terminationCondition
+    ) throws Exception{
+        String result = embeddingService.getChatCompletion(terminationCondition);
+        String embeddingResult = embeddingService.getEmbeddingResult(result);
+        double [] embeddingArray;
+        embeddingArray = strToDoubleArray(embeddingResult);
+        System.out.println(Arrays.toString(embeddingArray));
+
+        embeddingService.saveEmbeddingValue(terminationCondition, Arrays.toString(embeddingArray));
+        return ApiResponse.onSuccess(
+                SuccessStatus.DIARY_OK,
+                null
+        );
     }
 
     //prompt로 넘겨주면 해당 String에 대해 embedding return
     @GetMapping("/api/embedding")
     public String getChatCompletion(@RequestParam String prompt) throws Exception {
+        String result = embeddingService.getChatCompletion(prompt);
+        String embeddingResult = embeddingService.getEmbeddingResult(result);
+        double [] embeddingArray;
+        embeddingArray = strToDoubleArray(embeddingResult);
+        System.out.println(Arrays.toString(embeddingArray));
+
+        String compare = "일기 써줘";
+        String compareResult = embeddingService.getChatCompletion(compare);
+        String compareEmbeddingResult = embeddingService.getEmbeddingResult(compareResult);
+        double [] compareEmbeddingArray;
+        compareEmbeddingArray = strToDoubleArray(compareEmbeddingResult);
+
+        double checkSimilarity = cosineSimilarity(embeddingArray, compareEmbeddingArray);
+        System.out.println("@@@@@@@@@@@ 유사도 : " + checkSimilarity);
+
         return embeddingService.getChatCompletion(prompt);
     }
 
