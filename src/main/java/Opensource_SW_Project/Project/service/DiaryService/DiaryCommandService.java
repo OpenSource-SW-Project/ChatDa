@@ -6,6 +6,8 @@ import Opensource_SW_Project.Project.web.dto.Talk.TalkRequestDTO;
 
 public interface DiaryCommandService {
     String createDiarySystemPrompt(Long memberId);
+    String createDiarySystemPromptWithStyle(Long memberId);
     Diary updateDiary(Long diaryId, DiaryRequestDTO.UpdateDiaryDTO request);
     Diary saveDiary(Long memberId, TalkRequestDTO.CreateMessageRequestDTO request, String title, String content);
+    void saveDiary2(Long memberId, TalkRequestDTO.CreateMessageRequestDTO request, String title, String content);
 }

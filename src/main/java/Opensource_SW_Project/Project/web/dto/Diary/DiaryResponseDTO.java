@@ -19,6 +19,8 @@ public class DiaryResponseDTO{
         Long diaryId;
         String title;
         String content;
+        String title2;
+        String content2;
     }
 
     @Getter
@@ -65,6 +67,8 @@ public class DiaryResponseDTO{
         Long diaryId;
         String title;
         String content;
+        String title2;
+        String content2;
         LocalDateTime createdAt;
     }
 
