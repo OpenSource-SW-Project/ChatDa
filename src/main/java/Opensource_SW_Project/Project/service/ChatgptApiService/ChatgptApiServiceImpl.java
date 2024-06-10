@@ -62,6 +62,7 @@ public class ChatgptApiServiceImpl implements ChatgptApiCommandService { // 첫 
     // 대화 내용 저장
     public void saveUserPromptAndMessage(TalkRequestDTO.CreateMessageRequestDTO request, String userPrompt, String message){
         Long checkTopic;
+        int countTopic;
 
         Talk talk = talkRepository.findById(request.getTalkId()).get(); // 후에 예외처리 해주기, 해당하는 user가 존재하지 않을 때
 
@@ -71,17 +72,24 @@ public class ChatgptApiServiceImpl implements ChatgptApiCommandService { // 첫 
         //System.out.println(getDetailedTalk.getContent());
         checkTopic = getDetailedTalk.getNextCheckTopic();
 
+        // countTopic 업데이트
+        countTopic = getDetailedTalk.getCountTopic();
+        // 이전의 datailedTalk의 nextCheckTopic column의 값을 이용해 countTopic 세팅하기
+        if(checkTopic == 0) countTopic = getDetailedTalk.getCountTopic() + 1;
+
         DetailedTalk questionDetailedTalk = DetailedTalk.builder()
                 .talk(talk)
                 .content(userPrompt)
                 .category(Category.QUESTION)
                 .checkTopic(checkTopic)
+                .countTopic(countTopic)
                 .build();
         DetailedTalk answerDetailedTalk = DetailedTalk.builder()
                 .talk(talk)
                 .content(message)
                 .category(Category.ANSWER)
                 .checkTopic(checkTopic)
+                .countTopic(countTopic)
                 .build();
         detailedTalkRepository.save(questionDetailedTalk);
         detailedTalkRepository.save(answerDetailedTalk);
@@ -112,6 +120,7 @@ public class ChatgptApiServiceImpl implements ChatgptApiCommandService { // 첫 
                     .category(Category.QUESTION)
                     .checkTopic(checkTopic)
                     .nextCheckTopic(nextCheckTopic)
+                    .countTopic(1)
                     .build();
             detailedTalkRepository.save(firstDetailedTalk);
         }
@@ -232,8 +241,7 @@ public class ChatgptApiServiceImpl implements ChatgptApiCommandService { // 첫 
     public String getRandomSubject() {
         String[] subjects = {
                 "오늘 날씨", "오늘 먹은 음식", "오늘 만난 사람", "오늘 기분", "주말에 할 일",
-                "오늘 아침에 있었던 일", "오늘 기억에 남는 일", "오늘 있었던 일 중 특별한 일",
-                "오늘 했던 특별한 경험", "요즘 고민 거리"
+                "오늘 아침에 있었던 일", "오늘 기억에 남는 일", "요즘 고민 거리"
                 //"요즘들어 가장 큰 고민은 뭐야?",
                 //"학교 공부는 요즘 어떤거 같아?",
                 //"오늘 날씨 어떤거 같아?",
@@ -279,6 +287,13 @@ public class ChatgptApiServiceImpl implements ChatgptApiCommandService { // 첫 
         return summarizedFeatures;
     }
 
-
+    public Boolean checkCountTopic(TalkRequestDTO.CreateMessageRequestDTO request){
+        Talk talk = talkRepository.findById(request.getTalkId()).get(); // 후에 예외처리 해주기, 해당하는 user가 존재하지 않을 때
+        // 바로전 detailedTalk의 checkCount확인하기
+        DetailedTalk getDetailedTalk = detailedTalkRepository.findFirstByTalkOrderByCreatedAtDesc(talk);
+        if(getDetailedTalk == null) return false;
+        if(getDetailedTalk.getCountTopic() == 4) return true;
+        return false;
+    }
 
 }

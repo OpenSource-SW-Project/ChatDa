@@ -34,6 +34,8 @@ public class DetailedTalk extends BaseEntity {
 
     private Long nextCheckTopic;
 
+    private int countTopic;
+
     // user와 양방향 매핑하기 <- 양방향??
     public void setTalk(Talk talk) {
 //        // 기존에 이미 등록되어 있던 관계를 제거
