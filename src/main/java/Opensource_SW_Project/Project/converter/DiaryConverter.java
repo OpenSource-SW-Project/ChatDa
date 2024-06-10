@@ -16,6 +16,8 @@ public class DiaryConverter {
                 .diaryId(diary.getDiaryId())
                 .title(diary.getTitle())
                 .content(diary.getContent())
+                .title2(diary.getTitleWithStyle())
+                .content2(diary.getContentWithStyle())
                 .build();
     }
 
@@ -46,6 +48,8 @@ public class DiaryConverter {
                 .diaryId(diary.getDiaryId())
                 .title(diary.getTitle())
                 .content(diary.getContent())
+                .title2(diary.getTitleWithStyle())
+                .content2(diary.getContentWithStyle())
                 .createdAt(diary.getCreatedAt())
                 .build();
     }

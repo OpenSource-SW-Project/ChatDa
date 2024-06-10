@@ -139,7 +139,7 @@ public class EmbeddingService implements EmbeddingServicelmpl {
             }
         }
         if(max > 0.91) similarity = true;
-        //System.out.println("!!!!!!!!! : " + max);
+        System.out.println("@@@@@@@@@ : " + max);
 
         return similarity;
     }

@@ -29,6 +29,12 @@ public class Diary extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
+    @Column(columnDefinition = "TEXT")
+    private String titleWithStyle; // 제목 필드 추가
+
+    @Column(columnDefinition = "TEXT")
+    private String contentWithStyle;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -55,5 +61,10 @@ public class Diary extends BaseEntity {
     public void update(DiaryRequestDTO.UpdateDiaryDTO request) {
         this.title = request.getTitle();
         this.content = request.getContent();
+    }
+
+    public void updateContentWithStyle(String title, String content) {
+        this.titleWithStyle = title;
+        this.contentWithStyle = content;
     }
 }

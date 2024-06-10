@@ -12,6 +12,7 @@ import java.util.Optional;
 @Repository
 public interface DiaryRepository extends JpaRepository<Diary, Long> {
 
+    Diary findByMember(Member member);
     List<Diary> findByTalk(Talk talk);
     List<Diary> findAllByMember(Member member);
 }

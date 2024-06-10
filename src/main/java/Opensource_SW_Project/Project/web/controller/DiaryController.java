@@ -60,6 +60,7 @@ public class DiaryController {
         // 토큰 유효성 검사 (memberId)
         jwtTokenProvider.isValidToken(memberId);
 
+        // 일반 일기 생성
         String DiarySystemPrompt = diaryCommandService.createDiarySystemPrompt(memberId);
         String userHistoryTalk = chatgptApiService.getHistorytalk(memberId, request);
         String userPrompt = DiarySystemPrompt + userHistoryTalk;
@@ -79,6 +80,27 @@ public class DiaryController {
         // service에서 userPrompt와 chatGPTResponse 저장
         //Diary newDiary = diaryCommandService.saveDiary(memberId, request, chatGPTResponse.getChoices().get(0).getMessage().getContent());
         Diary newDiary = diaryCommandService.saveDiary(memberId, request, title, content);
+
+
+        // 문체 적용 일기 생성
+        String DiarySystemPromptWithSytle = diaryCommandService.createDiarySystemPromptWithStyle(memberId);
+        String userPrompt2 = DiarySystemPromptWithSytle + userHistoryTalk;
+
+        String systemPrompt2 = "";
+        // request를 api로 보내 chatGPT응답받기
+        ChatGPTRequestDTO chatGPTrequest2 = new ChatGPTRequestDTO(model, systemPrompt2,userPrompt2);
+        ChatGPTResponseDTO chatGPTResponse2 =  template.postForObject(apiURL, chatGPTrequest2, ChatGPTResponseDTO.class);
+
+        // 일기 내용 파싱
+        String diaryContent2 = chatGPTResponse2.getChoices().get(0).getMessage().getContent();
+
+        String[] splitContent2 = diaryContent2.split("\n", 2); // \n으로 나눔. 첫 번째는 제목, 두 번째는 내용
+        String title2 = splitContent2[0].replace("제목: ", "").trim();
+        String content2 = splitContent2[1].replace("내용: ", "").trim();
+
+        // service에서 userPrompt와 chatGPTResponse 저장
+        //Diary newDiary = diaryCommandService.saveDiary(memberId, request, chatGPTResponse.getChoices().get(0).getMessage().getContent());
+        diaryCommandService.saveDiary2(memberId, request, title2, content2);
 
         return ApiResponse.onSuccess(
                 SuccessStatus.DIARY_OK,
