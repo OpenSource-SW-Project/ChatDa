@@ -64,3 +64,29 @@ function saveDiary() {
         alert('제목과 내용을 모두 입력해주세요.');
     }
 }
+
+const btn_1 = document.getElementById("btn-1");
+const btn_2 = document.getElementById("btn-2");
+
+var current = 1;
+btn_1.classList.add("active");
+
+btn_1.addEventListener("click", ()=> {
+    btn_1.classList.add("active");
+    btn_2.className = "toggle-btn";
+    if (current != 1) {
+        current = 1;
+        title.value = sessionStorage.getItem("title");
+        content.value = sessionStorage.getItem("content");
+    }
+})
+
+btn_2.addEventListener("click", ()=> {
+    btn_2.classList.add("active");
+    btn_1.className = "toggle-btn";
+    if (current != 2) {
+        current = 2;
+        title.value = sessionStorage.getItem("title2");
+        content.value = sessionStorage.getItem("content2");
+    }
+})

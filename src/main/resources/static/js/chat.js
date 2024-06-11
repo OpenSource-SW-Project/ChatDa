@@ -161,6 +161,7 @@ end_chat_btn.addEventListener("click", endChat);
 
 function endChat(event) {
     setTimeout(() => {
+        pengu.className = "";
         pengu.style.top = "50%";
         pengu.style.left = "50%";
         pengu.style.transform = 'translate(-50%, -50%)';
@@ -190,8 +191,10 @@ function endChat(event) {
             const result = data.result;
             sessionStorage.setItem("title", result.title);
             sessionStorage.setItem("content", result.content);
+            sessionStorage.setItem("title2", result.title2);
+            sessionStorage.setItem("content2", result.content2);
             sessionStorage.setItem("diaryId", result.diaryId);
-            //window.location.href = "temp";
+            window.location.href = "temp";
         })
         .catch(error => {
             console.error('Error:', error);

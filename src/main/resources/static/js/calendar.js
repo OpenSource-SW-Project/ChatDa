@@ -94,7 +94,8 @@ function showCalendar(month, year) {
                 } // color today's date
 
                 cell.appendChild(cellText);
-                const diary = data.filter(element => (element.createdAt[2] == date))[0];
+                const diary_all = data.filter(element => (element.createdAt[2] == date));
+                const diary = diary_all[diary_all.length-1];
                 if(diary) {
                     addSymbol(cell, diary.title, diary.createdAt, diary.content);
                 }
