@@ -44,7 +44,7 @@ public class DiaryQueryServiceImpl implements DiaryQueryService{
     @Override
     public List<Diary> getDiaryByTalkId(Long talkId) {
         Talk getTalk = talkRepository.findById(talkId).get();
-        List<Diary> diary = diaryRepository.findByTalk(getTalk);
+        List<Diary> diary = diaryRepository.findAllByTalk(getTalk);
         return diary;
     }
 

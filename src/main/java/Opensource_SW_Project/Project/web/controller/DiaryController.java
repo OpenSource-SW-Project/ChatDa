@@ -84,6 +84,16 @@ public class DiaryController {
 
         // 문체 적용 일기 생성
         String DiarySystemPromptWithSytle = diaryCommandService.createDiarySystemPromptWithStyle(memberId);
+        // 문체를 생성하지 않았다면 ChatGPT를 통해 문체 적용 일기 생성하지 않기
+        if(DiarySystemPromptWithSytle == null) {
+            return ApiResponse.onSuccess(
+                    SuccessStatus.DIARY_OK,
+                    DiaryConverter.toCreateDiaryResultDTO(
+                            newDiary
+                    )
+            );
+        }
+
         String userPrompt2 = DiarySystemPromptWithSytle + userHistoryTalk;
 
         String systemPrompt2 = "";

@@ -51,6 +51,7 @@ public class DiaryCommandServiceImpl implements DiaryCommandService {
     public String createDiarySystemPromptWithStyle(Long memberId){
         Member getMember = memberRepository.findById(memberId).get();
         Style getStyle = styleRepository.findByMember(getMember);
+        if(getStyle == null) return null;
 
 
         String diarySystemPrompt = "다음은 " + getMember.getName() +"의 하루에 대한 대화 내용이다.\n" +
@@ -89,8 +90,8 @@ public class DiaryCommandServiceImpl implements DiaryCommandService {
     }
 
     public void saveDiary2(Long memberId, TalkRequestDTO.CreateMessageRequestDTO request, String title, String content){
-        Member getMember = memberRepository.findById(memberId).get();
-        Diary getDiary = diaryRepository.findByMember(getMember);
+        Talk getTalk = talkRepository.findById(request.getTalkId()).get();
+        Diary getDiary = diaryRepository.findByTalk(getTalk);
 
         getDiary.updateContentWithStyle(title, content);
     }
