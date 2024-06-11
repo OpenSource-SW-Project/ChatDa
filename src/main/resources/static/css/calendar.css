@@ -1,3 +1,13 @@
+select {
+    min-width: 80px;
+}
+
+.upper {
+    background-color: #00000008;
+    display: flex;
+    justify-content: space-between;
+}
+
 td,th {
     width: 55px;
     height: 55px;
