@@ -7,12 +7,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface DiaryRepository extends JpaRepository<Diary, Long> {
 
-    Diary findByMember(Member member);
-    List<Diary> findByTalk(Talk talk);
+    Diary findByTalk(Talk talk);
+    List<Diary> findAllByTalk(Talk talk);
     List<Diary> findAllByMember(Member member);
 }
