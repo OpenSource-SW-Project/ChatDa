@@ -32,7 +32,7 @@ function load_style() {
         .then(response => response.json())
         .then(data => {
             console.log(data);
-            const style = data.result.styles[0];
+            const style = data.result;
             if (style) {    // style exist
                 sessionStorage.setItem("style", style.content);
                 const alert_badge = document.getElementById("alert-badge");
