@@ -76,7 +76,7 @@ function send_chat(event) {
             talkId: talk_id,
             userPrompt: user_message
         };
-
+        enableWait();
         fetch(url + `api/chat?memberId=${member_id}`, {
             method: 'POST',
             headers: {
@@ -87,8 +87,20 @@ function send_chat(event) {
         })
             .then(response => response.json())
             .then(data => {
+                disableWait();
                 console.log(data);
-                receive_chat(null, data.result.message);
+                if(data.result.talkState === "COMMON"){
+                    receive_chat(null, data.result.message);
+                } else if (data.result.talkState === "WARNING") {
+                    new_chat.classList.add("warning");
+                    receive_chat(null, data.result.message);
+                } else if (data.result.talkState === "EXIT") {
+                    const byebye = "알겠어, 오늘은 여기까지. 오늘 대화 내용을 바탕으로 일기를 작성해 줄게"
+                    receive_chat(null, byebye);
+                    setTimeout(() => {
+                        endChat();
+                    }, "3000");
+                }
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -135,19 +147,26 @@ function receive_chat(event, response) {
     chat_log.appendChild(new_response_wrapper);
 
     chat_log.scrollTop = chat_log.scrollHeight;
-
+    /*
     chat_count = chat_count + 1;
     if (chat_count === 10) {
         chat_btn.disabled = true;
         alert("데모 버전에서 여기까지 대화를 제공합니다. 일기 생성 버튼을 눌러 일기를 생성해보세요!");
     }
+    */
 }
-//
 
 const end_chat_btn = document.getElementById("end-chat-btn");
 end_chat_btn.addEventListener("click", endChat);
 
 function endChat(event) {
+    setTimeout(() => {
+        pengu.style.top = "50%";
+        pengu.style.left = "50%";
+        pengu.style.transform = 'translate(-50%, -50%)';
+    }, 1000);
+    
+
     end_chat_btn.disabled = true;
     chat_box.classList.add('out');
     //create diary
@@ -172,7 +191,7 @@ function endChat(event) {
             sessionStorage.setItem("title", result.title);
             sessionStorage.setItem("content", result.content);
             sessionStorage.setItem("diaryId", result.diaryId);
-            window.location.href = "temp";
+            //window.location.href = "temp";
         })
         .catch(error => {
             console.error('Error:', error);
@@ -410,4 +429,4 @@ function get_today_chat() {
 const pengu = document.getElementById("penguin");
 setTimeout(() => {
     pengu.className = "in";
-}, "5000");
+}, "20000");

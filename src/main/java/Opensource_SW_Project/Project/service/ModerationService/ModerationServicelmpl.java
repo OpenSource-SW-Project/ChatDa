@@ -59,7 +59,7 @@ public class ModerationServicelmpl implements ModerationService {
 
             String[] categoryScores = new String[categoryScoresNode.size()];
             String result = null;
-            double threshold = 0.03;
+            double threshold = 0.015;
 
             int index = 0;
             Iterator<Map.Entry<String, JsonNode>> fields = categoryScoresNode.fields();
