@@ -64,3 +64,35 @@ button:disabled {
     cursor: default;
     opacity: 0.65;
 }
+
+#choose-div {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+button.toggle-btn {
+    background-color: #526a84;
+    color: white;
+    border: none;
+    margin: 0px 4px;
+    width: 36px;
+    height:36px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 30px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.toggle-btn:hover {
+    background-color: #0056b3;
+}
+
+.toggle-btn:focus {
+    outline: none;
+}
+
+.toggle-btn.active {
+    background-color: #007BFF;
+
+}
