@@ -16,21 +16,28 @@ ChatDa 서비스 이용 방법은 다음과 같습니다.
 
 ### [예시 사진]
 **0. 메인 화면**
-<img src="https://github.com/PiLab-CAU/OpenSourceProject-2401/assets/74255823/18ca6bac-7c84-4430-b06d-13f5848e7006" width="60%">
+
+<img src="https://github.com/OpenSource-SW-Project/ChatDa/assets/74255823/58700b5a-4664-42c9-88ce-5f62edc933da" width="60%">
+
+<img src="https://github.com/OpenSource-SW-Project/ChatDa/assets/74255823/51aba597-1948-44b7-9f60-7307a07f3b09" width="60%">
 
 ---
 
 **1. ChatDa 대화 화면**
 <img src="https://github.com/PiLab-CAU/OpenSourceProject-2401/assets/74255823/30b867d6-872e-4a64-b26b-661484e9e55a" width="100%">
 
----
-**2. 데모 버전 대화 제한**
+<img src="https://github.com/OpenSource-SW-Project/ChatDa/assets/74255823/2d9135c7-b3f2-416d-b203-3310e1a8489d" width="50%">
 
-<img src="https://github.com/PiLab-CAU/OpenSourceProject-2401/assets/74255823/760d0763-8831-4c7f-a241-a4d6a1c44536" width="50%">
+---
+**2. 데모 버전 대화 제한**   [To be erased]
+
+<img src="https://github.com/PiLab-CAU/OpenSourceProject-2401/assets/74255823/760d0763-8831-4c7f-a241-a4d6a1c44536" width="70%">
 
 - 데모 버전에서는 최대 3개의 화제에 대해 10회 정도의 채팅으로 구성되어있습니다.
 - 현 버전은 초기 버전으로 최종 구현에서는 더 다양한 화제에 대해 긴 대화를 나눌 것 입니다.
-- 또한 사용자 특화된 대화는 생성되지 않습니다.
+- 또한 사용자 특화된 대화는 생성되지 않습니다.   
+
+
 
 ---
 **3. 일기 생성**
@@ -54,16 +61,16 @@ ChatDa 서비스 이용 방법은 다음과 같습니다.
 
 <img src="https://github.com/PiLab-CAU/OpenSourceProject-2401/assets/74255823/f55fea84-1ff5-4d00-84f8-c2344a7f04b7" width="80%">
 
-- 아직은 캘린더에서 챗다와의 대화를 통해 생성된 일기를 조회할 수 **없습니다**!!! 
-- 생성된 일기 조회는 로그인 기능이 추가된 이후에 가능합니다!
+- 아직은 캘린더에서 챗다와의 대화를 통해 생성된 일기를 조회할 수 **없습니다**!!!     [To be erased]
+- 생성된 일기 조회는 로그인 기능이 추가된 이후에 가능합니다!       [To be erased]
 
 - Demo 캘린더에서 날짜 옆에 위치한 이모지를 클릭하면 예시 일기를 확인할 수 있습니다.
 <img src="https://github.com/PiLab-CAU/OpenSourceProject-2401/assets/74255823/e0d05379-a016-4005-8154-1dd2ee166266" width="100%">
 <img src="https://github.com/PiLab-CAU/OpenSourceProject-2401/assets/74255823/6ebc3841-fe1e-4b5a-b441-eb456b022a8a" width="100%">
 
 ---
-### 구현 상황
-챗다 대화 알고리즘 ver1을 적용하였습니다.
+### 구현 상황     [To be modified]
+챗다 대화 알고리즘 ver1을 적용하였습니다.  
 
 생성된 일기는 대화 종료 후 확인 할 수 있으며 이후 다시 확인하는 기능은 현재 구현하지 않았습니다.
 
