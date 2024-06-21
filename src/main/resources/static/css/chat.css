@@ -51,52 +51,58 @@ body {
 }
 
 #chat-input {
-    
+
     font-size: 16px;
     flex-grow: 3;
     width: 300px;
-    margin : 2px 8px;
+    margin: 2px 8px;
     padding: 4px 12px;
     border: none;
     border-radius: 20px;
-    /* 양쪽이 둥근 모서리 */
+    /* ì–‘ìª½ì´ ë‘¥ê·¼ ëª¨ì„œë¦¬ */
     background-color: rgba(0, 0, 0, 0.1);
-    /* 반투명 배경 */
+    /* ë°˜íˆ¬ëª… ë°°ê²½ */
     color: #333;
     outline: none;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    /* 약간의 그림자 효과 */
+    /* ì•½ê°„ì˜ ê·¸ë¦¼ìž íš¨ê³¼ */
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 #chat-input::placeholder {
     color: rgba(0, 0, 0, 0.5);
-    /* 반투명한 플레이스홀더 */
+    /* ë°˜íˆ¬ëª…í•œ í”Œë ˆì´ìŠ¤í™€ë” */
 }
 
 #chat-input:focus {
     background-color: rgba(0, 0, 0, 0.2);
-    /* 포커스 시 더 진한 반투명 배경 */
+    /* í¬ì»¤ìŠ¤ ì‹œ ë” ì§„í•œ ë°˜íˆ¬ëª… ë°°ê²½ */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    /* 포커스 시 더 진한 그림자 효과 */
+    /* í¬ì»¤ìŠ¤ ì‹œ ë” ì§„í•œ ê·¸ë¦¼ìž íš¨ê³¼ */
 }
 
-#chat-btn {    
+#chat-btn {
     flex-grow: 1;
     margin: 0px 8px 0px 0px;
-      border: none;
-      border-radius: 20px; /* 둥근 모서리 */
-      background-color: rgba(255, 255, 255, 0.8); /* 반투명 배경 */
-      font-size: 16px;
-      cursor: pointer;
-      outline: none;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 약간의 그림자 효과 */
-      transition: background-color 0.3s ease, box-shadow 0.3s ease;
-      display: inline-block;
-  }
+    border: none;
+    border-radius: 20px;
+    /* ë‘¥ê·¼ ëª¨ì„œë¦¬ */
+    background-color: rgba(255, 255, 255, 0.8);
+    /* ë°˜íˆ¬ëª… ë°°ê²½ */
+    font-size: 16px;
+    cursor: pointer;
+    outline: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    /* ì•½ê°„ì˜ ê·¸ë¦¼ìž íš¨ê³¼ */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    display: inline-block;
+}
+
 .rounded-button:active {
-    background-color: rgba(0, 0, 0, 0.3); /* 클릭 시 더 진한 반투명 배경 */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4); /* 클릭 시 더 진한 그림자 효과 */
+    background-color: rgba(0, 0, 0, 0.3);
+    /* í´ë¦­ ì‹œ ë” ì§„í•œ ë°˜íˆ¬ëª… ë°°ê²½ */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    /* í´ë¦­ ì‹œ ë” ì§„í•œ ê·¸ë¦¼ìž íš¨ê³¼ */
 }
 
 .chat-wrapper {
@@ -111,8 +117,8 @@ body {
 }
 
 .chat-bubble {
-    margin: 8px;
-    padding: 7px;
+    margin: 8px 16px;
+    padding: 7px 12px;
     border-radius: 10px;
     background-color: rgba(0, 0, 0, 0.2);
     word-break: keep-all;
@@ -120,6 +126,12 @@ body {
 
 .chat-bubble:nth-child(even) {
     text-align: right;
+    background-color: rgb(58 58 235);
+    color: white;
+}
+
+.chat-bubble:nth-child(odd) {
+    background-color: #FFFFFF;
 }
 
 .warning {
@@ -155,7 +167,6 @@ img {
 @keyframes slideInOut {
     0% {
         left: -64px;
-        /* 시작 위치 */
     }
 
     20% {
@@ -168,7 +179,6 @@ img {
 
     100% {
         left: -64px;
-        /* 종료 위치 */
     }
 }
 
@@ -178,29 +188,24 @@ img {
 
 ::-webkit-scrollbar {
     width: 8px;
-    /* 스크롤 바 너비 */
 }
 
 ::-webkit-scrollbar-track {
     background: #d6e6f5;
-    /* 트랙 배경색 */
 }
 
 ::-webkit-scrollbar-thumb {
     background: #888;
-    /* 스크롤 바 색상 */
     border-radius: 4px;
-    /* 둥근 모서리 */
 }
 
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
-    /* 스크롤 바 호버 색상 */
 }
 
-#exit-img{
+#exit-img {
     width: 32px;
-    height:32px;
+    height: 32px;
 }
 
 #end-chat-btn {
@@ -208,28 +213,29 @@ img {
     border: none;
     cursor: pointer;
     background-color: rgba(66, 66, 66, 0.2);
-    display : flex;
+    display: flex;
     position: absolute;
-    right : 10px;
-    top : 10px;
-    width : 36px;
+    right: 10px;
+    top: 10px;
+    width: 36px;
     height: 36px;
     margin: 0px;
     padding: 0px;
     border-radius: 17px;
-    align-items : center;
+    align-items: center;
     justify-content: center;
 }
 
 #end-chat-btn:hover {
-    background-color: rgba(255, 0, 0, 0.5);; /* 호버 시 더 진한 빨간색 */
+    background-color: rgba(255, 0, 0, 0.5);
+    ;
 }
 
 #end-chat-btn:focus {
-    outline: none; /* 포커스 시 외곽선 제거 */
-    box-shadow: 0 0 5px rgba(255, 0, 0, 0.5); /* 포커스 시 그림자 */
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
 }
 
 #end-chat-btn:active {
-    background-color: #cc0000; /* 클릭 시 더 진한 빨간색 */
+    background-color: #cc0000;
 }

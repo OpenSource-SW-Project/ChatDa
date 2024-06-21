@@ -235,13 +235,13 @@ public class ChatgptApiServiceImpl implements ChatgptApiCommandService { // 첫 
 
     // 새 화제 생성 systemPrompt---------------------------------------------------------------
     public String generateNewSubjectSystemPrompt_condition4() {
-        return "조건\n1. 대화 화제 전환을 위해 " + getRandomSubject() + "에 관하여 질문한다. \n2. 한문장으로 짧게 질문만 한다.";
+        return "조건\n1." + getRandomSubject() + "에 관하여 질문한다. \n2. 한 문장으로 짧게 질문만 한다.";
     }
 
     public String getRandomSubject() {
         String[] subjects = {
                 "오늘 날씨", "오늘 먹은 음식", "오늘 만난 사람", "오늘 기분", "주말에 할 일",
-                "오늘 아침에 있었던 일", "오늘 기억에 남는 일", "요즘 고민 거리"
+                "오늘 아침에 있었던 일", "오늘 기억에 남는 일", "요즘 고민"
                 //"요즘들어 가장 큰 고민은 뭐야?",
                 //"학교 공부는 요즘 어떤거 같아?",
                 //"오늘 날씨 어떤거 같아?",
