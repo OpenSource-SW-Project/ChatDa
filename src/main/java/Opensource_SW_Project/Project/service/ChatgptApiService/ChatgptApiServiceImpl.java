@@ -137,10 +137,10 @@ public class ChatgptApiServiceImpl implements ChatgptApiCommandService { // 첫 
             message1 = getResponseOfChatGPT_API(systemPrompt1, userPrompt);
 
             // 새로운 화제에 대한 질문 생성 시스템 프롬프트
-            systemPrompt2 = getDefaultSystemPrompt(getMember.getName()) + generateNewSubjectSystemPrompt_condition4() + "\n\n" + getHistorytalk(memberId, request);
+            systemPrompt2 = getDefaultSystemPrompt(getMember.getName()) + generateNewSubjectSystemPrompt_condition4();
             message2 = getResponseOfChatGPT_API(systemPrompt2, userPrompt);
 
-            message = message1 + message2;
+            message = message1 + " " + message2;
 
             checkTopic = 0L;
         }
@@ -153,10 +153,10 @@ public class ChatgptApiServiceImpl implements ChatgptApiCommandService { // 첫 
                 message1 = getResponseOfChatGPT_API(systemPrompt1, userPrompt);
 
                 // 새로운 화제에 대한 질문 생성 시스템 프롬프트
-                systemPrompt2 = getDefaultSystemPrompt(getMember.getName()) + generateNewSubjectSystemPrompt_condition4() + "\n\n" + getHistorytalk(memberId, request);
+                systemPrompt2 = getDefaultSystemPrompt(getMember.getName()) + generateNewSubjectSystemPrompt_condition4();
                 message2 = getResponseOfChatGPT_API(systemPrompt2, userPrompt);
 
-                message = message1 + message2;
+                message = message1 + " " + message2;
 
                 checkTopic = 0L;
             }
@@ -219,29 +219,29 @@ public class ChatgptApiServiceImpl implements ChatgptApiCommandService { // 첫 
     // 조건 SystemPrompt-----------------------------------------------------------------------
 
     public String generateRespondSystemPrompt_condition1() {
-        String respondPrompt = "조건\n1. 자연스럽게 이어지도록 적절하게 반응한다.\n2. 한문장으로 짧게 반응한다.";
+        String respondPrompt = "조건\n1. 대화기록을 바탕으로 대화가 자연스럽게 이어지도록 적절하게 반응한다.\n2. 한문장으로 짧게 반응한다.";
         return respondPrompt;
     }
 
     public String generateRequestionSystemPrompt_condition2() {
-        String requestionPrompt = "조건\n1. 자연스럽게 이어지도록 적절하게 반응한다.\n2. 한문장으로 짧게 질문한다.";
+        String requestionPrompt = "조건\n1. 대화기록과 user prompt를 바탕으로 대화가 자연스럽게 이어지도록 적절하게 반응한다.\n2. 한문장으로 짧게 질문한다.";
         return requestionPrompt;
     }
 
     public String generateEndSubjectSystemPrompt_condition3() {
-        String endSubjectPrompt = "조건\n1. 자연스럽게 이어지도록 적절하게 반응한다.\n2. 한문장으로 짧게 반응한다\n3. 질문하지 않는다.";
+        String endSubjectPrompt = "조건\n1. 대화기록을 바탕으로 대화가 자연스럽게 이어지도록 적절하게 반응한다.\n2. 한문장으로 짧게 반응한다\n3. 질문하지 않는다.";
         return endSubjectPrompt;
     }
 
     // 새 화제 생성 systemPrompt---------------------------------------------------------------
     public String generateNewSubjectSystemPrompt_condition4() {
-        return "조건\n1. 대화 화제 전환을 위해 " + getRandomSubject() + "에 관하여 질문한다. \n2. 한문장으로 짧게 질문만 한다.";
+        return "조건\n1. " + getRandomSubject() + "에 관하여 질문한다.\n2. 한문장으로 짧게 질문만 한다.";
     }
 
     public String getRandomSubject() {
         String[] subjects = {
-                "오늘 날씨", "오늘 먹은 음식", "오늘 만난 사람", "오늘 기분", "주말에 할 일",
-                "오늘 아침에 있었던 일", "오늘 기억에 남는 일", "요즘 고민 거리"
+                "오늘 날씨", "오늘 먹은 음식", "오늘 만났던 사람", "오늘 기분", "주말에 할 일",
+                "오늘 아침에 있었던 일", "오늘 가장 기억에 남는 일", "요즘 고민 거리"
                 //"요즘들어 가장 큰 고민은 뭐야?",
                 //"학교 공부는 요즘 어떤거 같아?",
                 //"오늘 날씨 어떤거 같아?",
