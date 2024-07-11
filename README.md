@@ -1,5 +1,5 @@
 <img src="https://github.com/PiLab-CAU/OpenSourceProject-2401/assets/74255823/6e3fbecc-573f-4ca2-acbc-d82bd2713937" width="40%">
-```console
+```shell
 git add .
 git commit -m "hi hi"
 ```
