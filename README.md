@@ -1,12 +1,15 @@
 <img src="https://github.com/PiLab-CAU/OpenSourceProject-2401/assets/74255823/6e3fbecc-573f-4ca2-acbc-d82bd2713937" width="40%">
+
+### [데모 링크]
+http://43.202.126.252:8080/
+---
+
 ```shell
 git add .
 git commit -m "hi hi"
 ```
 
-### [데모 링크]
-http://43.202.126.252:8080/
----
+
 ### [최종 발표 영상]
 https://youtu.be/XFfiGo3Jq-U
 ---
