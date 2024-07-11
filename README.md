@@ -4,12 +4,6 @@
 http://43.202.126.252:8080/
 ---
 
-```shell
-git add .
-git commit -m "hi hi"
-```
-
-
 ### [최종 발표 영상]
 https://youtu.be/XFfiGo3Jq-U
 ---
