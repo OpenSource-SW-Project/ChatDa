@@ -1,7 +1,7 @@
 <img src="https://github.com/PiLab-CAU/OpenSourceProject-2401/assets/74255823/6e3fbecc-573f-4ca2-acbc-d82bd2713937" width="40%">
 
 ### [데모 링크]
-http://43.202.126.252:8080/
+http://43.202.126.252:8080/ [서비스는 현재 종료되었습니다.]
 ---
 
 ### [최종 발표 영상]
