@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class MemberController {
     // error 해결 테스트
+    // error 해결 테스트2
+
     private final MemberCommandService memberCommandService;
     private final MemberQueryService memberQueryService;
 
