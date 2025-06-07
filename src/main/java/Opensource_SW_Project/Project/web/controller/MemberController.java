@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 @Slf4j
 public class MemberController {
-
+    // error 해결 테스트
     private final MemberCommandService memberCommandService;
     private final MemberQueryService memberQueryService;
 
