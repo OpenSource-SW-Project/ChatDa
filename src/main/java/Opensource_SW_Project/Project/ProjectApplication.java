@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 public class ProjectApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ProjectApplication.class, args);
+		SpringApplication.run(ProjectApplication.class, args); // error 해결완료!
 		// commit action 테스트 1
 		// commit action 테스트 2
 		// commit action 테스트 3
