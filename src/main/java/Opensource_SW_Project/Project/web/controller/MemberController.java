@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 @RequestMapping("/users")
 @Slf4j
-public class MemberController {
+public class MemberController { // ArrayIndexOutOfBoundsException 해결!
 
     private final MemberCommandService memberCommandService;
     private final MemberQueryService memberQueryService;
