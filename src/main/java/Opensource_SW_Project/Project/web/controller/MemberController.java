@@ -25,6 +25,7 @@ public class MemberController {
     // error 해결 테스트
     // error 해결 테스트2
 
+    // ArithmeticException 해결완료!
     private final MemberCommandService memberCommandService;
     private final MemberQueryService memberQueryService;
 
