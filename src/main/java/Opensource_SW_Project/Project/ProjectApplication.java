@@ -10,6 +10,7 @@ public class ProjectApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ProjectApplication.class, args);
+		// ArrayIndexOutOfBoundsException 해결!
 		// hihihello
 //		// 1. NullPointereption
 //		str.length(); // 런타임 예외 → throws 불필요
