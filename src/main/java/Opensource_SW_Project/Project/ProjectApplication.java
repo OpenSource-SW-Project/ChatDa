@@ -14,22 +14,20 @@ public class ProjectApplication {
 //		// 1. NullPointereption
 //		str.length(); // 런타임 예외 → throws 불필요
 //
-		// 2. ArrayIndexOutOfBoundsException
-		int[] arr = new int[3];
-		int value = arr[5]; // 런타임 예외
+//		// 2. ArrayIndexOutOfBoundsException
+//		int[] arr = new int[3];
+//		int value = arr[5]; // 런타임 예외
 //
 //		// 3. ArithmeticException
 //		int result = 10 / 0; // 런타임 예외
 
-		// 추가된 줄1
-		// 추가된 줄2
-
-		// commit action 테스트1
-		// commit action 테스트2
 		// error 해결 테스트2.1
 		// error 해결 테스트3
 		// error 해결 테스트4
 		// error 해결 테스트5 수정
+
+		// 추가된 줄1
+		// 추가된 줄2
 	}
 
 }
