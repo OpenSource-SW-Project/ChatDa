@@ -12,6 +12,7 @@ public class ProjectApplication {
 		SpringApplication.run(ProjectApplication.class, args);
 		// commit action 테스트 1
 		// commit action 테스트 2
+		// commit action 테스트 3
 	}
 
 }
