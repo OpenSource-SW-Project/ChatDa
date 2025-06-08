@@ -12,17 +12,17 @@ public class ProjectApplication {
 		SpringApplication.run(ProjectApplication.class, args);
 		// commit action 테스트1
 		// commit action 테스트2
-		// commit action 테스트3
-		// commit action 테스트4
-		// error 해결 테스트
 		// error 해결 테스트2.1
 		// error 해결 테스트3
 		// error 해결 테스트4
-		// error 해결 테스트5
-		// error 해결 테스트6
-		// error 해결 테스트7
+		// error 해결 테스트5 수정
+		// error 해결 테스_ 수정
+		// error 테스트7
 		// error 해결 테스트8
 		// error 해결 테스트9
+
+		// 추가된 줄1
+		// 추가된 줄2
 	}
 
 }
