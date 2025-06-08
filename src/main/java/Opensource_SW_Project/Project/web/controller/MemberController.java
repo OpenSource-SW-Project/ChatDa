@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 @RequestMapping("/users")
 @Slf4j
-public class MemberController { // error 해결완료!
+public class MemberController {
 
     private final MemberCommandService memberCommandService;
     private final MemberQueryService memberQueryService;
