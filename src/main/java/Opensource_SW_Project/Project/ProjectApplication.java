@@ -10,7 +10,7 @@ public class ProjectApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ProjectApplication.class, args); // error 해결!
-		// commit action 테스트 1
+		// commit action 테스트 1 // test1 commit하기!
 		// commit action 테스트 2 // commit하기!
 		// commit action 테스트 3
 		// ArrayIndexOutOfBoundsException 강제로 발생시키기 - 코드 블럭 저장!!
