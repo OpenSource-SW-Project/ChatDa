@@ -15,7 +15,7 @@ public class ProjectApplication {
 		// commit action 테스트 3 // test@@@@@@@@@@@@@ commit하기!
 		// ArrayIndexOutOfBoundsException 강제로 발생시키기 - 코드 블럭 저장!!
 		int[] testArray = new int[2];
-		System.out.println(testArray[0]); // ArrayIndexOutOfBoundsException 해결!!
+		System.out.println(testArray[1]); // ArrayIndexOutOfBoundsException 해결!!
 	}
 
 }
