@@ -9,8 +9,8 @@ public class ProjectApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ProjectApplication.class, args);
 
-		// 추가된 줄1
-		// 추가된 줄2
+		// 추가된 줄1!
+		// 추가된 줄2!
 		// 추가된 줄3
 		// 추가된 줄4
 		// 추가된 줄5
