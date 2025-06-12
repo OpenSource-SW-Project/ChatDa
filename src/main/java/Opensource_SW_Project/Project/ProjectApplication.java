@@ -6,9 +6,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableJpaAuditing
 public class ProjectApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(ProjectApplication.class, args); // 해결됨!
-		int[] array = new int[2];
-		System.out.println(array[1]);
+		SpringApplication.run(ProjectApplication.class, args); // 오류 해결!
+
+		// 추가된 줄1
+		// 추가된 줄2
 	}
 
 }
